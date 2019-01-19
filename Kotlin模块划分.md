@@ -61,7 +61,7 @@ _注意：在写文章的时候，多写一下当前的 kotlin 代码编译成 .
 ## Kotlin 和 Android
 ### Kotlin 在 Android 中的运用
 * Android 和 Kotlin 拓展库（介绍下 Koltin 专门为 Android 编写的拓展库比如：不用自己写 findById 的 extension ，KTX ，Anko 等等。）
-* Kotlin 和 Android （结合之前的文章，说一说 Koltin 在 Android 中的实践 用一些项目中的例子来体现 Kotlin 开发 Android 的真正便利）
+* Kotlin 和 Android （结合之前的文章，说一说 Koltin 在 Android 中的实践 用一些项目中的例子来体现 Kotlin 开发 Android 的真正便利，比如说：拓展方法，let，apply lazy 等在 Android 中实际应用）
 ### Unit test
 * Kotlin 单元测试（讲解 Kotlin 在 单元测试的应用，介绍一些专门为 Koltin 设计的 单元测试库）
 ### 协程和 Android 
