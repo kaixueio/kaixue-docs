@@ -1,16 +1,16 @@
 # Kotlin 目录
-_注意：在写文章的时候，多写一下当前的kotlin代码编译成class文件是怎么样的，和java代码怎么等效，比如：在说接口的默认方法的时候，读者可能很难理解，因为java没有接口的默认方法，但是你可以结合kotlin编译出的class字节码来解释，让读者一下子就知道了其中的原理_
+_注意：在写文章的时候，多写一下当前的 kotlin 代码编译成 .class 文件是怎么样的，和 Java 代码怎么等效，比如：在说接口的默认方法的时候，读者可能很难理解，因为 Java 没有接口的默认方法，但是你可以结合 Kotlin 编译出的 .class 字节码来解释，让读者一下子就知道了其中的原理_
 
 ## 总览
-* 什么是 Kotlin ，给新手一个直观的感觉粗略的了解一下 Kotlin（可以介绍下 kotlin 和 java 的不同，空安全，和 java 互相调用，在Android中的一些简单运用，点到为止不用深入，目的是让新人对这门语言有个概念）
+* 什么是 Kotlin ，给新手一个直观的感觉粗略的了解一下 Kotlin（可以介绍下 Kotlin 和 Java 的不同，空安全，和 Java 互相调用，在 Android 中的一些简单运用，点到为止不用深入，目的是让新人对这门语言有个概念）
 
 ## 基础
 ### 基本语法
-* 基本要素（从 Hello world  开始，介绍一下 函数 ，变量，基本数据类型，和类：这个节点上不用说太深，点到为止，主要让读者对koltin的基本语法有个大概的了解）
-* 流程语句（when ，if ，for 等等，重要说说这些分支语句和java的区别）
+* 基本要素（从 Hello world  开始，介绍一下 函数 ，变量，基本数据类型，和类：这个节点上不用说太深，点到为止，主要让读者对 Koltin 的基本语法有个大概的了解）
+* 流程语句（when ，if ，for 等等，重要说说这些分支语句和 Java 的区别）
 * 异常的处理
 ### 函数
-* 函数的定义和拓展函数，拓展属性（记得写一写 拓展函数怎么被在java中调用）
+* 函数的定义和拓展函数，拓展属性（记得写一写 拓展函数怎么被在 Java 中调用）
 * 可变参数，中缀调用，字符串和正则表达式的处理
 * 局部函数和拓展
 ### 类，对象和接口
@@ -20,16 +20,16 @@ _注意：在写文章的时候，多写一下当前的kotlin代码编译成clas
 * 委托属性
 * object 的用法（对象声明，伴生对象，对象表达式等等）
 ### 类型系统
-* 可空性（一定要说到的点：含义，解决的问题，怎么安全的调用 ?. 安全转换 as? 非空断言!!  let 和 ?.let  延迟初始化  可空的拓展函数  和java 之间调用怎么保证可空的安全性）
-* 基本类型进阶（进阶说说基本类型，数字转换，可空的基本类型，Any Any?  Unit 和 java 的void 和 Nothing）
-* 集合与数组（集合，和可空集合，只读和可变集合，Koltin集合和java 的一些关系，集合的**操作符和序列**等等 数组和java的 数组）
+* 可空性（一定要说到的点：含义，解决的问题，怎么安全的调用 ?. 安全转换 as? 非空断言!!  let 和 ?.let  延迟初始化  可空的拓展函数  和 Java 之间调用怎么保证可空的安全性）
+* 基本类型进阶（进阶说说基本类型，数字转换，可空的基本类型，Any Any?  Unit 和 Java 的 void 和 Nothing）
+* 集合与数组（集合，和可空集合，只读和可变集合，Koltin 集合和 Java 的一些关系，集合的**操作符和序列**等等,数组和 Java 的数组）
 
 ## 进阶
 ### Lambda 
 * 基本表达式，和引用
-* lambda 和 java 直接的互相使用（可以说一下  java中可以用this 拿到自己，lambda却不可以：比如在 listener 里面 java 可以 用this 取消自己，kotlin 不行）
+* lambda 和 java 直接的互相使用（可以说一下 Java 中可以用 this 拿到自己，lambda却不可以：比如在 Listener 里面 Java 可以 用 this 取消自己，Kotlin 不行）
 * 带接受者的 lambda （with apply等等，说说这些函数的实现原理）
-* 高阶函数（高阶函数的定义，java中怎么调用）
+* 高阶函数（高阶函数的定义，Java 中怎么调用）
 * 内联函数
 * 高阶函数中的return
 
@@ -42,27 +42,27 @@ _注意：在写文章的时候，多写一下当前的kotlin代码编译成clas
 * 泛型的基本使用和声明
 * 泛型的约束（super 和 extend 在kotlin中的一些类比）
 * 泛型的空和非空
-* 运行时的泛型（这个比较复杂：说说泛型擦除，kotlin中泛型的判断比如 is T  as T 是怎么通过内联实现的 还有  T::class ）
+* 运行时的泛型（这个比较复杂：说说泛型擦除，Kotlin 中泛型的判断比如 is T  as T 是怎么通过内联实现的 还有  T::class ）
 * 泛型的子类型化（协变 逆变 把 in out 和 ？ Extend 和 ？ super 结合起来说一说：这个比较绕 也很考验作者的功底，还得讲一下 * 符号 在泛型中的使用）
 *
 ### 注解，反射 （最好举个例子，把注解反射一起说了）
 * 申明和应用注解（元注解，泛型，用于java的注解 @jvmstatic 等等）
-* 反射（说说反射api KClass KCallable KFunction KProperty 等等）
+* 反射（说说反射 Api KClass KCallable KFunction KProperty 等等）
 
 ### DSL （这一章更是晕脑壳，可以用一点例子来说明）
 * 什么是 DSL 
 * DSL 的定义
 
 ## Kotlin 1.3
-* 协程（只用说协程本身的东西，不用讲和Android的配合，配合使用在后面的章节）
+* 协程（只用说协程本身的东西，不用讲和 Android 的配合，配合使用在后面的章节）
 * 契约（这一节比较简单 ，可以和内联类一起写）
 * 内联类
 
 ## Kotlin 和 Android
 ### Kotlin 在 Android 中的运用
 * Android 和 Kotlin 拓展库（介绍下 Koltin 专门为 Android 编写的拓展库比如：不用自己写 findById 的 extension ，KTX ，Anko 等等。）
-* Kotlin 和 Android （结合之前的文章，说一说 Koltin 在Android中的实践 用一些项目中的例子来体现 kotlin 开发Android的真正便利）
+* Kotlin 和 Android （结合之前的文章，说一说 Koltin 在 Android 中的实践 用一些项目中的例子来体现 Kotlin 开发 Android 的真正便利）
 ### Unit test
-* Kotlin 单元测试（讲解Kotlin 在 单元测试的应用，介绍一些专门为 Koltin 设计的 单元测试库）
+* Kotlin 单元测试（讲解 Kotlin 在 单元测试的应用，介绍一些专门为 Koltin 设计的 单元测试库）
 ### 协程和 Android 
-* 协程在Android中的使用（讲解协程在Android中的使用，协程生命周期的管理，网络访问等等）
+* 协程在 Android 中的使用（讲解协程在 Android 中的使用，协程生命周期的管理，网络访问等等）
