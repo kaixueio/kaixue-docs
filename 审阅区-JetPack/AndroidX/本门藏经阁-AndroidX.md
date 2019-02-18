@@ -1,4 +1,5 @@
 > 自盘谷开天辟地后，上古大神Andy Rubin开宗立派创立Android门，历经数十载，宗门日渐壮大，门下弟子遍布整个九州大陆。坊间流传，其门下弟子最善以身着格子衬衣，牛仔裤，背黑色双肩包装扮行走江湖，那其中的头顶光滑锃亮者更是其中的佼佼强者，修为绝顶。
+
 ### 本门藏经阁-AndroidX 
 藏经阁，历来为各大门派收藏本门绝学之所在。
 本门亦不例外，这AndroidX 中尽数收录了宗门无上武功心法秘笈，其中多数源自宗门上古宝典支持库([Support Library Packages](https://developer.android.com/topic/libraries/support-library/))，经过历代宗主不断参悟，优化改进，现已形成一套完整修炼体系，为门下弟子修行所用。后世若是有门人参透更高武学，亦将收录于此，造福后世弟子。
@@ -19,29 +20,20 @@ support库和Android操作系统是分开提供的，Support库提供了一系�
 AndroidX中的所有软件包都以字符串`androidx`开头。原始Support库包也已映射到相应的`androidx.*`包中。
 如原始Support库中的`com.android.support:appcompat-v7`包映射到AndroidX中为`androidx.appcompat:appcompat:1.0.0` 。包名变成以`androidx`开头。
 下表仅列部分原始支持库迁移到AndroidX到映射表，大概了解一下就可以了，只要知道之前使用到支持库中的库AndroidX都支持，如何使用下面会具体介绍，感兴趣的同学可以去官网查看完整[映射表](https://developer.android.com/jetpack/androidx/migrate)
+
 | 原始Support库      |    AndroidX | 
 | :--------: | :--------:| 
-| com.android.support:support-compat	  | androidx.core:core:1.0.0+
- | 
- |com.android.support:appcompat-v7	|androidx.appcompat:appcompat:1.0.0+
-|
-|com.android.support:design	|com.google.android.material:material:1.0.0+
-|
-|com.android.support:multidex|androidx.multidex:multidex:2.0.0+
-|
+| com.android.support:support-compat	  | androidx.core:core:1.0.0+| 
+|com.android.support:appcompat-v7	|androidx.appcompat:appcompat:1.0.0+|
+|com.android.support:design	|com.google.android.material:material:1.0.0+|
+|com.android.support:multidex|androidx.multidex:multidex:2.0.0+|
 |com.android.support.test.espresso:espresso-accessibility|androidx.test.espresso:espresso-accessibility:3.1.0|
-|com.android.support.test:runner|androidx.test:runner:1.1.0
-|
-|com.android.support:cardview-v7|androidx.cardview:cardview:1.0.0
-|
-|com.android.support:recyclerview-v7|androidx.recyclerview:recyclerview:1.0.0
-|
-|com.android.support:viewpager|androidx.viewpager:viewpager:1.0.0
-|
-|android.arch.lifecycle:livedata|androidx.lifecycle:lifecycle-livedata:2.0.0-rc01
-|
-|com.android.support:support-fragment|androidx.fragment:fragment:1.0.0+
-|
+|com.android.support.test:runner|androidx.test:runner:1.1.0|
+|com.android.support:cardview-v7|androidx.cardview:cardview:1.0.0|
+|com.android.support:recyclerview-v7|androidx.recyclerview:recyclerview:1.0.0|
+|com.android.support:viewpager|androidx.viewpager:viewpager:1.0.0|
+|android.arch.lifecycle:livedata|androidx.lifecycle:lifecycle-livedata:2.0.0-rc01|
+|com.android.support:support-fragment|androidx.fragment:fragment:1.0.0+|
 
 除了对原始Support库的映射和改进，后续新的Support库的开发都将在AndroidX库中进行，包括原始Support库都维护和新引入的Jetpack组件。AndroidX库中的包大致可以分为以下三大类：
   1. 测试组件
@@ -75,7 +67,8 @@ AndroidX中的所有组件都是单独维护和更新的。这样做的好处就
 >This is the stable release of Support Library 28.0.0 and is suitable for use in production. This will be the last feature release under the android.support packaging, and developers are encouraged to migrate to AndroidX.
 
 OK,既然官方推荐而且Support库也不再更新了，没啥好说的了，盘它！
-####准备工作
+
+#### 准备工作
 **1.Android Studio 升级到3.2.0 Canary 14以上版本**
 
  <img src="http://pn3wv0m0r.bkt.clouddn.com/blog/image/androidx/img2.png" width=500 height=300 />
@@ -108,10 +101,12 @@ android.useAndroidX=true
 
 #### 一键迁移
 Android Studio 3.2.0 Canary 14及以上版本提供了方便快捷的一键迁移到AndroidX的功能。在菜单上选择**Refactor->Migrate to AndroidX**即可完成迁移。
+
 ![Alt text](http://pn3wv0m0r.bkt.clouddn.com/blog/image/androidx/img3.png)
 
 **注意:**
 如果准备工作第三点中你的`compileSdkVersion`没有升到28及以上点击“Migrate to AndroidX”会提示：
+
 ![Alt text](http://pn3wv0m0r.bkt.clouddn.com/blog/image/androidx/img4.png)
 
 ### 写在最后
