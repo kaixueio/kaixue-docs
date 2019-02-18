@@ -6,7 +6,7 @@
 - [项目结构、人员和进度](https://github.com/kaixueio/kaixue-docs/blob/master/%E9%A1%B9%E7%9B%AE%E8%B7%9F%E8%B8%AA.md)
 - [文章格式规范](https://github.com/kaixueio/kaixue-docs/blob/master/%E6%96%87%E7%AB%A0%E6%A0%BC%E5%BC%8F%E8%A7%84%E8%8C%83.md)
 - [文章模板](https://github.com/kaixueio/kaixue-docs/blob/master/%E6%96%87%E7%AB%A0%E6%A8%A1%E6%9D%BF.md)
-- 文章原稿
+- [文章原稿和审阅者评价](https://github.com/kaixueio/kaixue-docs/tree/master/%E6%96%87%E7%AB%A0)
 
 ## 关键点记事
 
