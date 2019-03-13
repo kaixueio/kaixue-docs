@@ -2,7 +2,7 @@
 
 码上开学的各种文档集中地
 
-- [定位及目标](https://github.com/kaixueio/kaixue-docs/blob/master/%E5%AE%9A%E4%BD%8D%E5%8F%8A%E7%9B%AE%E6%A0%87.md)
+- [定位、要求和目标](https://github.com/kaixueio/kaixue-docs/blob/master/%E5%AE%9A%E4%BD%8D%E3%80%81%E8%A6%81%E6%B1%82%E5%92%8C%E7%9B%AE%E6%A0%87.md)
 
 - [项目跟踪](https://github.com/kaixueio/kaixue-docs/blob/master/%E9%A1%B9%E7%9B%AE%E8%B7%9F%E8%B8%AA.md)
 
