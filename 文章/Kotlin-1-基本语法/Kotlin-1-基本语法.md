@@ -1,11 +1,10 @@
 ## 原文链接：
 
-https://gitee.com/CnPeng_1/CnPengKotlin/blob/master/%E7%A0%81%E4%B8%8A%E5%BC%80%E5%AD%A6-Kotlin.md
+[https://gitee.com/CnPeng_1/CnPengKotlin/blob/master/%E7%A0%81%E4%B8%8A%E5%BC%80%E5%AD%A6-Kotlin%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95V2.md](https://gitee.com/CnPeng_1/CnPengKotlin/blob/master/%E7%A0%81%E4%B8%8A%E5%BC%80%E5%AD%A6-Kotlin%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95V2.md)
 
 ## 同步时间：
 
-2019-02-18 16:08
-
+2019-03-25 10:42
 
 
 以下是正文：
@@ -14,113 +13,80 @@ https://gitee.com/CnPeng_1/CnPengKotlin/blob/master/%E7%A0%81%E4%B8%8A%E5%BC%80%
 
 
 
-
-
-在[《Kotlin开篇》](https://kaixue.io/kotlin-overview/)中，我们对 Kotlin 有了一个大致的了解—— Kotlin 是一个基于JVM的新的编程语言，由 JetBrains 开发。与 Java 相比，Kotlin 的语法更简洁、更具表达性，而且提供了更多的特性，比如，高阶函数、操作符重载、字符串模板。它与 Java 高度可互操作，可以同时用在一个项目中。
+在[《 Kotlin 开篇》](https://kaixue.io/kotlin-overview/)中，我们对 Kotlin 有了一个大致的了解—— Kotlin 是一个基于 JVM 的新的编程语言，由 JetBrains 开发。与 Java 相比，Kotlin 的语法更简洁、更具表达性，而且提供了更多的特性，比如，高阶函数、操作符重载、字符串模板。它与 Java 高度可互操作，可以同时用在一个项目中。
 
 在学习 Kotlin 基础部分的时候，我们会与 Java 做相应的对比，有了对比你会更加喜欢 Kotlin !
 
 接下来，我们就从头开始，细致的了解一下这门语言。
 
-## 一、Kotlin编译环境搭建
-
-### 1、编译环境介绍
-
-所谓编译环境，就是运行我们编写完的 Kotlin 代码的一个工具。Kotlin 支持多种编译器 ——
-
-先来一张 Kotlin 官网中对支持编译器的截图：
-
-![](https://images.gitee.com/uploads/images/2019/0129/115313_ceaece5e_930142.png)
+## 一、Kotlin 编译环境搭建
 
 
-在上图中，我们可以得知，编译 Kotlin 时可以使用 [Intellij IDEA](https://www.jetbrains.com/idea/)、[AndroidStudio](https://developer.android.google.cn/studio/index.html)、[Eclipse](http://www.eclipse.org/downloads/)、[Complier ](https://github.com/JetBrains/kotlin/releases/tag/v1.1.2-2)。
+我们可以通过多种开发工具去创建 Kotlin 编译环境，但对于 Android 程序员来说，我们最熟悉的还是 Android Studio，所以我们会先介绍如何在 Android Studio 中引入 Kotlin 。
 
-对于上面四种编译途径，各自有如下特点：
+考虑到你可能想先建一个纯 Kotlin 项目来测试和练习 Kotlin 语言，所以我们也会简单的介绍一下 Intellij IDEA。
 
-* Intellij IDEA 中已经集成了 Kotlin 编译环境
-* AndroidStudio 3.X 也集成了 Kotlin 编译环境
-* Eclipse 需要安装对应的 kotlin 插件才可以
-* Complier 是纯命令行编译环境
-
-四种编译器对应的下载页面分别为：
-
-编译器|下载地址
----|---
- Intellij IDEA    | [https://www.jetbrains.com/idea/](https://www.jetbrains.com/idea/)
-AndroidStudio   | [https://developer.android.google.cn/studio/index.html](https://developer.android.google.cn/studio/index.html)
-Eclipse|[http://www.eclipse.org/downloads/](http://www.eclipse.org/downloads/)
-Complier|[https://github.com/JetBrains/kotlin/releases/tag/v1.1.2-2](https://github.com/JetBrains/kotlin/releases/tag/v1.1.2-2)
-
-### 2、搭建编译环境
-
-我们在这里主要介绍 AndroidStudio 和 Intellij IDEA.
-
-#### (1)、AndroidStudio 编译环境的搭建
-
-> 本节介绍的是如何在 AndroidStudio 中新建一个基于 Kotlin 的 Android 项目。如果你想编译和运行后面章节中的 Kotlin 代码以查看运行结果，请在 Intellij IDEA 中尝试，安装步骤将在下一节中介绍。
-
-AndroidStudio 的编译需要JDK ，在下载 AndroidStudio 的时候可以选择带 JDK 版本的（或者自己单独下载 JDK）
-
-安装步骤省略。
-
-下面的图例会引导你一步步的新建一个基于 Kotlin 的 Android 项目。
-
-![打开AndroidStudio并创建一个新的AndroidStudio项目 ](https://images.gitee.com/uploads/images/2019/0128/084036_64014519_930142.png)
-
-![输入项目名称、选择项目路径、勾选kotlin支持](https://images.gitee.com/uploads/images/2019/0128/084036_5d8a7306_930142.png)
-
-![选择设备](https://images.gitee.com/uploads/images/2019/0128/084036_604ede3f_930142.png)
-
-![创建空页面.png](https://images.gitee.com/uploads/images/2019/0128/084036_774f5a8d_930142.png)
-
-![输入页面名称](https://images.gitee.com/uploads/images/2019/0128/084036_ca8c887b_930142.png)
-
-![创建完成，展示自动生成的kotlin代码](https://images.gitee.com/uploads/images/2019/0128/084037_8814b69f_930142.png)
-
-到此，一个基于 Kotlin 的 Android 项目已经创建完成。
+如果你想直接在 Android 项目中测试 Kotlin，跳过下面 IDEA 的介绍也行。
 
 
-#### (2)、Intellij IDEA 编译环境搭建
+### 1、Android Studio 中的 Kotlin
 
-> 如果你想编译和运行后面章节中的 Kotlin 示例代码，推荐安装 IDEA 。文中后续的代码都是基于 IDEA 编写和运行的
+分为两种情况，一种是新建一个 Kotlin 项目，一种是在现有的 Java 项目中引入 Kotlin 代码。
 
-下载及安装的过程省略。
+下列示例基于 Android Studio 3.3 版本。
 
-需要说明的是，IEDA分为 Ultimate 旗舰版 和 Community 社区版，前者主要针对 Web 和 企业级 开发，是收费的，试用期一个月；社区版是免费开源的，所以，学习阶段可以直接下载社区版的。
+#### (1)、新建基于 Kotlin 的项目
 
-![初次开启](https://images.gitee.com/uploads/images/2019/0129/115313_c6aa9540_930142.png)
+我们只需要在创建新的 Android 项目时选择 Language 为 Kotlin 即可，如下图：
 
-上图中编号的含义分别如下：
-* 1、创建一个新的项目
-* 2、导入已有项目
-* 3、打开本地项目
-* 4、从版本控制软件中拉取
+![新建一个基于Kotlin的项目](https://images.gitee.com/uploads/images/2019/0219/220046_4cd6541d_930142.png "屏幕截图.png")
 
-我们选择 1 新建一个项目，然后按照下图操作：
+创建完成后自动生成基于 Kotlin 语言的 MainActivity 代码，如下：
 
-![新建kotlin项目](https://images.gitee.com/uploads/images/2019/0128/084032_8ae7ef46_930142.png)
+![创建完成后自动生成基于 Kotlin 语言的 MainActivity 代码](https://images.gitee.com/uploads/images/2019/0219/220429_73127222_930142.png "屏幕截图.png")
 
-![创建项目名称并选择路径](https://images.gitee.com/uploads/images/2019/0128/084033_a872ed2c_930142.png)
+#### (2)、现有 Java 版项目引入 Kotlin 
 
+先创建一个 .kt 文件，然后打开该文件后，点击下图页面右上角的 `Configure`
 
-![正在初始化](https://images.gitee.com/uploads/images/2019/0128/084032_17fbf560_930142.png)
+![现有项目引用 Kotlin ](https://images.gitee.com/uploads/images/2019/0219/224652_7dcf67d3_930142.png "屏幕截图.png")
 
-![新建kotlin文件](https://images.gitee.com/uploads/images/2019/0128/084032_f9e29990_930142.png)
+如下图，根据实际情况勾选需要配置的 module 并点击 ok 后，会联网下载所需资源。
 
-![为文件命名](https://images.gitee.com/uploads/images/2019/0128/084033_fae49625_930142.png)
+![](https://images.gitee.com/uploads/images/2019/0219/222253_323c56dd_930142.png "屏幕截图.png")
 
-![编辑内容](https://images.gitee.com/uploads/images/2019/0128/084034_59383b0e_930142.png)
+配置完成后，即可从 Java 代码中调用 Kotlin 代码：
 
-![运行程序](https://images.gitee.com/uploads/images/2019/0128/084033_38eb4ced_930142.png)
+![](https://images.gitee.com/uploads/images/2019/0219/225936_8a02bec8_930142.png "屏幕截图.png")
 
-![大功告成](https://images.gitee.com/uploads/images/2019/0128/084034_2a88d435_930142.png)
+上图中, `isNetAvailable()` 是我们在 .kt 中为 Context 扩展的一个函数，import 成功后需要为该函数传递 this 作为参数——扩展函数的概念后续会有介绍
 
-好了，基于 IDEA 的编译环境构建完成了。
+### 2、Intellij IDEA 中的 Kotlin
+
+下列示例基于 Intellij IDEA 2018.3.3 Community 社区版。
+
+下载及安装的过程省略。构建 Kotlin 项目的步骤如下：
+
+![](https://images.gitee.com/uploads/images/2019/0219/232046_aefe3479_930142.png "屏幕截图.png")
+
+![](https://images.gitee.com/uploads/images/2019/0219/232136_77b756af_930142.png "屏幕截图.png")
+
+![](https://images.gitee.com/uploads/images/2019/0219/232303_63b05b8b_930142.png "屏幕截图.png")
+
+新建项目之后，src 目录下并没有任何内容，我们右击该目录新建第一个 Kotlin 文件
+
+![](https://images.gitee.com/uploads/images/2019/0219/232508_68b07295_930142.png "屏幕截图.png")
+
+![](https://images.gitee.com/uploads/images/2019/0219/232729_4f9a82c2_930142.png "屏幕截图.png")
+
+![](https://images.gitee.com/uploads/images/2019/0219/233507_a1b2b9ac_930142.png "屏幕截图.png")
+
+好了，IDEA 下构建和运行 Kotlin 的步骤介绍完毕。
 
 ### 3、本章小结：
 
-本章中我们介绍了 Kotlin 支持的编译环境，以及基于 IDEA 和 AndroidStudio 的编译环境的基本搭建步骤，并运行了第一个 Kotlin 程序 —— 打印了 ”HelloWorld“。
-
+本章中我们介绍了基于 Android Studio 和 IDEA 的编译环境的搭建步骤，并在 IDEA 运行了第一个 Kotlin 程序 —— 打印了 ”Hello Kotlin“。
+ 
 如果你没有看懂我们输入的那一段代码是啥意思，不要着急，我们会慢慢带你了解的。
 
 在 Kotlin 基础部分的后续章节中我们将基于 IDEA 编写和运行相关的代码。
@@ -128,58 +94,56 @@ AndroidStudio 的编译需要JDK ，在下载 AndroidStudio 的时候可以选�
 
 ## 二、函数基础
 
-函数 (funcation) 也叫 方法，可以类比数学里的各种公式。我们想获取某个结果时，直接调用对应的公式即可。我们在调用公式时传递的数据被称为 **参数**；而公式的运行结果，就是函数的 **返回值**。
+Kotlin 中的函数可以理解为 Java 中的方法。（具体细节上二者有差异，这不在本文的探讨范围内，暂不赘述）
 
-本章节将介绍函数的声明格式、函数的返回值类型。其中会牵涉到 `数据类型` 和 `for循环`，如果对这两个东西不了解也不用着急，后面会有对应介绍。
+### 1、函数声明
 
-### 1、函数声明的基本格式
+Kotlin中声明函数的标准格式如下：
 
-#### (1)、Kotlin 函数的基本格式
+```kotlin
+fun 函数名 (参数名: 参数类型 , 参数名: 参数类型): 返回值类型{
+    //函数体
+}
+``` 
 
-在上一篇文章中，我们在创建 Intellij IDEA 编译环境时已经写过 HelloWorld 代码，具体代码为：
+Kotlin 函数的特点:
+
+* Kotlin 中使用 `fun` 标识函数。
+* Kotlin 中语句默认不需要分号
+* Kotlin 中函数默认为 public 
+* 函数参数名在前，参数类型在后，两者之间使用冒号 `:` 间隔，多个参数之间使用逗号间隔。
+* 返回值在左小括号`)` 和 右花括号`{` 之间，其格式为 `: 返回值数据类型`。
+
+> 根据实际需求，参数及其类型可以省略，也就是声明一个无参函数；如果函数没有返回值，那么返回值类型也可以省略
+
+
+我们顺便来回忆一下 Java 中方法的特点：
+ 
+* Java 语句末尾必须有分号`;`表示语句到此结束
+* Java 中必须通过 public 显示声明函数为公开
+* Java 中参数类型在前，参数和参数类型之间使用空格间隔
+* Java 中函数的返回值类型定义在 函数名之前
+
+
+### 2、函数返回值的类型
+
+#### (1）、函数无返回值 
+
+在 Kotlin 中，如果某个函数没有返回值，那么就用 `:Unit` 表示。也就是说，我们前面说的 main 函数的完整写法应该是：
 
 ```java
-fun main(args: Array<String>) {
-    println("HelloWorld")
+fun main(): Unit {
+    println("Hello Kotlin")
 }
 ```
 
-那么，接下来我们来解析一下这个 main 函数（也可以称为 main 方法）的格式，具体如下：
-
-字段|含义
----|---
-fun | 用来声明一个函数，表示它后面的内容是一个函数，
-main | 函数的具体名称。名称自定义，你想叫啥就叫啥
-args | 该函数的参数。如果某个函数有多个参数，使用逗号间隔
-：| 声明参数类型的声明符。参数和类型之间必须用：链接
-Array<String>|参数类型，这里表示 args 的类型是 String 类型的 Array 数组
-{ } | 用来包裹函数的主体内容
-println ("HelloWorld") | 这是函数主体，你想让函数实现什么功能就写出对应的代码即可
-
-以上就是 函数声明的基本格式，以后我们在声明函数的时候也需要遵守上面的格式。
-
-
-### 2、函数的返回值类型
-
-我们在定义一个函数之后，有时候是需要通获取运行结果并使用，这些运行结果会有对应的数据类型（具体下一节会有介绍），这就是函数的返回值类型。
-
-#### (1）、函数无返回值
-
-在kotlin中，如果某个函数不需要返回数据，那么这个函数的类型就是 **Unit**。也就是说，我们前面说的 main 函数的完整写法应该是：
-
-```
-fun main(args: Array<String>): Unit {
-    println("HelloWorld")
-}
-```
-
-但是，通常情况下， 如果某个函数没有返回值，那么 **Unit** 可以省略。
+通常情况下, 无返回值的函数会省略这个 `:Unit` 
 
 #### (2)、函数有返回值
 
 ##### A、显示声明返回值类型
 
-如果某个函数有返回值，那么就需要在函数声明中声明其返回值类型，示例代码如下：
+如果函数有返回值，则需要声明其具体返回值的类型，示例如下：
 
 ```java
 fun sum(a: Int, b: Int): Int {
@@ -187,7 +151,7 @@ fun sum(a: Int, b: Int): Int {
 }
 ```
 
-在上面的代码中，我们定义了一个 求和的函数，接收两个 Int 类型的参数，返回值是两个参数的和，由于得到的 和 是 Int 类型的数据，所以该函数的返回值类型就是Int，这个返回值类型就需要在函数中声明，否则会报错，报错状态如下：
+上述代码中，函数接收两个 Int 类型的参数，然后求和，返回值类型为 Int。如果省略末尾的 `:Int`，则会产生如下报错信息：
 
 ![返回值类型不匹配](https://images.gitee.com/uploads/images/2019/0129/115312_d58dcaf1_930142.png)
 
@@ -195,16 +159,16 @@ fun sum(a: Int, b: Int): Int {
 
 对于上面 显示声明返回值类型 中的示例代码，还有一种简写方式，如下：
 
-```
+```kotlin
 fun sum(a: Int, b: Int) = a + b
 ```
 
-在上面的示例代码中，直接将表达式作为函数体，然后 kotlin 会自动根据 a+b 的类型来确定 sum 函数的返回值类型，这也就是 **类型推断**(也可以称为：类型推导)。
+上述代码中，直接将表达式作为函数体，此时 Kotlin 会自动根据 a+b 的类型来确定 sum 函数的返回值类型，这也就是 **类型推断**(也可以称为：类型推导)。
 
 函数调用示例：
 
-```
-fun main(args: Array<String>) {
+```kotlin
+fun main() {
     println(sum(5, 6))
 }
 
@@ -214,110 +178,40 @@ fun sum(a: Int, b: Int) = a + b
 
 ### 3、参数长度可变的函数
 
-所谓参数长度可变的函数，就是说，在调用这个函数的时候我们可以根据实际需要传入参数，参数的个数由我们的具体需要决定，可能是1个，也可能是2 个或3个等等。
+参数长度可变的函数在声明的时候需要使用关键字 `vararg`，示例如下：
 
-参数长度可变的函数在声明的时候需要使用关键字 **vararg**，示例如下：
-
-```
-//可变参数关键词：vararg。下面这个函数接收可变参数，参数的具体类型为Int
-fun varList(vararg vars: Int) { 
- 	 //遍历输入的参数
-    for (v in vars) {            
-        println(v)
-    }
-}
-```
-
-完整实例代码及运行结果：
-
-```
-fun main(args: Array<String>) {
-
-    varList(1)
-    println("上面调用时传入一个参数，下面调用时传入多个参数")
-    varList(1, 2, 3, 4)
-}
-
+```kotlin
+//声明参数长度可变的函数。vararg 表示该参数长度由调用方决定
 fun varList(vararg vars: Int) {
+    //遍历输入的参数, vars 表示传入的全部参数，v 表示每一个参数——遍历的知识后续会介绍
     for (v in vars) {
         println(v)
     }
 }
-```
 
-![运行结果](https://images.gitee.com/uploads/images/2019/0129/115312_b740bd6b_930142.png)
-
-### 4、与Java函数的对比
-
-在对比之前，我们先了解一下 main() 函数。
-
-main() 函数是程序的入口，我们把编写的程序编译运行之后，编译器会先找 main 函数，如果有 main 函数，就会执行其中的内容；如果没有 main 函数，那么就只会编译，无法运行。
-
-前面我们已经了解了 Kotlin 中 函数的声明格式，那么我们在对比看一下 Java 中的函数。
-
-```java
-public static void main(String[] args) {
-	System.out.println("打印");
+fun main() {
+    varList(1)
+    println("上面调用时传入一个参数，下面调用时传入多个参数")
+    varList(1, 2, 3, 4)
 }
 ```
 
-瞧，同样是打印一个 HelloWorld，Java 中编写的内容明显的看着比 Kotlin 中的要多，那么，在这个函数中，两者的区别具体是怎样的呢？
+运行结果：
 
-* Java 语句末尾必须有分号`;`表示语句到此结束；Kotlin中不需要这个语句分号
-* Java 函数中的 public 表示可见属性为公开的；而 Kotlin 中默认函数就是 public 的，所以，可以省略
-* Java 中函数的返回值类型定义在 函数名之前；而 Kotlin 中返回值类型定义在函数末尾，遵循的格式是 `可见类型 函数名(参数) 返回值`——这样在语义层面更容易阅读。
-* Java 中函数的参数是先声明类型，然后声明参数名称；Kotlin 中先声明名称，再声明类型。
-
-
-
-### 5、Kotlin中的注释
-
-注释就是对代码片段的说明，通常用来描述代码片段的作用以及使用该代码片段时的注意事项。
-
-Kotlin 支持 `单行注释`和`多行注释`。（此处，与 Java 注释相同）
-
-类型|含义
----|---
-// |单行注释。用来描述内容前面。后面的内容不能换行，如果产生了换行，必须在新的一行前面添加新的//
-/*  */ |多行注释。描述的内容被包裹在其中，描述内容可以换行
-/** */ |文档注释。通常用来描述类和方法。
-
-示例代码：
-
-```java
-
-/**
- * main函数是程序的入口
- * @param args 接收一个String数组作为参数
- */
-fun main(args: Array<String>) {
-    //这是一个单行注释,不支持换行
-    //单行注释不支持换行，换行时必须在新的一行前面添加//
-    println("HelloWorld")
-
-    /*
-    * 这是多行注释，内容被包裹在中间
-    * 支持换行
-    */
-    println("HelloKotlin")
-}
 ```
-
-### 6、小结
-
-本章主要介绍了 Kotlin 中函数的声明格式，包括有返回值的声明格式，无返回值的声明格式。并且与 Java 中的声明格式做了简要对比。
-
-重点理解 隐式声明返回值类型。
-
-其他函数的高阶用法，在后续的 函数 部分会有详细讲解。
-
+1
+上面调用时传入一个参数，下面调用时传入多个参数
+1
+2
+3
+4
+```
 
 ## 三、变量
 
-声明变量的目的是方便我们传递和调用数据。
-
-
 ### 1、变量的声明
+
+#### (1)、Kotlin 中声明变量
 
 声明变量时需要遵循： `修饰符 变量名:类型 = 值` 的格式。
 
@@ -328,7 +222,7 @@ fun main(args: Array<String>) {
 
 举一个例子：
 
-```
+```kotlin
 fun sum(a: Int) {
     var value1:Int = a
     value1 = a + 1
@@ -341,30 +235,41 @@ fun sum(a: Int) {
 }
 ```
 
-上述函数中，
+上述代码中，
 
-我们声明了一个名称 sum 的函数，它接收一个 Int 类型的参数：a。在该函数的函数体(被大括号包裹的内容称为函数体)中我们用 `var value1:Int = a` 声明了变量 value1，用 `val value2:Int = 5` 声明了变量 value2 , 然后将打印 value1+value2 的和出来。
+ sum 函数接收一个 Int 类型的参数：a。在函数体(被大括号包裹的内容称为函数体)中我们声明了变量 value1 和 value2 , 然后打印 value1+value2 的和。
 
 由于 value1 被 `var` 修饰，所以，我们通过 `value1=a+1` 为它再次赋值时不会报错。
 
 但是，value2 被 `val` 修饰，我们通过 `value2 = 6` 为它再次赋值时会报错。
 
 
+#### (2)、与 Java 对比
+
+* Java 中声明变量量时，遵循的格式为：`修饰符 类型 变量名 = 值`
+* Java 中变量不需要修饰符，kotlin 中则需要使用 var 或 val 修饰。
+* 被 val 修饰的变量等同于Java 中被 final 修饰的变量。
+
+
 ### 2、const val
 
-`const val` 是一个比较特殊的概念。
+`const val` 大致等同于 Java 中的 `static final `
 
-它主要有三个特点：
+为什么说是 “大致等同” 呢？
 
-* 位于 .kt 文件顶层(就是类的外部) 或者 被 `object` 修饰的单例类 内部，或者被 `companion` 修饰的伴生对象内部
+我们先来看下 `const val` 的三个特点：
+
+* 定义在 .kt 文件顶层(就是 Kotlin 类的外部) 或者 被 `object` 修饰的 单例类 内部，或者被 `companion` 修饰的伴生对象内部。（这三者都表示被修饰的内容为全局的）
 * 其值只能是 `String` 或 其他基本数据类型
 * 没有自定义的 getter 方法
 
-（关于 单例、伴生对象、数据类型、getter 方法等内容后续会有介绍，此处只需要先记住 `const val`的特点即可。）
+（ 关于 单例、伴生对象、数据类型、getter 方法等内容后续会有介绍 ）
 
-如：
+而 Java 中的 `static final` 虽然可以做到全局，但它既可以修饰引用类型对象也可以修饰 String 和基本数据类型，所以说，二者只是大致等同。
 
-```
+示例：
+
+```kotlin
 //顶层的 const val
 const val str = "哈哈哈哈"
 
@@ -376,7 +281,6 @@ class User(val uName: String) {
     companion object {
         const val age = 15
     }
-
 }
 
 object School {
@@ -385,83 +289,26 @@ object School {
 }
 ```
 
-### 3、命名规则
-
-Kotlin 的命名规范与 Java 一致。
-
-* 以字母、数字、下划线组成
-* 定义变量名时首字母小写，定义类名时首字母大小。
-* 遵从驼峰规则（单词首字母大写，其他小写）
-
-其他更为细致的规则不再赘述
-
-
-### 4、与Java中的对比
-
-在 Java 中定义一个同样功能的 sum 函数：
-
-```java
-public void sum(int a) {
-	int value1 = a;
-        value1 = a + 1
-	
-        final int value2 = 5;
-	    
-	System.out.println(""+(value1+value2));
-}
-```
-
-* Java 中声明变量量时，遵循的格式为：`修饰符 类型 变量名=值`
-* Java 中变量不需要修饰符，kotlin 中则需要使用 var 或 val 修饰。
-* 被 val 修饰的变量等同于Java 中被 final 修饰的变量。
-
-
-### 4、小结
-
-本章介绍了变量的特点，以及如何声明变量。
-
-其实，变量又可以分为 `局部变量` 和 `全局变量`。定义在函数内部的称为 局部变量；定义在类中的称为 全局变量（类的概念在后续章节会介绍）。所以，本章节中的例子实际是局部变量。
-
 
 ## 四、基本数据类型
-
-数据类型，就是数据的分类。
-
-比如 1、2、3 它们都是整数，所以，它们的数据类型就是整型——Int。
 
 Kotlin 中的基本数据类型包括：数值类型，字符类型，字符串类型，布尔类型。
 
 ### 1、数值类型
 
-Kotlin 中数值类型可以细分为：Byte、Short、Int、Long、Float、Double。它们都用来表示数值，区别在于表示的数值范围和数值精度。具体如下：
+Kotlin 中数值类型可以细分为：Byte、Short、Int、Long、Float、Double。
 
-类型|含义|位宽|取值范围(最小值~最大值)
----|---|---|---
-Byte| 整数| 8|-128 ~ 127
-Short|整数|16|-32768 ~ 32767
-Int |整数|32|-2147483648 ~ 2147483647
-Long|整数|64|-9223372036854775808 ~ 9223372036854775807
-Float|单精度小数|32|1.4E-45  ~  3.4028235E38
-Double|双精度小数|64|4.9E-324 ~ 1.7976931348623157E308
+与 Java 中的数值类型相比，它们表示的数据范围和使用方式是一致的，但 Kotlin 中在表示各个类型时采用首字母大写，Java 中则全小写；更重要的是，Kotlin 中的字符类型不能作为数值使用，而 Kotlin 中可以
 
 #### (1)、数值的表示方式
-  * Long 类型数据通常会在末尾加 L 或 l 后缀，如 123L，123l，**建议用L**
 
-  * Float 类型数据通常会在末尾加 F 或 f 后缀，如 12.3F，12.3f，  如果一个小数 **不加后缀 F 或 f , 则默认为是 Double类型**
+* Long 类型数据通常会在末尾加 L 或 l 后缀，如 123L，123l，**建议用L**
 
- * kotlin中的数值可以用二进制、十进制、十六进制表示，但 **不支持八进制！！**。所以 十进制的 3 可以用如下三种方式表示：
-   * `二进制: 0b00000011`
-   * `十进制: 3` 
-   * `十六进制: 0x3`
+* Float 类型数据通常会在末尾加 F 或 f 后缀，如 12.3F，12.3f，如果一个小数 **不加后缀 F 或 f , 则默认为是 Double 类型**
 
+* Kotlin 中的数值可以用二进制、十进制、十六进制表示，但 **不支持八进制！！** 所以 十进制的 3 可以用如下三种方式表示：`二进制: 0b00000011`、`十进制: 3` 、`十六进制: 0x3`
 
-#### (2)、用下划线增加大数据的易读性
-
-先来看这么一个数据， 1234500000，这是 十二亿三千四百五十万， 我们看到这么一个数据的时候，基本都会去挨个的从左到右的数，个十百千万十万百万千万亿，然后才知道这个数据到底是多少。
-
-对于例子中这种值比较大的数据，我们读起来很费劲，但是，**kotlin 1.1 版本之后我们可以使用 下划线 _ 来链接较大的数值** ，我们可以每隔三位或者四位加一个下划线，这样，我们在读数据的时候就能一目了然了。
-        
-示例如下：
+* Kotlin 也可以像 Java 一样在较大的数值内使用 下划线`_` 来增强可读性，示例如下：
 
 ```java
 val oneMillion = 1_000_000
@@ -470,25 +317,36 @@ val socialSecurityNumber = 999_99_9999L
 val hexBytes = 0xFF_EC_DE_5E
 val bytes = 0b11010010_01101001_10010100_10010010
 ```
-#### (3)、数值类型之间的转换
+#### (2)、数值类型之间的转换
 
 ##### A、显示类型转换
 
 先来看一段代码：
 
-![将Byte 值直接赋值给 Int类型](https://images.gitee.com/uploads/images/2019/0129/115312_ec092ba1_930142.png)
+![](https://images.gitee.com/uploads/images/2019/0220/011142_4056ebd3_930142.png "屏幕截图.png")
 
-在上图中，我们看到，当我们将 Byte 类型的 a 赋值给 Int 类型的 b 时程序爆红了，那么我们该怎么解决呢？很简单：a.toInt( )，参考下图：
+在上图中，我们看到，当我们将 Byte 类型的 a 赋值给 Int 类型的 b 时程序爆红了，错误信息为 "Type mismatch" 那么我们该怎么解决呢？很简单：a.toInt( )，代码如下：
 
-![Byte 转为 Int型](https://images.gitee.com/uploads/images/2019/0129/115312_7237ee0c_930142.png)
+```java
+fun main() {
+    val a: Byte = 9
+    val b: Int = a.toInt()
+}
+```
+
 
 那么，如果我将 Int 数据赋值给 Byte 呢？
 
-![Int 数据赋值给 Byte](https://images.gitee.com/uploads/images/2019/0129/115313_42d1d1db_930142.png)
+![](https://images.gitee.com/uploads/images/2019/0220/011353_e65777c3_930142.png "屏幕截图.png")
 
-瞧，还是报错，那么怎么解决呢？a.toByte() 
+瞧，还是报错，那么怎么解决呢？a.toByte() , 代码如下：
 
-![Int 转为Byte](https://images.gitee.com/uploads/images/2019/0129/115313_5c671ed8_930142.png)
+```java
+fun main() {
+    val a: Int = 9
+    val b: Byte = a.toByte()
+}
+```
 
 通过上面的示例我们可以得出如下结论：
 
@@ -511,9 +369,9 @@ val bytes = 0b11010010_01101001_10010100_10010010
 
 ##### B、隐式类型转换和类型推断
 
-在上面的代码中，我们在显示声明了 b 的类型，所以在给他赋值时，如果类型不一致则必须进行显示类型转换，但是，如果我们没有给 b 声明具体的类型呢？
+在上面的代码中，我们显示声明了 b 的类型，所以在给他赋值时，如果类型不一致则必须进行显示类型转换，但是，如果我们没有给 b 声明具体的类型呢？
 
-![未声明 b 的类型](https://images.gitee.com/uploads/images/2019/0129/115313_120e500d_930142.png)
+![](https://images.gitee.com/uploads/images/2019/0220/011936_a8ee9346_930142.png "屏幕截图.png")
 
 瞧，没有报错，这是类型推断的作用。这种情况下，b 的类型就是 a 的类型。
 
@@ -536,22 +394,22 @@ val result = 1L + 3
 
 ### 2、字符类型
 
-Koltin中用 **单引号** `‘ ’` 括起来的单个内容被称为字符。
+Koltin 中用 **单引号** `‘ ’` 括起来的单个内容被称为字符。
 
-kotlin中字符用 **Char** 类型表示。
+Kotlin 中字符类型用 **Char** 表示。
 
 
 **注意：**
-**与Java不同，在 kotlin 中 Char 类型不能直接当作数字参与算术运算！！** 看下图：
+**与 Java 不同，在 Kotlin 中 Char 类型不能直接当作数字参与算术运算！！** 看下图：
 
-![字符不能直接参与与数值的算术运算](https://images.gitee.com/uploads/images/2019/0129/115313_4e5017cc_930142.png)
+![](https://images.gitee.com/uploads/images/2019/0220/012133_7c5ceeb2_930142.png "屏幕截图.png")
 
 在上图中，我们让 数值 3 和 字符 ‘1’ 直接进行算术运算，在 + 下面爆红了！！！因为，Char 不能直接参与算术运算。而在 Java 中 每个 Char 都有一个对应的数值，可以直接参与算术运算。
 
-在 kotlin 中，如果我们想让 Char 参与算术运算，需要先做类型转换，示例代码如下：
+在 Kotlin 中，如果我们想让 Char 参与算术运算，需要先做类型转换，示例代码如下：
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     // '1'.toInt() 得到 49，
     val b = 3 + '1'.toInt()
     print(b)
@@ -560,16 +418,15 @@ fun main(args: Array<String>) {
 
 运行结果：
 
-![将 char 转换类型之后参与运算的结果](https://images.gitee.com/uploads/images/2019/0129/115313_1ad92738_930142.png)
-
+```java
+52
+```
 
 ### 3、布尔类型
 
 #### (1)、布尔类型概念
 
 布尔类型的关键字为 **Boolean** ，它只有两个值: `true` 和 `false`。 
-
-布尔类型可以类比为判断题的答案，要么对——true，要么不对——false.
 
 ```java
 fun max(){
@@ -585,32 +442,23 @@ fun max(){
 
 上述示例代码中，我们定义了两个布尔类型的变量。一个使用了显式声明类型的方式，一个使用了隐式声明类型。它们的值由比较运算符决定。
 
-比较运算符：
-
-运算符|含义
----|---
-\> | 判断符号前面的数据是否大于后面，大于返回 true，否则返回 false
-< | 判断符号前面的数据是否小于后面，小于返回 true，否则返回 false
-== | 判断符号前面的数据是否与后面的相等，相等返回 true, 否则返回 false
-<= | 判断符号前面的数据是否小于或者等于后面的数据，满足则返回 true，否则返回 false
-\>= | 判断符号前面的数据是否大于或者等于后面的数据，满足则返回 true，否则返回 false
+同 Java 一致，Kotlin 中的比较运算符也包括：`>` `<` `==` `<=` `>=`
 
 #### (2)、布尔运算符和布尔函数
 
-布尔运算符和布尔函数用来对布尔值进行运算。
-
 ##### A: 布尔预算符
 
-布尔运算符（也叫逻辑运算符）有:
+Kotlin 中布尔运算符（也叫逻辑运算符）有:
 
 布尔运算符|含义
 ---|---
 !  | 逻辑非，取反
-ll | 短路逻辑或。有一个值为true，则返回true。若前一个值为true, 则不用再判断后一个值 
+\|\| | 短路逻辑或。有一个值为true，则返回true。若前一个值为true, 则不用再判断后一个值 
 && | 短路逻辑与。有一个值为false，则返回false。若前一个值为false，则不用再判断后一个值 
 
+Java 中的 `|` 和 `&` 在 Kotlin 中被取消了 
 
-如：
+示例：
 
 ```java
 fun isXxTrue(){
@@ -631,20 +479,6 @@ fun isXxTrue(){
 }
 ```
 
-上述示例代码中，各个 result 对应的值分别为：
-
-```
-true
-false
-
-true
-true
-false
-
-false
-true
-```
-
 ##### B: 布尔函数
 
 Kotlin 中没有提供 Java 语言中的 `&`(逻辑与) 和 `|`(逻辑或)。但为我们提供了 `and()`、`or()`函数，通过这两个函数，我们可以实现 `&` 和 `|` 的效果。而且还提供了 `not()`，该函数等价于 `！`(逻辑非)
@@ -652,8 +486,7 @@ Kotlin 中没有提供 Java 语言中的 `&`(逻辑与) 和 `|`(逻辑或)。但
 示例：
 
 ```java
-
-fun main(args: Array<String>) {
+fun main() {
     val flag = false
     //and()等价于 & ，isFirstMaxThanSecond 将被执行
     val result1 = flag and (isFirstMaxThanSecond(3, 5))
@@ -717,8 +550,8 @@ kotlin 中字符串用 **String** 类型表示。
 
 看示例代码：
 
-```
-fun main(args: Array<String>) {
+```kotlin
+fun main() {
 	 //这里使用 “”“  ”“” 创建了一个原生字符串
     val str = """        
         床前明月光，
@@ -731,7 +564,7 @@ fun main(args: Array<String>) {
 ```
 运行结果：
 
-![原样字符串](https://images.gitee.com/uploads/images/2019/0129/115313_becf1660_930142.png)
+![](https://images.gitee.com/uploads/images/2019/0220/013054_3874fe66_930142.png "屏幕截图.png")
 
 瞧，我们在创建字符串时使用了键盘上的回车键创建了换行，打印的时候这些格式被保留了！这就是 原样字符串。
 
@@ -740,8 +573,8 @@ fun main(args: Array<String>) {
 
 还是 李白的《静夜思》，依旧是在输入字符串的时候使用键盘上的回车键创建换行，如下：
 
-```
-fun main(args: Array<String>) {
+```kotlin
+fun main() {
 	//使用换行时，系统自动用 + 将字符串链接了
     val str2 = "" +  
             "床前明月光，" +    
@@ -760,8 +593,8 @@ fun main(args: Array<String>) {
 
 那么，如果我们想用 转义字符串打印出 原始字符串的样子该怎么办呢？——**用转义字符啊！**，代码如下：
 
-```
-fun main(args: Array<String>) {
+```kotlin
+fun main() {
     val str3 = " 床前明月光，\n 疑是地上霜，\n 举头望明月，\n 低头思故乡。"
     println(str3)
 }
@@ -774,8 +607,8 @@ fun main(args: Array<String>) {
 
 但是，你也可能会想，原样字符串不支持转义字符么？**是的，原样字符串不支持转义字符**，不信你就看下面的代码：
 
-```
-fun main(args: Array<String>) {
+```kotlin
+fun main() {
  	 //原样字符串不支持转义字符。输入啥样输出啥样
     val str = """
         床前明月光，\n
@@ -789,7 +622,7 @@ fun main(args: Array<String>) {
 ```
 运行结果：
 
-![](https://images.gitee.com/uploads/images/2019/0129/115313_1de80b22_930142.png)
+![](https://images.gitee.com/uploads/images/2019/0220/013218_5992013f_930142.png "屏幕截图.png")
 
 你看，换行符的转义符 \n 直接被打印出来了。。。
 
@@ -800,14 +633,12 @@ fun main(args: Array<String>) {
 
 ##### A：使用索引运算符访问
 
-索引其实就是单个字符在整个字符串中的位置，但这个位置是从 0 开始计数的。从左向右，第一个字符的索引为0 ，第二个为1，依次类推。
-
 使用索引运算符获取元素的格式为： `字符串[i] `
 
 示例代码：
 
-```
-fun main(args: Array<String>) {
+```kotlin
+fun main() {
     val str = "123456789"
     //使用索引运算符获取字符串中的元素
     val a = str[1] 
@@ -823,8 +654,8 @@ fun main(args: Array<String>) {
 
 kotlin 中 for 循环的基本格式为 ：
 
-```
-for (a in str){
+```kotlin
+for (c in str){
     //TODO sth   
 }
 ```
@@ -833,8 +664,8 @@ for (a in str){
 
 使用 for 循环迭代字符串的示例代码：
 
-```
-fun main(args: Array<String>) {
+```kotlin
+fun main() {
     val str = "123456"
 
     //遍历 字符串中的内容 并打印出来
@@ -844,7 +675,8 @@ fun main(args: Array<String>) {
 }
 ```
 运行结果：
-![for 循环遍历字符串中的元素](https://images.gitee.com/uploads/images/2019/0129/115313_e4ce9706_930142.png) 
+
+![](https://images.gitee.com/uploads/images/2019/0220/013428_5e54b9e4_930142.png "屏幕截图.png")
 
 #### (3)、字符串模板
 
@@ -856,31 +688,34 @@ Kotlin中字符串模板 以 `$` 开头，后面跟一个 `{ }` ，`{ }` 中的�
 
 示例代码：
 
-```
-fun main(args: Array<String>) {
+```kotlin
+fun main() {
     inputSth("abc")
 }
 
 fun inputSth(content: String) {
 	//字符串模板的使用
-    println("传入方法的数据是：${content}")    
+    println("传入函数的数据是：${content}")    
 }
 
 ```
 运行结果：
-![字符串模板的使用](https://images.gitee.com/uploads/images/2019/0129/115314_bbec1a6b_930142.png)
+
+```java
+传入函数的数据是abc
+```
 
 ##### B、字符串模板的简写方式
 
 我们再来看下面的代码：
 
-```
-fun main(args: Array<String>) {
+```java
+fun main() {
     inputSth("abc")
 }
 
 fun inputSth(content: String) {
-    println("传入方法的数据是：$content，它的长度是 ${content.length}") 
+    println("传入函数的数据是：$content，它的长度是 ${content.length}") 
 }
 ```
 
@@ -890,17 +725,20 @@ fun inputSth(content: String) {
 * **如果字符串模板中包裹的是表达式，则不能省略大括号**
 
 上面代码的运行结果：
-![](https://images.gitee.com/uploads/images/2019/0129/115314_8ecfd592_930142.png)
+
+```java
+传入函数的数据是：abc，它的长度是3
+```
 
 ##### C: 字符串模板中如何打印美元符号
 
-Kotlin 中使用 $ 作为字符串模板关键字，但它同时也是美元符号，那么， 如果我们需要字符串中使用美元符号时该怎么做么？
+Kotlin 中使用 $ 作为字符串模板关键字，但它同时也是美元符号，那么，如果我们需要字符串中使用美元符号时该怎么做么？
 
 * 方式1：`${‘＄’} `
 
 `${}` 还是字符串占位格式，其中包含的`＇＄＇`表示 ＄ 符号
 
-```
+```java
 val str="人民币转换后的美元金额为${'$'}$rmbNum"
 ```
 
@@ -908,7 +746,7 @@ val str="人民币转换后的美元金额为${'$'}$rmbNum"
 
 \ 表示转义，`＼＄`转义后得到 ＄
 
-```
+```java
 //＼＄ 表示转义获取$符号，$rmbNum 为字符串占位符
 val str="人民币转换后的美元金额为\$ $rmbNum"
 ```
@@ -921,8 +759,8 @@ kotlin 中比较字符串有两种方式: `==` 和 `.equals()`
 
 这两种方式都能比较字符串是否相同。看代码：
 
-```
-fun main(args: Array<String>) {
+```java
+fun main() {
     var str1 = "a"
     var str2 = "a"
     //使用 == 判断字符串是否一致  
@@ -931,15 +769,15 @@ fun main(args: Array<String>) {
     println(str1.equals(str2))  
 }
 ```
+
 运行结果：
 
 ![](https://images.gitee.com/uploads/images/2019/0129/115314_4ca09ea9_930142.png)
 
-通过上面的代码可知 ：
 
-kotlin 中 `==` 具有 与 `.equals(XX)` 相同的功能。
+实际上，在两端都非 null 的情况下, `==` 具有 与 `.equals(XX)` 相同的功能。
 
-其实， `==` 本身就是通过 `.equals(xx)` 实现的。equals()函数源码描述如下：
+equals()函数源码描述如下：
 
 ```java
 * Note that the `==` operator in Kotlin code is translated into 
@@ -953,14 +791,15 @@ public open operator fun equals(other: Any?): Boolean
 
 `equals( xx )`有一个重载方法 `equals(xxx , Boolean)` ，后面的Boolean表示 **是否忽略大小写** ，true 忽略，false不忽略。`equals(xx)` 内部将 Boolean 赋值为 false。看代码：
 
-```
-fun main(args: Array<String>) {
+```kotlin
+fun main() {
     var str1 = "a"
     var str2 = "A"
     println(str1.equals(str2))
     println(str1.equals(str2,true))
 }
 ```
+
 运行结果：
 
 ![](https://images.gitee.com/uploads/images/2019/0129/115314_aee61e0d_930142.png)
@@ -968,7 +807,7 @@ fun main(args: Array<String>) {
 
 ### 5、与Java对比
 
-对于数值类型，Kotlin 与 Java 差异不大，区别主要是类型之间的转换：Kotlin使用的是方法转换，Java使用的是强制类型转换。
+对于数值类型，Kotlin 与 Java 差异不大，区别主要是类型之间的转换：Kotlin 使用的是方法转换，Java 使用的是强制类型转换。
 
 字符类型的差异在于，Kotlin 中字符不能直接参与整数运算，必须先调用 toInt() 等函数转换为数值类型才可以参与运算；但 Java 中的字符可以直接参与运算。
 
@@ -1009,18 +848,6 @@ public static void main(String[] args) {
 	    }
 }
 ```
-* 比较字符串是否一致时，Kotlin 可以使用 == 和 equals(), Java 中仅能使用 equals()
-
-```java
-//这是Java版示例，你可以再回忆一下用Kotlin怎么实现的。
-public static void main(String[] args) {
-		String str1="123";
-		String str2="123";
-		
-		boolean flag= str1.equals(str2);
-	    System.out.println(flag);
-	}
-```
 
 
 ### 6、小结
@@ -1037,11 +864,11 @@ public static void main(String[] args) {
 ### 1、if 表达式
 
 在 Kotlin 中，if 既可以作为普通的判断语句使用，也可以作为表达式使用。
-**当 if 作为表达式使用时，本身就会有返回值，其效果等同于 java 中的三元运算。**
+**当 if 作为表达式使用时，本身就会有返回值，其效果等同于 Java 中的三元运算。**
 
 ### (1)、if/else
 
-我们来看使用 if 获取两个值中较大值的代码，如果按照 java 中的模式，我们应该这么写：
+我们来看使用 if 获取两个值中较大值的代码，如果按照 Java 中的模式，我们应该这么写：
 
 ```java
 fun getMaxVal1(a: Int, b: Int) {
@@ -1054,7 +881,7 @@ fun getMaxVal1(a: Int, b: Int) {
 }
 ```
 
-但是，我们已经知道了，在 kotlin 中，if 作为表达式时有返回值，效果等同于 java 中的三元运算，所以，我们获取两个值中较大值的代码就可以这么写：
+但是，我们已经知道了，在 Kotlin 中，if 作为表达式时有返回值，效果等同于 Java 中的三元运算，所以，我们获取两个值中较大值的代码就可以这么写：
 
 ```java
 fun getMaxVal2(a: Int, b: Int) {
@@ -1062,11 +889,11 @@ fun getMaxVal2(a: Int, b: Int) {
     var max = if (a > b) a else b   
 }
 ```
+
 这样是不是感觉很清新？
 
 >注意：
->
->* 作为表达式使用时，其性质等同于 java 中的三元运算，此时**必须要有 else  字段**
+>* 作为表达式使用时，其性质等同于 Java 中的三元运算，此时**必须要有 else  字段**
 
 另外，作为表达式使用时，if 和 else 分支后面不仅能跟普通的值，也可以跟代码块。如：
 
@@ -1080,6 +907,7 @@ fun getMaxVal2(a: Int, b: Int) {
         b
     }
 ```
+
 向上面的这段代码中，我们将 if  作为表达式使用，并且在 if 和 else 分支后面跟了一段代码块，这样，我们不但能将 较大的值赋值给 max , 还能在同时做其他的操作 -- 这里是打印了一句话。 
 
 ### (2)、if/else if
@@ -1089,7 +917,7 @@ if/else if 用来做多分支的判断，可以使用多个 else if .
 示例如下：
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     val a = 5
     val b = 6
 
@@ -1116,7 +944,7 @@ Kotlin 中的 if/else、if/else if 与 Java 中的最大区别就是：**Kotlin 
 在做多分支判断是，除了用 if/else if ，还可以使用 when 表达式。
 
 when 类似于 Java 中的 switch ，但是功能比 switch 更为强大。
-
+ 
 
 #### (1)、主要特点：
 
@@ -1188,6 +1016,7 @@ fun whenFunc3(a: Int) {
     }
 }
 ```
+
 在上面的代码中，我们 使用 Integer.sum(a,b) 方法作为 when 的分支条件，实际就是以 sum 的值作为分支条件。
 
 ##### 示例4、将When 作为 if..else if 使用
@@ -1209,6 +1038,7 @@ fun whenFunc4(a: Int) {
     }
 }
 ```
+
 上面的代码中，我们演示了判断一个值是否在区间之内，当然也可以判断值是否在某个集合中，关于集合的内容后面会有讲解。
 
 区间 就是指一个数据范围，在高中数学中有相应介绍。
@@ -1253,7 +1083,7 @@ fun whenFunc6(a: Int) {
 前面我们说过，when 可以作为表达式使用——表达式的一个特点就是有返回值，示例如下：
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     val a = 5
     val b = 6
 
@@ -1301,8 +1131,6 @@ Java 的 switch 语句中，默认分支使用 default 表示。Kotlin 的 when 
 
 ### 3、 For 循环
 
-For循环通常用来遍历获取集合或者数组中的元素。所谓遍历就是挨个获取数组或集合中的每一个元素。
-
 前面在介绍 获取字符串的元素 时，使用了 `for/in`, 它是 for 循环的一种。(字符串内部其实是维系了一个字符类型的数组)。除了 `for/in`, 还有`forEach`
 
 #### (1)、数组
@@ -1310,8 +1138,6 @@ For循环通常用来遍历获取集合或者数组中的元素。所谓遍历�
 ##### A: 创建数组
 
 在介绍 for循环时，我们会用到数组，所以，在开始介绍 for 循环之前，我们先简单了解一下数组以及如何创建数组。
-
-数组是相同类型数据的一个”小团体“。比如，一个班级中的全部学生就可以使用数组表示，数组中的元素就是每一个学生。班级中的学生都有固定的学号，这个学号就是数组元素的索引。
 
 Kotlin 中，数组是一个类，类名为 `Array`。
 
@@ -1333,10 +1159,10 @@ val students = arrayOf("张三","李四","王五")
 
 ##### B：访问数组元素
 
-在 创建数组 一节中我们已经知道，数组是有索引的，所以，访问数组元素时可以直接使用下标的形式。如：
+访问数组元素时可以直接使用下标的形式。如：
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     val students = arrayOf("张三","李四","王五")
     //以下标的形式访问数组元素
     val name=students[0]
@@ -1352,7 +1178,7 @@ fun main(args: Array<String>) {
 
 for/in 的基本格式如下: 
 
-```
+```kotlin
 for (item in xxArrary) {
 	// 循环体代码块
 }
@@ -1360,7 +1186,7 @@ for (item in xxArrary) {
 
 在上述格式中，如果被 {} 包裹的循环体只有一行，那么可以省略 {}, 如：
 
-```
+```kotlin
 for (item in xxArrary) 
 	print(item)
 
@@ -1368,7 +1194,7 @@ for (item in xxArrary)
 
 ##### 示例1：遍历获取数组中的数据
 
-```
+```kotlin
 fun forFunc1() {
 	 //创建int类型的数组
     var nums = arrayOf(1, 2, 3, 4, 5, 6, 7)  
@@ -1380,7 +1206,7 @@ fun forFunc1() {
 
 ##### 示例2：遍历数组中的索引
 
-```
+```kotlin
 fun forFunc2() {
     var nums = arrayOf(1, 2, 3, 4, 5)
     //nums.indices 获取数组的全部索引组成的区间
@@ -1392,7 +1218,7 @@ fun forFunc2() {
 
 在 Array 类中有一个 `indices` 属性 ，该属性返回的是 数组的索引区间。`indices` 源码如下：
 
-```
+```kotlin
 /**
  * Returns the range of valid indices for the array.
  */
@@ -1409,7 +1235,7 @@ public val <T> Array<out T>.indices: IntRange
 
 `数组名.withIndex()`返回的是一个 IndexingIterator 实例，该实例中包括两个属性：数组元素的索引，数组元素的值。
 
-```
+```kotlin
 fun forFunc3() {
     var nums = arrayOf(1, 2, 3, 4, 5)
     for ((index, num) in nums.withIndex()) {
@@ -1425,7 +1251,7 @@ kotlin中遍历的时候，我们也可以使用 `forEach ( ){  }`, 需要注意
 
 示例代码如下：
 
-```
+```kotlin
 fun forFunc4() {
     var nums = arrayOf(1, 2, 3, 4, 5)
     nums.forEach {    
@@ -1457,7 +1283,7 @@ public static void main(String[] args) {
 ```
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     val nums = intArrayOf(1, 2, 3, 4, 5)
 
     for (num in nums) {
@@ -1480,7 +1306,7 @@ Kotlin 中的 `while` 和 `do...while` 与java中的并没有区别，使用的�
 
 while 的基本格式为：
 
-```
+```kotlin
 while(条件语句){
 	//代码块
 }
@@ -1494,7 +1320,7 @@ while(条件语句){
 
 示例：
 
-```
+```kotlin
 fun whileFunc1() {
     var a = 10
     while (a > 0) {
@@ -1502,7 +1328,7 @@ fun whileFunc1() {
         a--
     }
 }
-```
+``` 
 
 上述示例中，
 
@@ -1513,7 +1339,7 @@ fun whileFunc1() {
 
 ```java
 
-fun main(args: Array<String>) {
+fun main() {
 
     //不参与其他运算时的 --a 和 a--
     whileFunc1()
@@ -1566,7 +1392,7 @@ fun whileFunc4() {
 
 do/while 的基本格式为：
 
-```
+```kotlin
 do{
 	//代码块
 }while(条件语句)
@@ -1579,7 +1405,7 @@ do{
 
 示例：
 
-```
+```kotlin
 fun whileFunc2() {
     var a = 10
     do {
@@ -1616,7 +1442,7 @@ break 表示中断循环。
 示例：
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     breakFunc()
     breakFunc2()
 }
@@ -1661,7 +1487,7 @@ a的值为9 a的值为8 a的值为7 a的值为6 a的值为5 break中断循环，
 continue 表示跳过本次循环，继续执行后面的循环.
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     continueFunc1()
     println()
     continueFunc2()
@@ -1710,7 +1536,7 @@ return 表示中断循环，并且跳出当前函数。
 假设某个函数中包含一个循环，循环后面还有其他语句，当循环使用 return 中断之后，循环后面的其他语句不会被执行。
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     returnFunc1()
     println()
     returnFunc2()
@@ -1885,7 +1711,7 @@ class Students(uName: String) {
 constructor(参数1:参数类型, 参数2:参数类型):this(参数:参数类型){
 	//函数体
 }
-```
+``` 
 
 上述格式中：
 
@@ -1953,7 +1779,7 @@ class Students(uName: String) {
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     //使用主构造创建实例
     val student1 = Students("张三")
     println()
@@ -1984,7 +1810,7 @@ fun main(args: Array<String>) {
 上述示例代码展示了构造函数的定义、构造函数的委托、实例的创建。
 
 虽然，在两个次构造函数中我们没有对姓名进行打印，但它们都通过委托的形式触发了主构造函数的 init 代码块，这样，init 代码块中打印姓名的操作就被触发了。
-
+ 
 ### 2、类的属性
 
 Kotlin 中为类定义属性时有两种方式：类内部定义，在主构造函数中定义
@@ -2051,7 +1877,7 @@ class Students(val uName: String) {
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val student = Students("张三", 23, "山东大学")
     println("该学生的姓名为：${student.uName}, 年龄为：${student.mAge}, 来自于：${student.mSchoolName}")
 }
@@ -2092,7 +1918,7 @@ printStackTrace(PrintStream s) | 将异常以及异常所在栈信息输入到�
 在对异常有了基本了解之后，我们手动创建一个异常：
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     val result = getConsult(5, 0)
 }
 
@@ -2145,7 +1971,7 @@ catch 和 finally 是可以省略的。但不能同时省略它们两个，也�
 ##### B: 处理异常
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     val result = getConsult(5, 0)
     val result2 = getConsult(6, 2)
 }
@@ -2220,7 +2046,7 @@ Kotlin 中 try 是表达式，是有返回值的。
 ##### 示例1：
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     val result = getConsult(5, 0)
     val result2 = getConsult(6, 2)
 
@@ -2248,7 +2074,7 @@ result2的值为 3
 ##### 示例2：
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     val result = getConsult(5, 0)
     val result2 = getConsult(6, 2)
 
@@ -2289,7 +2115,7 @@ catch 分支中有个两个值表达式：0、5。当产生异常触发 catch �
 ##### 示例1：调用方捕获并处理异常
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
 	 //调用方捕获并处理异常
     val result = try {
         getConsult(5, 0)
@@ -2311,7 +2137,7 @@ fun getConsult(a: Int, b: Int): Int {
         throw ArithmeticException("除数不能为0")
     }
 }
-```
+``` 
 
 输出结果：
 
@@ -2319,11 +2145,11 @@ fun getConsult(a: Int, b: Int): Int {
 result的值为 0
 result2的值为 3
 ```
-
+ 
 ##### 示例2：调用方未处理异常
 
 ```java
-fun main(args: Array<String>) {
+fun main() {
     val result = getConsult(5, 0)
     val result2 = getConsult(6, 2)
 
@@ -2402,5 +2228,7 @@ public class HelloWorld {
 > 本篇文章到此结束，我们主要介绍了 Kotlin 的基本语法及相关知识，如需了解更多内容，请查看后续章节。谢谢！
 >
 > 如果文中有错误的地方，请务必联系我：QQ 893612134 , 微信 P893612134
+
+
 
 
