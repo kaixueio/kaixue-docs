@@ -22,7 +22,7 @@ LiveData 采用的是观察者模式，当 LiveData 保存的数据发生变化�
 ```gradle
 dependencies {
 	def lifecycle_version = "1.1.1"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+        implementation 'com.android.support:appcompat-v7:28.0.0'
 	implementation "android.arch.lifecycle:livedata:$lifecycle_version"
 }
 ```
@@ -30,7 +30,7 @@ dependencies {
 ```gradle
 dependencies {
 	def lifecycle_version = "1.1.1"
-    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+        implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
 	implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
 }
 ```
