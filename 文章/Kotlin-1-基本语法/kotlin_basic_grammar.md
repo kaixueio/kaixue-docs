@@ -132,7 +132,7 @@ when (x) {
 when (x) {
     in 1..10 -> print("x is in the range")
     !in 10..20 -> print("x is outside the range")
-  	is Int -> print("x is Int")
+    is Int -> print("x is Int")
     else -> print("none of the above")
 }
 ```
