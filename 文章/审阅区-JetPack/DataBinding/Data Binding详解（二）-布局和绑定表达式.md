@@ -154,11 +154,13 @@ android:text="@{@plurals/banana(bananaCount)}"
 ## 事件绑定
 Data Binding允许你编写表达式来处理view分派的事件。事件属性名字取决于监听器方法名字。例如View.OnClickListener有onClick()方法，View.OnLongClickListener有onLongClick()的方法，因此事件的属性是`android:onLongClick`，`android:onClick`。
 对于 click 事件，为了避免多种click事件的冲突，Google也定义了一些专门的事件处理，比如：
+
 | Class | 设置监听器的方法 | 绑定时的属性 |
  |:-|:-|:-| 
 |SearchView|	setOnSearchClickListener(View.OnClickListener)	|android:onSearchClick|
 |ZoomControls|	setOnZoomInClickListener(View.OnClickListener)|	android:onZoomIn|
 |ZoomControls|	setOnZoomOutClickListener(View.OnClickListener)|	android:onZoomOut|
+
 除了它们，Google还定义了其他一些常用的绑定事件的属性，这些可以阅读[Google官方Data Binding的API](https://developer.android.google.cn/reference/android/databinding/package-summary)。
 你可以使用以下机制来处理事件绑定：
 ### 方法引用
