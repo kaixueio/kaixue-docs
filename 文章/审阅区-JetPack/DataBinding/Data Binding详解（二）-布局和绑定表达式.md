@@ -140,6 +140,7 @@ Map的使用也可以直接引用key值，写成这样：
 android:text="@{@plurals/banana(bananaCount)}"
 ```
 有些资源的引用需要明确指明类型，如下表所示:
+
 | 类型 |正常引用 | 表达式引用 |
  |:-|:-|:-| 
 | String[] | @array | @stringArray |
@@ -149,6 +150,7 @@ android:text="@{@plurals/banana(bananaCount)}"
 | StateListAnimator | @animator | @stateListAnimator |
  | color int | @color | @color |
  | ColorStateList | @color | @colorStateList |
+ 
 ## 事件绑定
 Data Binding允许你编写表达式来处理view分派的事件。事件属性名字取决于监听器方法名字。例如View.OnClickListener有onClick()方法，View.OnLongClickListener有onLongClick()的方法，因此事件的属性是`android:onLongClick`，`android:onClick`。
 对于 click 事件，为了避免多种click事件的冲突，Google也定义了一些专门的事件处理，比如：
