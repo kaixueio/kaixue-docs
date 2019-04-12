@@ -224,6 +224,7 @@ public class Converter {
 `@InverseMethod` 注解可以应用于双向数据绑定中使用的任何方法，以声明从 View 的属性值转换到绑定数据值时用于逆转换的方法。这个逆转换方法的参数数量必须和绑定方法相同，参数类型可以不同。绑定方法的参数类型必须匹配其逆转换方法的返回值，绑定方法的返回值必须匹配其逆转换方法的参数。双向绑定的效果可以结合 Demo 查看，在 Demo 中我展现了数据变化时的效果。
 ## 双向属性
 Data Binding 库已经为你内置了很多支持双向数据绑定的属性。你也可以参照这些属性的绑定适配器来实现自定义属性：
+
 | 类别 | 属性 | 绑定适配器 |
 | ------------ | ------------ | ----|
 | [`AdapterView`](https://developer.android.google.cn/reference/android/widget/AdapterView) | `android:selectedItemPosition` `android:selection` | [`AdapterViewBindingAdapter`](https://android.googlesource.com/platform/frameworks/data-binding/+/3b920788e90bb0abe615a5d5c899915f0014444b/extensions/baseAdapters/src/main/java/android/databinding/adapters/AdapterViewBindingAdapter.java) |
@@ -237,6 +238,7 @@ Data Binding 库已经为你内置了很多支持双向数据绑定的属性。�
 | [`TabHost`](https://developer.android.google.cn/reference/android/widget/TabHost) | `android:currentTab` | [`TabHostBindingAdapter`](https://android.googlesource.com/platform/frameworks/data-binding/+/3b920788e90bb0abe615a5d5c899915f0014444b/extensions/baseAdapters/src/main/java/android/databinding/adapters/TabHostBindingAdapter.java) |
 | [`TextView`](https://developer.android.google.cn/reference/android/widget/TextView) | [`android:text`](https://developer.android.google.cn/reference/android/R.attr#text) | [`TextViewBindingAdapter`](https://android.googlesource.com/platform/frameworks/data-binding/+/3b920788e90bb0abe615a5d5c899915f0014444b/extensions/baseAdapters/src/main/java/android/databinding/adapters/TextViewBindingAdapter.java) |
 | [`TimePicker`](https://developer.android.google.cn/reference/android/widget/TimePicker) |`android:hour` `android:minute` | [`TimePickerBindingAdapter`](https://android.googlesource.com/platform/frameworks/data-binding/+/3b920788e90bb0abe615a5d5c899915f0014444b/extensions/baseAdapters/src/main/java/android/databinding/adapters/TimePickerBindingAdapter.java) |
+
 至此 Data Binding 的基础知识点已讲完，想要灵活的运用还需多动手练习，同时你也可以下载官方的示例学习：
  *   [Android Data Binding Library samples](https://github.com/googlesamples/android-databinding)
 *   [Android Data Binding codelab](https://codelabs.developers.google.com/codelabs/android-databinding)
