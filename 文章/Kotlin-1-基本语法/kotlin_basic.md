@@ -1,8 +1,10 @@
-# Kotlin 基础
+# Kotlin 基础语法概览
 
-Kotlin 是一门 Google 极为推崇的语言，目前已经成为了 Android 的官方开发语言，这也是一门值得 Android 工程师学习的语言。同为 JVM 系列语言，Kotlin 和 Java 有不少相似之处，学习曲线并没有大家想象的那么陡峭。下面从一个简短的例子说起，介绍一下 Kotlin 的基础语法。
+Kotlin 是一门 Google 极为推崇的语言，目前已经成为了 Android 的官方开发语言，这也是一门值得 Android 工程师学习的语言。同为 JVM 系列语言，Kotlin 和 Java 有不少相似之处，学习曲线并没有大家想象的那么陡峭。
 
-这一天，老王代码写着写着肚子就饿了，随手拿起手机就打开了点餐机，准备点几份吃的。毕竟填饱肚子，才有力气好好搬砖嘛。老王先点了一盘最爱的小炒肉，又来了一份宫保鸡丁。这个点餐机能实时显示已选的菜品和价格，还是挺好用的呢。老王看到今天点餐机竟然有一个「山珍海味」的选项，就决定尝尝看。结果选了之后被告知厨子不会做这个菜，真是可恶😠，心想大概是写点餐机的程序猿又写了一个 bug 吧。
+本篇文章作为概览，目地是让你快速了解 Kotlin 的基本写法。如果你对 Kotlin 感兴趣，可以继续阅读后续系列文章~ 下面就从一个故事说起。
+
+这一天，老王代码写着写着肚子就饿了，随手拿起手机就打开了点餐机，准备点几份吃的。毕竟填饱肚子，才有力气好好搬砖嘛。老王先点了一盘最爱的小炒肉，又来了一份宫保鸡丁。这个点餐机能实时显示已选的菜品和价格，还是挺好用的呢。老王看到今天点餐机竟然有一个「山珍海味」的选项，就决定尝尝看。结果选了之后被告知厨子不会做这个菜，真是可恶 😠，心想大概是写点餐机的程序猿又写了一个 bug 吧。
 
 ![preview](https://ws1.sinaimg.cn/large/006tNc79gy1g2ay3mth3wg30bu0l4au2.gif)
 
@@ -36,7 +38,6 @@ buildscript {
     repositories {
         google()
         jcenter()
-
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.2'
@@ -61,7 +62,7 @@ dependencies {
 }
 ```
 
-接下来就是将 Java 代码转换成 Kotlin 代码了，最简单的方式自然是用 Kotlin 重新写一遍😅。不过 Android Studio 给我们提供了一个工具，可以自动将 Java 代码转换成 Kotlin 代码。首先打开一个要转换的 Java 文件，然后使用 `MainMenu -> Code -> Convert Java File to Kotlin File` 操作（图片中的最后一项）即可。
+接下来就是将 Java 代码转换成 Kotlin 代码了，最简单的方式自然是用 Kotlin 重新写一遍 😅。不过 Android Studio 给我们提供了一个工具，可以自动将 Java 代码转换成 Kotlin 代码。首先打开一个要转换的 Java 文件，然后使用 `MainMenu -> Code -> Convert Java File to Kotlin File` 操作（图片中的最后一项）即可。
 
 ![006tNc79gy1g2488tz1wvj308f0h1guf.jpg](https://ws3.sinaimg.cn/large/006tNc79gy1g2488tz1wvj308f0h1guf.jpg)
 
@@ -422,3 +423,5 @@ companion object {
 ## 总结
 
 Kotlin 作为一门 JVM 语言，在语法上和 Java 较为类似，类比两者的差异，则能更快更好地掌握 Kotlin 基本写法。
+
+Kotlin 的基础语法，大概就是这个样子啦。如果想进一步了解和学习 Kotlin，欢迎关注后续系列文章。
