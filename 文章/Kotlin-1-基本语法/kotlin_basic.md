@@ -36,7 +36,7 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.2'
@@ -84,14 +84,14 @@ Kotlin 中的基本数据类型主要有：数值(numbers)、字符(characters)�
 > Kotlin 代码参考
 
 ```kotlin
-val a: Int = 1 
+val a: Int = 1
 val b: Long = a // 编译错误! Type mismatch: inferred type is Int but Long was expected
 val b: Long = a.toLong() // 显式转换
 ```
 
 #### 字符类型
 
-Kotlin 中的字符类型不能直接当作数字来用，不能与数字进行比较或者赋值，需要通过 `Chat.toInt()` 或 `Int.toChar()` 转换才行。
+Kotlin 中的字符类型不能直接当作数字来用，不能与数字进行比较或者赋值，需要通过 `Char.toInt()` 或 `Int.toChar()` 转换才行。
 
 #### 布尔值
 
@@ -101,7 +101,7 @@ Kotlin 中的字符类型不能直接当作数字来用，不能与数字进行�
 
 Kotlin 中可以用双引号 `"` 声明普通的字符串，也可以用三个双引号 `"""` 来声明一个多行的字符串。
 
-在 Java 中拼接字符串，通常用 `+` 手动拼接，或者用 `StringBuilder`类和 `String#format(String, Object...)`方法。而 Kotlin 支持了字符串模板语法，用 `$` 向字符串中注入变量值。如果需要表达式的值，可以用 `${...}`。 
+在 Java 中拼接字符串，通常用 `+` 手动拼接，或者用 `StringBuilder`类和 `String#format(String, Object...)`方法。而 Kotlin 支持了字符串模板语法，用 `$` 向字符串中注入变量值。如果需要表达式的值，可以用 `${...}`。
 
 > Java 代码参考 [字符串模版](https://github.com/bruce3x/KotlinDemo/blob/v1.0/java_version/src/main/java/com/bruce3x/kotlin/demo/FoodOrderService.java#L60)
 
@@ -133,7 +133,7 @@ float total = 0F;
 total = 1F
 ```
 
-> Kotlin 代码参考 
+> Kotlin 代码参考
 
 ```kotlin
 val isVip: Boolean = false          // 显式指定类型
@@ -165,7 +165,7 @@ public String getOrderDetail() {
 }
 ```
 
-> Kotlin 代码参考 [无返回值的函数](https://github.com/bruce3x/KotlinDemo/blob/v1.0/kotlin_version/src/main/java/com/bruce3x/kotlin/demo/FoodOrderService.kt#L22)、[带返回值的函数](https://github.com/bruce3x/KotlinDemo/blob/v1.0/kotlin_version/src/main/java/com/bruce3x/kotlin/demo/FoodOrderService.kt#L34) 
+> Kotlin 代码参考 [无返回值的函数](https://github.com/bruce3x/KotlinDemo/blob/v1.0/kotlin_version/src/main/java/com/bruce3x/kotlin/demo/FoodOrderService.kt#L22)、[带返回值的函数](https://github.com/bruce3x/KotlinDemo/blob/v1.0/kotlin_version/src/main/java/com/bruce3x/kotlin/demo/FoodOrderService.kt#L34)
 
 ```kotlin
 // 没有返回值
@@ -210,7 +210,7 @@ if (isVip) {
 }
 ```
 
-此外，If 语句还支持作为表达值返回，等效于 Java 中的三目运算符(Conditional Operator `?  :`)。
+此外，If 语句还支持作为表达值返回，等效于 Java 中的三目运算符(Conditional Operator `? :`)。
 
 > Java 代码参考 三目运算符
 
@@ -226,7 +226,7 @@ val amount: Float = if (isVip) 0.88F * total else total
 
 #### When 语句
 
-`when` 可是视作 Kotlin 中的 switch 语句。每一条分支的值，可以是常量或表达式。
+`when` 可以视作 Kotlin 中的 switch 语句。每一条分支的值，可以是常量或表达式。
 
 > Java 代码参考 [switch 语句](https://github.com/bruce3x/KotlinDemo/blob/v1.0/java_version/src/main/java/com/bruce3x/kotlin/demo/FoodOrderService.java#L34)
 
@@ -268,7 +268,7 @@ fun select(food: String) {
 
 ```kotlin
 val number = 233
-when{
+when {
     number < 5 -> println("small number")
     number > 5 -> println("large number")
     else -> println("number is 5")
@@ -279,16 +279,16 @@ when{
 
 `for` 语句本质上是在遍历一个对象的迭代器，只要一个对象能提供迭代器，就能用 `for` 循环，比如常用的列表集合、字符串等。
 
-> Java 代码参考  [for-loop 语句](https://github.com/bruce3x/KotlinDemo/blob/v1.0/java_version/src/main/java/com/bruce3x/kotlin/demo/FoodOrderService.java#L59)
+> Java 代码参考 [for-loop 语句](https://github.com/bruce3x/KotlinDemo/blob/v1.0/java_version/src/main/java/com/bruce3x/kotlin/demo/FoodOrderService.java#L59)
 
 ```java
 List<Food> items = new ArrayList<>();
 for (Food item : items) {
-    // 一些操作 
+    // 一些操作
 }
 ```
 
-> Kotlin 代码参考  [for-loop 语句](https://github.com/bruce3x/KotlinDemo/blob/v1.0/kotlin_version/src/main/java/com/bruce3x/kotlin/demo/FoodOrderService.kt#L41)
+> Kotlin 代码参考 [for-loop 语句](https://github.com/bruce3x/KotlinDemo/blob/v1.0/kotlin_version/src/main/java/com/bruce3x/kotlin/demo/FoodOrderService.kt#L41)
 
 ```kotlin
 val items = ArrayList<Food>()
