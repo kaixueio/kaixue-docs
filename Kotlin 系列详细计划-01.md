@@ -1,0 +1,229 @@
+# Kotlin 第一节计划
+
+## Kotlin 基础语法（一）
+
+这是视频剧本（初版），文章就大致按这个顺序写。区别：
+
+**视频是从「快速概览」的角度来的，文章也许会有较小的知识点顺序调整。**
+
+今天（或者明天？）我把具体的文章知识点顺序给大家，然后开写第一篇。
+
+### Kotlin 变量声明
+
+Kotlin 里声明一个变量（field、parameter、local variable），要这么写：
+
+<video src="https://hencoder-1252765421.cos.ap-beijing.myqcloud.com/kotlin-0-1-1.mp4"></video>
+
+但如果真的这么写，会报错：
+
+![image-20190601200516522](http://hencoder-1252765421.cos.ap-beijing.myqcloud.com/2019-06-01-120517.png)
+
+这个提示是在说，属性需要在声明的同时初始化，除非你把它声明成抽象的。
+
+> 视频额外字幕：「field 在 Kotlin 里面叫 property（不过其实它们确实不一样，Kotlin 的 property 功能会多一些）」
+
+哎，变量还能抽象的？嗯，这是 Kotlin 的功能，不过这里先不理它，后面会讲到。
+
+- 为什么要初始化？因为 Kotlin 的变量没有默认值的，这点不像 Java，Java 的 field 有默认值，引用类型的默认 null，int 类型的默认 0，这些 Kotlin 没有。
+
+  不过其实，Java 也只是 field 有默认值，local variable 也是没有默认值的：
+
+  <video src="https://hencoder-1252765421.cos.ap-beijing.myqcloud.com/kotlin-0-1-2.mp4"></video>
+
+  - 好拐回来说，需要初始化，那就给它初始化呗，赋值一个 null 给他：
+
+    ![image-20190601201609731](http://hencoder-1252765421.cos.ap-beijing.myqcloud.com/2019-06-01-121610.png)
+
+  - 啊又不行，告诉我需要赋一个非空的值给它才行，怎么办？
+
+  - 那就给它个非空的值呗：
+
+    ![image-20190601203501839](http://hencoder-1252765421.cos.ap-beijing.myqcloud.com/2019-06-01-123502.png)
+
+  - 哎不对啊， `findViewById()` 现在还不能用的，需要写在 `onCreate()` 里面。那那那，怎么办？
+
+  - 「好麻烦，未来不知道还会有多少学习障碍，算了，Kotlin 学习结束，我还是用 Java 吧。」
+
+  - 其实这都是 Kotlin 的空安全设计相关的内容。很多人尝试上手 Kotlin 之后快速放弃，就是因为搞不明白它的空安全设计，导致代码各种拒绝编译，最终光速放弃。所以咱先别猴急，我先用几十秒钟来给你讲一下 Kotlin 的空安全。
+
+### Kotlin 的空安全
+
+空安全？简单来说就是通过 IDE 的提示来避免调用 null 对象，从而避免 NullPointerException。其实 androidx (support lib) 就有的，用一个注解就可以标记变量是否可能为空，然后 IDE 会帮助检测和提示：
+
+![image-20190601205535431](http://hencoder-1252765421.cos.ap-beijing.myqcloud.com/2019-06-01-125535.png)
+
+而到了 Kotlin 这里，就有了语言级别的默认支持，而且从警告变成了报错（编译失败）：
+
+![image-20190601201609731](http://hencoder-1252765421.cos.ap-beijing.myqcloud.com/2019-06-01-121610.png)
+
+  - 在 Kotlin 里面，所有的变量都默认是不允许为空的，如果你给它赋值 null，就会被报错，像上面那样。
+
+    这种有点强硬的要求，其实是很合理的：既然你声明了一个变量，就是要使用它对吧？那你把它赋值为 null 干嘛？要尽量让它有可用的值啊。
+
+    Java 在这方面很宽松，我们成了习惯，但 Kotlin 更强的限制其实在你熟悉了之后，是会减少很多运行时的问题的。
+
+  - 另外……这个 View 其实在实际场景中我们是不会让它为空的对吧？这种「我很确定我用的时候绝对不为空，但第一时间我没法给它赋值」的，Kotlin 给了我们一个选项：lateinit：
+
+    ![image-20190604171730123](http://ww1.sinaimg.cn/large/006tNc79gy1g3p8t4wkuxj30py032jrj.jpg)
+
+    - 这个 `lateinit` 的意思很简单：我没法第一时间就初始化，但我肯定会在使用它之前完成初始化的。
+- 而它的作用也很直接：让 IDE 不要对这个变量检查初始化和报错。换句话说，加了这个关键字，这个变量的初始化就全靠你自己了，编译器不帮你了。
+  
+  - 不过，还是有些场景，变量的值真的无法保证空与否，比如你要从服务器取一个 JSON 数据，并把它解析成一个 `User` 对象：
+
+    ![image-20190604172504268](http://ww1.sinaimg.cn/large/006tNc79gy1g3p91q7t5gj30w603o0t2.jpg)
+
+    > 闪现半秒钟，切屏
+
+    哦串片了，这是下下下期的内容。有的时候你从服务器取一个 `User` 对象，服务器传给你的数据未必有 `name`。
+
+    ![image-20190604173433383](http://ww2.sinaimg.cn/large/006tNc79gy1g3p9bi485bj30sm0480t2.jpg)
+
+    这个时候，空值就是有意义的。对于这些可以为空值的变量，你可以在类型右边加一个 ? 号，解除它的非空限制：
+
+    ![image-20190604173503812](http://ww2.sinaimg.cn/large/006tNc79gy1g3p9bfmvwfj30oi03kwes.jpg)
+
+    也就是，加了问号之后，一个 Kotlin 变量就像 Java 变量一样没有非空的限制，自由自在了。你除了在初始化的时候可以给他设置为空值，在代码里的任何地方也都可以。不过，可空类型的变量会有新的问题：
+
+    - 由于对空引用的调用会导致空指针异常，所以 Kotlin 在可空变量直接调用的时候 IDE 会报错：
+
+      ![image-20190601213017496](http://hencoder-1252765421.cos.ap-beijing.myqcloud.com/2019-06-01-133017.png)
+
+    - 「可能为空」的变量，Kotlin 不允许用。那怎么办？用之前检查一下吧：
+
+      ![image-20190601213438929](http://hencoder-1252765421.cos.ap-beijing.myqcloud.com/2019-06-01-133439.png)
+
+    - 哎？这怎么还报错？这个报错的意思是你检查了非空也不能保证下面调用的时候就是非空（因为多线程情况下，其他线程可能把它再改成空的）。不过 Kotlin 里其实不是这么玩的，而是用 `?`：
+
+      ![image-20190601214356665](http://hencoder-1252765421.cos.ap-beijing.myqcloud.com/2019-06-01-134357.png)
+
+      这个写法同样会对变量做一次非空确认之后再调用方法，不过这是 Kotlin 的写法，并且它可以做到线程安全。
+
+    - 也就是说，如果你要在 Kotlin 里使用一个可能为空的变量，代码大概是这样的：
+
+      ![image-20190601215028877](http://hencoder-1252765421.cos.ap-beijing.myqcloud.com/2019-06-01-135028.png)
+
+    - 另外还有一种双感叹号的用法，我在视频里就不介绍了，你们看文章吧。
+
+### 变量和空安全小结
+
+这就是 Kotlin 的变量以及空安全设计。其实它的声明跟 Java 虽然完全不一样，但是学习起来完全没难度的，因为只是一个风格而已。但很多人在上手的时候都被变量声明搞蒙，原因就是 Kotlin 的空安全设计所导致的这些报错：
+
+- 变量需要手动初始化，所以不初始化的话报错；
+- 变量默认非空，所以初始化赋值 null 的话报错；
+- 变量用 ? 设置为可空的时候，使用的时候因为「可能为空」又报错。
+
+关于空安全，最重要的是记住一点：所谓「可空不可空」，关注的全都是使用的时候，即「这个变量在使用时是否可能为空」。如果一个变量从头到尾只有赋值没有调用，要它有什么用呢？
+
+![image-20190604170055416](http://ww1.sinaimg.cn/large/006tNc79gy1g3p8bwaf77j30k00ciaqe.jpg)
+
+> 哔——
+
+哦对了，变量除了 var 打头，还可以写成 val 打头的：
+
+```kotlin
+val SIZE = 18
+```
+
+val 是 Kotlin 在 Java 的「变量」类型之外，又增加的一种变量类型：只读变量。它只能赋值一次，不能修改。var 是 variable 的缩写，val 是 value 的缩写。
+
+### 函数
+
+- 除了变量，Kotlin 的函数声明方式也和 Java 的方法不一样了。——嗯 Java 的方法（method）到了 Kotlin 就叫函数（function）了。这俩的区别就是没有区别。
+
+  > 视频额外字幕：其实是有的，但是在 2019 年这个时代，大家已经把这两个词混用了。
+
+  <video src="https://hencoder-1252765421.cos.ap-beijing.myqcloud.com/kotlin-0-1-3.mp4"></video>
+
+  - 另外，函数的参数也有可空的控制：
+
+    ```kotlin
+    String myName : String? = "rengwuxian" // 可空变量
+    fun cook(name: String) : Food {} // 不可空参数
+    cook(myName) // 报错
+    
+    String myName : String? = "rengwuxian" // 可空变量
+    fun cook(name: String?) : Food {} // 可空参数
+    cook(myName) // 可以
+    
+    String myName : String = "rengwuxian" // 不可空变量
+    fun cook(name: String) : Food {} // 不可空参数
+    cook(myName) // 可以
+    ```
+
+  - 函数如果没有返回值，Java 里是 void，Kotlin 是 `Unit`：
+
+    ```kotlin
+    fun suicide() : Unit {}
+    fun suicide() {} // Unit 返回类型可以省略
+    ```
+
+- 讲到函数，Kotlin 和 Groovy 一样，是有默认的 getter/setter 支持的。简单说就是当你取变量的值的时候以及给变量赋值的时候，实际上是调用了它的 get 和 set 方法：
+
+  ```kotlin
+  name = "rengwuxian" // 你写的代码
+  setName("rengwuxian") // 实际上发生的代码
+  
+  println(name) // 你写的代码
+  println(getName()) // 实际上发生的代码
+  ```
+
+  这有什么用？
+
+  - 主要作用在于：所有的属性的读写都被自动加了一个钩子，你可以为每个变量设置钩子方法：
+
+    ```kotlin
+    setName(newName : String) {
+      name = newName
+      log("New name logged: " + name)
+    }
+    ```
+
+  - 另外你也可以利用这个全局钩子，去修改一个变量的赋值和取值的具体手段：
+
+    ```kotlin
+    val size = 0
+    fun getSize() : Int {
+      return items.size
+    }
+    ```
+
+    顺便：所以「只读变量」也未必每次取得的值都一样的，对吧？
+
+  - 不过其实 Kotlin 的 getter / setter 是有专属写法的。
+
+    - 首先，它们的声明要这样写：
+
+      ![image-20190603181231919](https://ww3.sinaimg.cn/large/006tNc79gy1g3p71t8ovtj30t60cuabo.jpg)
+
+    - 另外，看见那个 `field` 了吗？
+
+  ### 结束，以及引出文章
+
+  除此之外，Kotlin 的类的写法：
+
+  ```kotlin
+  class MainActivity : AppCompatActivity {}
+  ```
+
+  > 只展现半秒。
+
+  构造方法：
+
+  ```kotlin
+  class MainActivity : AppCompatActivty {
+    constructor()
+  }
+  ```
+
+  > 也只展现半秒。
+
+  以及继承：
+
+  > 图片，同样是半秒。
+
+  条件控制：
+
+  > 图片，还是半秒。
+
+  都跟 Java 有不同。这些东西，以及刚才说的变量和函数的细节，文章里都写得非常清楚。如果你打算学习 Kotlin，或者上手过 Kotlin 但一直没有找到合适的机会整体学习一下，赶快打开文章看一下吧，大概会花掉你十几分钟的时间。看完记得在今天结束之前把下面附加的练习题做了，今天的内容就掌握得差不多了。更多的东西：静态方法、Java 和 Kotlin 互操作、扩展函数、数据类、内联函数、高阶函数、委托、标准函数、Kotlin 的泛型、反射和注解、协程，都会在接下来的一段时间连续释放，所以赶快关注公众号、关注哔哩哔哩、加入邮件列表吧，码上开学要开始疯狂输出了！
