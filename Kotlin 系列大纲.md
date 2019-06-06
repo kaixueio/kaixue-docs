@@ -74,7 +74,7 @@
 
   * 区别：全都变成了普通的类
 
-    * 可以赋值为 `null`
+    * 全都是对象
     
     * 多了一大堆工具方法，如 `Int.toFloat()`
       
@@ -88,6 +88,8 @@
       var offsetX: Float = offset.toFloat() // ✔️
       var offsetY: Float = offset // ❌
       ```
+    
+  * Android 工程师的疑问：没了 `int`，会不会有什么暂时想不到的麻烦？
 
 * 类型的声明
 
