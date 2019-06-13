@@ -95,13 +95,13 @@ var count: Int = 0
 可以使用 `lateinit` 关键字，顾名思义，就是说我先声明好我晚些时候会初始化它，你不用担心它没有值的情况。
 
 ```kotlin
-lateinit count: Int ❌
+lateinit var count: Int ❌
 ```
 
 报错 `'lateinit' modifier is not allowd on primitive properties` ，这就是说虽然 Kotlin 里的 `Int` 是大写，但仍然是`基本类型`的属性，关于基本类型后面再讲。不过换成非基本类型比如 `String` 是没问题的。
 
 ```kotlin
-lateinit countStr: String
+lateinit var countStr: String
 ```
 
 当然 Kotlin 以防万一还提供了 `::countStr.isInitialized` 来判断变量到底有没有被初始化过，实际的开发中应该尽可能避免用到，简单了解下即可。
