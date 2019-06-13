@@ -316,7 +316,7 @@ kotlinDict.setWord("hello");
 
 ### var 和 val
 
-前面讲了变量声明用 `var` ，除此之外还可以用 `val`
+前面讲了变量声明用 `var` ，除此之外还可以用 `val `，它是 value 的缩写。
 
 `var` 就是 Java 中的变量，而 `val ` 是 Kotlin 增加的一种变量类型，叫**只读变量 Read-only variables** 。
 
