@@ -84,7 +84,7 @@ var count: Int ❌
 
 报错 `Property must be initialized` ，也就是说这里声明的 `var` 叫 Property ，相当于 Java 里的 field ，但 Kotlin 里的 field 是另一个概念，之后再讲。
 
-根据修改建议 Add Initializer 会变成如下：
+根据修改建议 `Add Initializer` 会变成如下：
 
 ```kotlin
 var count: Int = 0
@@ -98,7 +98,7 @@ var count: Int = 0
 lateinit count: Int ❌
 ```
 
-报错 `'lateinit' modifier is not allowd on primitive properties` ，这就是说虽然 Kotlin 里的 `Int` 是大写，但仍然是基本类型的属性，关于基本类型后面再讲。不过换成非基本类型比如 `String` 是没问题的。
+报错 `'lateinit' modifier is not allowd on primitive properties` ，这就是说虽然 Kotlin 里的 `Int` 是大写，但仍然是`基本类型`的属性，关于基本类型后面再讲。不过换成非基本类型比如 `String` 是没问题的。
 
 ```kotlin
 lateinit countStr: String
@@ -106,7 +106,7 @@ lateinit countStr: String
 
 当然 Kotlin 以防万一还提供了 `::countStr.isInitialized` 来判断变量到底有没有被初始化过，实际的开发中应该尽可能避免用到，简单了解下即可。
 
-那是不是每次都要添加变量类型呢，当然不是，Kotlin 还支持类型自动推断，像这样：
+那是不是每次都要添加变量类型呢，当然不是，Kotlin 还支持类型**自动推断 inferred** ，像这样：
 
 ```kotlin
 var count = 1
@@ -126,17 +126,19 @@ List<String> names = new ArrayList<>();
 `var` 声明的变量是可以被重新赋值的。
 
 ```kotlin
+var count: Int = 1
 // reassign
-count = 1
+count = 2
 ```
 
 报错 `Expecting a top level declaration` 。
 
-说明对变量的操作需要放到顶层声明中，Kotlin 里的顶层声明指的就是函数，但是函数怎么写我们还不知道，*没关系 再继续努力 没关系*，怎么唱起周杰伦的《三年二班》了，回到正题，先假定已经有一个函数了。
+说明对变量的操作需要放到顶层声明中，Kotlin 这里的顶层声明指的就是`函数`，但是函数怎么写我们还不知道，*没关系 再继续努力 没关系*，怎么唱起周杰伦的《三年二班》了，回到正题，先假定已经有一个函数了。
 
 ```kotlin
 // fun 是函数的关键字，这里先跳过
 fun incrementCount() {
+    var count: Int = 1
     // 在函数里操作变量就不会报错了
     // += 的语法和 Java 一样，是不是很熟悉
     count += 1
@@ -166,12 +168,12 @@ ballCount2 = null ❌ // 赋值也报错
 var ballCount1: Int? = null
 ballCount1 = 1
 
-lateinit var ballCount2: Int? ❌ // lateinit 修饰符只能用来修饰非空类型，不然既要延迟初始化又不保证非空，编译器要说你玩儿我的吧
+lateinit var ballCount2: Int? ❌ // lateinit 修饰符只能用来修饰非空类型，不然既要延迟初始化又不保证非空，编译器说你玩儿我的吧
 
 var ballCount3 = null // 编译通过，这是唯一可以不显式指定类型的 case
 ballCount3 = 3 ❌ // 因为之前没有指定类型，所以这行报错了
 
-var ballCount4 = 4 // 自动推断，此时其实是 Int 而不是 Int?
+var ballCount4 = 4 // 自动推断，此时其实是 'Int' 而不是 'Int?'
 ```
 
 你可能又要问了，为什么要这样设计？请看下面这个例子：
@@ -181,7 +183,7 @@ var word: String = "hello"
 word.length
 
 var nullableWord: String? = null
-// 在 Java 里调用的话编译期间不会报错，而是在运行时抛出 NullPointerException
+// 在 Java 里调用一个空值的话编译期间不会报错，而是在运行时抛出 NullPointerException
 // 但是在 Kotlin 里面编译的时候就会报错，提前告诉你
 nullableWord.length ❌
 ```
@@ -289,6 +291,7 @@ public class Dict {
 ```kotlin
 // kotlin
 // setter 简化成了赋值
+// 这里涉及到类的实例化，我们先有个印象，没有 'new' 关键字
 Dict().word = "hello"
 // getter 省略了 get 前缀
 println(Dict().word)
