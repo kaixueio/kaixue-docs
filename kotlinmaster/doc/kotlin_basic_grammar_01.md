@@ -98,7 +98,7 @@ var count: Int = 0
 lateinit var count: Int ❌
 ```
 
-报错 `'lateinit' modifier is not allowd on primitive properties` ，这就是说虽然 Kotlin 里的 `Int` 是大写，但仍然是`基本类型`的属性，关于基本类型后面再讲。不过换成非基本类型比如 `String` 是没问题的。
+报错 `'lateinit' modifier is not allowd on primitive properties` ，这就是说虽然 Kotlin 里的 `Int` 是大写，但仍然是 `基本类型` 的属性，关于基本类型后面再讲。不过换成非基本类型比如 `String` 是没问题的。
 
 ```kotlin
 lateinit var countStr: String
@@ -364,6 +364,8 @@ val word2: String = "hello"
 
 Kotlin 中的函数和 Java 中的方法可以大体上理解成一个概念，其中的区别我们不用在意。
 
+### 声明
+
 Kotlin 中的函数使用 `fun` 关键字声明
 
 ```kotlin
@@ -399,7 +401,40 @@ fun incrementCount(count: Int?): Int? {
 	count.plus(1) ❌
     count?. + 1 ❌ // 没有这种写法
     count!! + 1 // 等于把空判断交给了运行时，也不推荐
-    return count?.plus(1) // 使用 safe call 的方式解决，对于本篇来讲有点超纲了
+    return count?.plus(1) // 使用 safe call 的方式
 }
 ```
+
+来总结下 Kotlin 声明时和 Java 的不同点
+
+- 返回类型和方法名位置互换
+- 中间用 `: ` 分隔
+- 参数的格式也和 Java 不一样
+- 参数和返回类型也有「可空与不可空」
+- 没有返回类型时，返回 `Unit` ，可以省略不写
+
+我们再来看看刚才的例子
+
+```kotlin
+fun incrementCount(count: Int?): Int? {
+    // 这里还有几个需要注意的地方
+    // '?.' 和 '!!.' 这两种 call 本质上是函数调用，所以一定有返回值，返回值可以是 Unit
+    // '?.' 根据如果就的规则，当 count 为空时，返回什么呢？这里其实返回的是 null ，对应函数的返回值 'Int?'
+    return count?.plus(1)
+}
+```
+
+### 构造函数
+
+前面讲的 Kotlin 的 getter / setter 就是读写函数，现在我们还没讲到类，但是类的构造函数也是函数。
+
+讲到这里，同学们可能又要提出问题了，那为什么这两种函数没有 `fun` 关键字声明呢？而且读写函数也没有声明返回值啊。
+
+其实，这两种函数属于特殊的函数，读写函数总是和属性一起出现，构造函数总是和类一起出现。
+
+我们只要知道，函数的 `{}` 内部的规则都是一致的就好。
+
+## 类型
+
+我们学习变量和函数的时候大部分用的都是 `Int` ，接下来我们正式介绍下 Kotlin 中的基本类型
 
