@@ -204,6 +204,14 @@ nullableWord1!!.length // 运行期仍然会报错！
 var nullableWord2: String? = "hello"
 nullableWord2?.length // 运行期不会报错
 nullableWord2!!.length // 运行期不会报错
+
+// 但并不是说 java 里的判空逻辑在 kotlin 里就毫无用武之地了
+// 下面这种同时判断多个的情况，用 '!= null' 来写可读性反而会比较好
+if (nullableWord1 != null && nullableWord2 != null) {
+    // 同时判断
+    // 此处没有 '?.' 因为编译器帮我们 smart cast to 'Int' 了
+    var totalLength = nullableWord1.length + nullableWord2.length
+}
 ```
 
 这就是 Kotlin 的空安全特性，并且是兼容 Java 的。
@@ -258,8 +266,8 @@ var word: String = "hello"
     }
 println(word)
 // 这时会打印出什么呢？答案是 hello
-// 因为初始化的动作是 assign ，是不调用 setter 函数的
-// 如果再这样写
+// 因为初始化 initialize 是不调用 setter 的
+// 如果接着写
 word = "hello"
 println(word)
 // 那么打印出来的就是 hello Mike
