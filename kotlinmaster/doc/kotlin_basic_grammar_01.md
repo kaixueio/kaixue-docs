@@ -310,7 +310,14 @@ println(Dict().word)
 ```kotlin
 // kotlin
 class KotlinDict {
+    // 这里简单提一下 var 的可见性，默认是 public 的
+    // 真的吗我不信.gif
     var word: String? = null
+    // 那我们手动加一下
+    public var word1: String = "i dont believe this var is public"
+    // 这时候 IDE 马上给你提示了
+    // Redundant visibility modifier
+    // 告诉你 'public' 是多余的，我们 public 着呢
 }
 ```
 
