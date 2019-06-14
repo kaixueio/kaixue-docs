@@ -347,3 +347,52 @@ val word2: String = "hello"
     }
 ```
 
+至此，变量部分告一段落了，当然本文无法涵盖所有知识点，希望同学们通过文章学会在实际的练习中掌握学习和解决问题的能力。知识是无穷尽的，方法论才是王道。
+
+---
+
+## 函数
+
+前面在讲变量的时候我们看到，对变量的操作需要放在函数里。
+
+Kotlin 中的函数和 Java 中的方法可以大体上理解成一个概念，其中的区别我们不用在意。
+
+Kotlin 中的函数使用 `fun` 关键字声明
+
+```kotlin
+fun incrementCount(): Unit {
+}
+
+// 上面的写法 IDE 会提示 Redundant 'Unit' return type
+// 意思是返回值如果是 'Unit' 可以省略
+// 类比 Java 中的 'void' 关键字
+fun incrementCount() {
+}
+
+// 但是其他类型的返回值就不能省略，并且要加 return
+fun incrementCount(): Int {
+	return 2
+}
+
+// 来看看参数怎么写
+fun incrementCount(count: Int): Int {
+	return count + 1
+}
+
+// 参数和返回值都允许可空
+fun incrementCount(count: Int?): Int? {
+    // 下面这句的报错非常有意思了
+    // Operator call conrresponds to a dot-qualified call 'count.plus(1)' which is not allowed on a nullable receiver 'count'.
+	count + 1 ❌
+    // 来解释下，就是说 '+' 在 kotlin 里是 operator call，关于 operator 的概念我们先有个印象
+    // 知道下面这两句是等价的就行
+    1 + 1
+    1.plus(1)
+    // 现在理解为什么 count + 1 会报错了吧，因为和下面是等价的
+	count.plus(1) ❌
+    count?. + 1 ❌ // 没有这种写法
+    count!! + 1 // 等于把空判断交给了运行时，也不推荐
+    return count?.plus(1) // 使用 safe call 的方式解决，对于本篇来讲有点超纲了
+}
+```
+
