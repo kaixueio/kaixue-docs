@@ -4,22 +4,23 @@
 
 ## 搭建 Kotlin 开发环境
 
-先新建一个 Kotlin 工程。
+首先我们新建一个 Kotlin 工程。
 
-- 准备好 Android Studio 开发环境，当前最新版本是 3.5 beta 4。
+- 准备好 Android Studio 开发环境。
+- 新建 project，其中 Language 选择 Kotlin。
 
-- 新建 project，其中 Language 选择 Kotlin 来自动生成支持 Kotlin 的 `build.gradle` 文件。
+![](http://ww4.sinaimg.cn/large/006tNc79gy1g42sd40ajkj318o0rwmzs.jpg)
 
 重点看 `project root`  和 `app` 目录下的 `build.gradle` 文件和 Java 有什么不同：
 
 ```groovy
-// project root dir
+// 项目根目录下 build.gradle
 ext.kotlin_version = '1.3.31'
 dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 }
 
-// app dir
+// app 目录下 build.gradle
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions' // 这个之后再讲，现在用不到
 
@@ -29,33 +30,35 @@ dependencies {
 }
 ```
 
-任何语言的学习都离不开基础语法，就像学外语要先认识单词才能造句。
+如果是现有的项目里支持 Kotlin ，手动在这两个目录的 `build.gradle` 加上上面这些就可以了。
 
-不过在开始动手之前，有必要先认识下 IDE 已经创建好的 `MainActivity.kt` 这个类，可以看到，Kotlin 文件是以 .kt 结尾的。我们并不在这个类里写任何代码，而是会参照着新写一个。 
+在开始学习基础语法之前，先认识下 IDE 帮我们创建好的 `MainActivity.kt` 这个文件。
 
-```kotlin
-// 包的声明和 Java 类似，但是有一些小区别
-// 目录与包的结构无需匹配：源代码可以在文件系统的任意位置
-package org.kotlinmaster
+![image-20190616191747823](http://ww2.sinaimg.cn/large/006tNc79gy1g437q0mcm6j30sk0cqjtv.jpg)
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+和 Java 里的 `Activity` 长得还挺像的，也有 `package` `import` `class` 和貌似重载了的 `onCreate` 方法。
 
-// 关于 class 后面再讲
-class MainActivity : AppCompatActivity() {
-	// ...
-}
-```
+值得注意的一点是，没看到代码里有分号，事实上 Kotlin 中是**不需要分号**的。
 
-这里值得注意的一点是，Kotlin 中是**不需要分号**的！只是硬要加上的话也不会报错。
+Kotlin 文件是以 `.kt` 结尾的。我们先不在这个类里加代码，而是照葫芦画瓢新建一个。 
 
-新建一个 Kotlin File 叫 Sample.kt 。
+新建一个包 basic_grammar_01，包下新建一个 Kotlin Class 叫 `Sample.kt` 。
 
-```kotlin
-package org.kotlinmaster.basic_grammar_01
-```
+![](http://ww4.sinaimg.cn/large/006tNc79gy1g42sn90cj9j30bi02cjrg.jpg)
 
-好了，开始学习基础语法的旅程吧。
+![](http://ww3.sinaimg.cn/large/006tNc79gy1g42sk3roflj314a08s40r.jpg)
+
+![](http://ww2.sinaimg.cn/large/006tNc79gy1g42slcl158j30j80akta9.jpg)
+
+我们看到，可以创建的不同的 Kotlin Kind  对应在 IDE 里的图标是不同的，这个在 Java 里也是一样的。
+
+这里的各种 Kind 我们之后都会掌握，不用着急。
+
+![image-20190616185118546](http://ww2.sinaimg.cn/large/006tNc79gy1g436ygeds7j30d40ao0tv.jpg)
+
+Dict 是 Java Class ， 其他都是 Kotlin Class 。
+
+准备工作完成，开始学习基础语法的旅程吧。
 
 ---
 
@@ -63,165 +66,171 @@ package org.kotlinmaster.basic_grammar_01
 
 ### 声明与赋值
 
-声明变量用到关键字 `var` ，就是 variable 的缩写。
+Kotlin 里面声明变量要用到关键字 `var` ，就是 variable 的缩写。
 
-```kotlin
-var count: Int = 1
-```
+这里先给出一个正确的写法
 
-和 Java 有以下不同
+![](http://ww4.sinaimg.cn/large/006tNc79gy1g42t0wy02lj30li08sgma.jpg)
+
+对比 Java 主要有以下不同
 
 - 类型和变量名位置互换
 - 中间使用 `:` 分隔
 - `var` 关键字开头
-- 必须有默认值
+- 必须初始化
 
-如果这么写:
+前面 3 点是 Kotlin 的格式，没什么理解门槛，最后一个，为什么要初始化？
 
-```kotlin
-var count: Int ❌
-```
+因为 Kotlin 的变量没有默认值的，这点不像 Java，Java 的 field 有默认值，引用类型的默认 `null`，`int` 类型的默认 0，这些 Kotlin 没有。不过其实，Java 也只是 field 有默认值，local variable 也是没有默认值的。
 
-报错 `Property must be initialized` ，也就是说这里声明的 `var` 叫 Property ，相当于 Java 里的 field ，但 Kotlin 里的 field 是另一个概念，之后再讲。
+Kotlin 把默认值的检查设计得更加严格了，认为开发者需要负责对变量进行初始化，这样设计的好处是明确一个变量的意义。
 
-根据修改建议 `Add Initializer` 会变成如下：
+如果只声明变量而不给变量初始化，就像普罗米修斯创造了第一批人类的肉体，但是却没有雅典娜赋予他们的灵魂。
+
+如果不进行初始化会怎么样呢？看看👇这么写
+
+![](http://ww3.sinaimg.cn/large/006tNc79gy1g42t237dvoj30lq08qaax.jpg)
+
+我们先把具体的错误放一边。
+
+下面的**黑色粗体**文字是学习任何新的编程语言事半功倍的利器，我们在学习 Java 的时候也经常用到。
+
+- **看懂 IDE 的报错（以下都简称报错）对于初学者来讲非常重要，我会对当前需要知道的知识点进行讲解，对暂时用不到的知识点咱们放到后面再讲解。**
+- **IDE 是非常智能的，通常来讲会提供修复错误的解决方案（虽然有时候会有问题），理解 IDE 的解决方案，也是帮助我们更好地掌握知识的途径。**
+- **为了跟国际接轨，尽量先给出英文原文，然后再进行中文解释。**
+
+让我们回到上面这个错误，这个报错的意思是
+
+> 属性需要在声明的同时初始化，除非你把它声明成抽象的。
+
+哎，变量还能抽象的？嗯，这是 Kotlin 的功能，不过这里先不理它，后面会讲到。
+
+IDE 告诉我们，这里声明的 `var` 叫属性 Property，这个概念相当于 Java 里的字段 field，但 Kotlin 里的 field 是另一个概念，之后再讲。
+
+我们可以看到 IDE 给我们的修复提示
+
+![](http://ww1.sinaimg.cn/large/006tNc79gy1g42tq5m3q6j30g60bgq4e.jpg)
+
+apply 第一个修复提示后我们就在声明的同时进行初始化了
 
 ```kotlin
 var count: Int = 0
 ```
 
-那么问题来了，我就是现在不想赋值行不行？
+在某些实际场景中我们在用的时候是不会让变量没有值的，但声明的时候确实还不知道该给它初始化什么默认值。
 
-可以使用 `lateinit` 关键字，顾名思义，就是说我先声明好我晚些时候会初始化它，你不用担心它没有值的情况。
+这种「我很确定我用的时候绝对不为空，但第一时间我没法给它赋值」的场景，Kotlin 给了我们一个选项：`lateinit` 。顾名思义，就是说我先告诉编译器我保证在使用它之前对它初始化，你不用担心它没有值的情况。
+
+编译器说，好，既然你诚心诚意地保证了，我就大发慈悲地相信你，不在声明的时候检查了，之后如果有什么问题，后果自负（大声喊出好讨厌的感觉~~~）。
+
+![image-20190616183757620](http://ww4.sinaimg.cn/large/006tNc79gy1g436kkfpecj30pu0b0abp.jpg)
+
+可以看到 `view` 声明时使用了 `lateinit`，在 `onCreate` 中进行了初始化。
+
+好，既然 `lateinit` 这么有用，快点带我装哔带我飞。
+
+![image-20190616112010831](http://ww3.sinaimg.cn/large/006tNc79gy1g42tx200gcj30ms08o756.jpg)
+
+帅不过 3 秒，又报错了（这里还是 IDE 的报错，下同），意思是
+
+> Kotlin 里的 `Int` 仍然是 `基本类型` 的属性，关于基本类型后面再讲。不过换成其他类型比如 `String` 是没问题的，前面的 `View` 也没问题。
+
+![image-20190616112307135](http://ww1.sinaimg.cn/large/006tNc79gy1g42u04vs8gj30gs06kwer.jpg)
+
+那是不是每次都要添加变量类型呢，太麻烦了，Kotlin 还支持类型**自动推断 inferred** ，像这样：
 
 ```kotlin
-lateinit var count: Int ❌
+var count = 1 // 这里根据右侧的 1 自动推断出 count 是 'Int' 类型
 ```
 
-报错 `'lateinit' modifier is not allowd on primitive properties` ，这就是说虽然 Kotlin 里的 `Int` 是大写，但仍然是 `基本类型` 的属性，关于基本类型后面再讲。不过换成非基本类型比如 `String` 是没问题的。
+这是在编译期间完成的，这也是 Kotlin 作为静态类型语言的体现。
 
-```kotlin
-lateinit var countStr: String
-```
-
-当然 Kotlin 以防万一还提供了 `::countStr.isInitialized` 来判断变量到底有没有被初始化过，实际的开发中应该尽可能避免用到，简单了解下即可。
-
-那是不是每次都要添加变量类型呢，当然不是，Kotlin 还支持类型**自动推断 inferred** ，像这样：
-
-```kotlin
-var count = 1
-```
-
-这是在编译期间完成的，所以 Kotlin 是一门静态类型语言。
-
-Java 里也有类型推断：
+Java 里也有类型推断，比如👇
 
 ```java
 // 右边省略了 <> 里面的 String
 List<String> names = new ArrayList<>();
 ```
 
-如果使用 `lateinit` 关键字就必须要加变量类型。
+类型推断最直接的好处就是可以帮我们简化代码。
+
+终于声明好一个变量了，我现在要对它进行重新赋值了。
 
 `var` 声明的变量是可以被重新赋值的。
 
-```kotlin
-var count: Int = 1
-// reassign
-count = 2
-```
+![image-20190616185918076](http://ww4.sinaimg.cn/large/006tNc79gy1g4376rlpwoj30cc090aai.jpg)
 
-报错 `Expecting a top level declaration` 。
+上面出现了 `fun` 关键字，我们在 `MainActivity` 中也看到过，这里简单提一下这个叫函数，`{}` 里面的是函数体，先不管它，我们在里面对 `count` 进行了重新赋值。
 
-说明对变量的操作需要放到顶层声明中，Kotlin 这里的顶层声明指的就是`函数`，但是函数怎么写我们还不知道，*没关系 再继续努力 没关系*，怎么唱起周杰伦的《三年二班》了，回到正题，先假定已经有一个函数了。
+### 空安全设计
 
-```kotlin
-// fun 是函数的关键字，这里先跳过
-fun incrementCount() {
-    var count: Int = 1
-    // 在函数里操作变量就不会报错了
-    // += 的语法和 Java 一样，是不是很熟悉
-    count += 1
-}
-```
+我们回忆一下 Java 里对变量赋值为空的场景
 
-### 空安全
+![image-20190616200434083](http://ww1.sinaimg.cn/large/006tNc79gy1g4392oq6fej30ji0dmgn0.jpg)
 
-刚才声明的变量，如果赋值为空会出现什么情况？
+这里我们使用了 `@NonNull` 和 `@Nullable` 的注解来让 IDE 提示我们避免调用 `null` 对象，从而避免 NullPointerException。
 
-```kotlin
-var ballCount1: Int = null ❌ // 初始化报错
+下面的用法 IDE 就会给出警告。
 
-var ballCount2: Int = 1
-ballCount2 = null ❌ // 赋值也报错
-```
+![image-20190616200723042](http://ww4.sinaimg.cn/large/006tNc79gy1g4395m4bhnj30rg0augmv.jpg)
 
-报错 `Null can not be a value of a non-null type Int` 。
+而到了 Kotlin 这里，就有了语言级别的默认支持，而且从警告变成了报错（编译失败）。
 
-修复建议是 `Change type of 'ballCount' to type 'Int?'`
+![image-20190616205212423](http://ww1.sinaimg.cn/large/006tNc79gy1g43ag96vt7j30ji0c8dgz.jpg)
 
-当某个变量的值可以为 `null` 的时候，必须在声明处的类型后添加 `?` 来标识可为空。
+在 Kotlin 里面，所有的变量都默认是不允许为空的，如果你给它赋值 null，就会报错，初始化的时候和后面再次赋值都不行，像👆那样。
 
-来复习下前面学过的知识吧。
+这种有点强硬的要求，其实是很合理的：既然你声明了一个变量，就是要使用它对吧？那你把它赋值为 null 干嘛？要尽量让它有可用的值啊。
 
-```kotlin
-var ballCount1: Int? = null
-ballCount1 = 1
+Java 在这方面很宽松，我们成了习惯，但 Kotlin 更强的限制其实在你熟悉了之后，是会减少很多运行时的问题的。
 
-lateinit var ballCount2: Int? ❌ // lateinit 修饰符只能用来修饰非空类型，不然既要延迟初始化又不保证非空，编译器说你玩儿我的吧
+但我们都知道一个道理，做人留一线日后好想见。
 
-var ballCount3 = null // 编译通过，这是唯一可以不显式指定类型的 case
-ballCount3 = 3 ❌ // 因为之前没有指定类型，所以这行报错了
+有时候对于一个变量，确实存在可能为空值的场景，因为我们无法用一个默认值去解决。Kotlin 也为这种情况提供了语言层面的支持。
 
-var ballCount4 = 4 // 自动推断，此时其实是 'Int' 而不是 'Int?'
-```
+比如你要从服务器取一个 JSON 数据，并把它解析成一个 `Person` 对象。
 
-你可能又要问了，为什么要这样设计？请看下面这个例子：
+![image-20190616210319947](http://ww2.sinaimg.cn/large/006tNc79gy1g43arv22ggj30s408g75o.jpg)
 
-```kotlin
-var word: String = "hello"
-word.length
+这个时候，空值就是有意义的。对于这些可以为空值的变量，你可以在类型右边加一个 `?` 号，解除它的非空限制，就像 IDE 的修复提示那样。
 
-var nullableWord: String? = null
-// 在 Java 里调用一个空值的话编译期间不会报错，而是在运行时抛出 NullPointerException
-// 但是在 Kotlin 里面编译的时候就会报错，提前告诉你
-nullableWord.length ❌
-```
+![image-20190616210502922](http://ww4.sinaimg.cn/large/006tNc79gy1g43atouiw9j30dk05mmx5.jpg)
 
-报错 `Only safe (?.) or non-null asserted (!!) calls are allowed on a nullable receiver of type String? `
+加了 `?` 之后，一个 Kotlin 变量就像没有 `@NonNull` 注解的  Java 变量一样没有非空的限制，自由自在了。你除了在初始化的时候可以给它设置为空值，在代码里的任何地方也都可以。
 
-这里有几个概念：
+不过，可空类型的变量会有新的问题：
 
-- `?.` safe call 「如果就」规则，如果不为空就执行 `?.` 后面的逻辑。
-- `!!` non-null asserted call 「肯定不空」的断言，相当于忽略可空提示的风险自担的强行调用。
-- `receiver` 这里就是 call 前面的变量。
+由于对空引用的调用会导致空指针异常，所以 Kotlin 在可空变量直接调用的时候 IDE 会报错
+![image-20190616210901577](http://ww2.sinaimg.cn/large/006tNc79gy1g43axqy9lvj30xc03smxq.jpg)
+
+「可能为空」的变量，Kotlin 不允许用。那怎么办？用之前检查一下吧
+![image-20190616211641446](http://ww2.sinaimg.cn/large/006tNc79gy1g43b5pxd10j313w04saau.jpg)
+
+哎？这怎么还报错？这个报错的意思是你检查了非空也不能保证下面调用的时候就是非空（因为多线程情况下，其他线程可能把它再改成空的）。不过 Kotlin 里其实不是这么玩的，而是用 `?` ：
+![image-20190616213711992](http://ww3.sinaimg.cn/large/006tNc79gy1g43br298o4j30hq01yjrh.jpg)
+这个写法同样会对变量做一次非空确认之后再调用方法，不过这是 Kotlin 的写法，并且它可以做到线程安全，所以英文叫 safe call。
+
+也就是说，如果你要在 Kotlin 里使用一个可能为空的变量，代码大概是这样的：
 
 ```kotlin
-var nullableWord1: String? = null
-nullableWord1?.length // 运行期不会报错
-nullableWord1!!.length // 运行期仍然会报错！
-
-var nullableWord2: String? = "hello"
-nullableWord2?.length // 运行期不会报错
-nullableWord2!!.length // 运行期不会报错
-
-// 但并不是说 java 里的判空逻辑在 kotlin 里就毫无用武之地了
-// 下面这种同时判断多个的情况，用 '!= null' 来写可读性反而会比较好
-if (nullableWord1 != null && nullableWord2 != null) {
-    // 同时判断
-    // 此处没有 '?.' 因为编译器帮我们 smart cast to 'Int' 了
-    var totalLength = nullableWord1.length + nullableWord2.length
-}
+var view: View? = null
+view?.setBackgroundColor(Color.RED)
 ```
 
-这就是 Kotlin 的空安全特性，并且是兼容 Java 的。
+除了 `?.` 这种 safe call 还有一种用 `!!.` 的叫 non-null asserted call (见上文调用可空变量时的 IDE 报错)。
 
-新建一个 Java 类
+既然有了 `?.` ，那为什么还要有 `!!.` 呢？有种既生瑜何生亮的感觉。
+
+- `?.` safe call 表示「如果就」规则，如果不为空就执行 `?.` 后面的逻辑，运行期不会出现问题。
+- `!!.` non-null asserted call 「肯定不空」的断言，相当于忽略可空提示的风险自担的强行调用，这种强行调用编译是通过了，但运行期可能会出现和断言不一致的情况（异常），断言更多是开发者希望某个时刻如果出现问题能够暴露出来，而不是像 safe call 那样隐蔽掉，另一个场景是参数的传递，这个后面再讲。
+
+以上就是 Kotlin 的空安全设计，并且是兼容 Java 的。
+
+这里的兼容主要是指 Java 中的 @Nullable 和 @NonNull 在 Kotlin 中会被当成可空和非空来对待，看👇这个例子。
 
 ```java
 package org.kotlinmaster.basic_grammar_01;
 
-// 这里用 import org.jetbrains.annotations.Nullable; 也可以
 import androidx.annotation.Nullable;
 
 public class Dict {

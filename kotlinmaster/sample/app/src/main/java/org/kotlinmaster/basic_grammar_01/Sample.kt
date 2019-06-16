@@ -1,22 +1,12 @@
 package org.kotlinmaster.basic_grammar_01
 
+class Sample {
 
-var count: Int = 1
+    fun nullCall() {
+        var ballCount1: Int = null
 
-lateinit var countStr: String
-
-var word: String = "hello"
-    get() {
-        return "world"
+        var ballCount2: Int = 1
+        ballCount2 = null
     }
-    set(value) {
-        field = value + " hahaha"
-    }
-
-fun incrementCount() {
-    count += 1
-
-    var nullableWord: String? = null
-    nullableWord?.length
 
 }
