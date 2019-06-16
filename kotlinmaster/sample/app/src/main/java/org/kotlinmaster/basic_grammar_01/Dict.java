@@ -17,4 +17,5 @@ public class Dict {
         kotlinDict.setWord("hello");
     }
 
+
 }
