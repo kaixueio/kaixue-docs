@@ -1,17 +1,16 @@
 # Kotlin 基础语法（一）
 
-Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言，这对于使用 Java 的开发者影响重大。意味着，将来很多的官方示例都会首选 Kotlin，同时，对 Kotlin 在开发、构建等各个方面的支持也会更优先。很多公司的移动开发岗已经把掌握 Kotlin 作为面试的考察点之一，甚至作为简历筛选的必要条件，学会并掌握 Kotlin 成了当下 Android 开发者的当务之急。「不会 Kotlin，Android 开发没人要了」、「Kotlin 真的有那么好吗」类似这些问题困扰着国内的 Android 开发者。鉴于 Kotlin 在国内还不算普及，学习一门新语言有不少成本，本系列文章，将会帮助国内开发者学习并掌握 Kotlin。
+Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言，这对于使用 Java 的开发者影响重大。意味着，将来很多的官方示例都会首选 Kotlin，同时，对 Kotlin 在开发、构建等各个方面的支持也会更优先。很多公司的移动开发岗已经把掌握 Kotlin 作为面试的考察点之一，甚至作为简历筛选的必要条件，学会并掌握 Kotlin 成了当下 Android 开发者的当务之急。「不会 Kotlin，Android 开发没人要了」、「Kotlin 真的有那么好吗」类似这些问题困扰着国内的 Android 开发者。鉴于 Kotlin 在国内还不算普及，学习一门新语言有不少成本，本系列文章，将会帮助国内开发者学习并掌握 Kotlin，是的，它非常棒。
 
 ## 搭建 Kotlin 开发环境
 
-首先我们新建一个 Kotlin 工程。
-
-- 准备好 Android Studio 开发环境。
-- 新建 project，其中 Language 选择 Kotlin。
+新版的 Android Studio 已经对 Kotlin 非常友好了，可以很方便地新建一个 Kotlin 项目，如图所示。
 
 ![](http://ww4.sinaimg.cn/large/006tNc79gy1g42sd40ajkj318o0rwmzs.jpg)
 
-重点看 `project root`  和 `app` 目录下的 `build.gradle` 文件和 Java 有什么不同：
+这里的语言选择 Kotlin 以便让 IDE 自动帮我们生成支持 Kotlin 的 `build.gradle` 文件。
+
+重点看 `project root`  和 `app` 目录下的 `build.gradle` 文件和原来 Java 的有什么不同，这里把两个文件不同的地方写在了一起。
 
 ```groovy
 // 项目根目录下 build.gradle
@@ -30,11 +29,17 @@ dependencies {
 }
 ```
 
-如果是现有的项目里支持 Kotlin ，手动在这两个目录的 `build.gradle` 加上上面这些就可以了。
+如果是现有的项目要支持 Kotlin ，只需要在这两个目录的 `build.gradle` 对应加上上面这些就可以了。
 
-在开始学习基础语法之前，先认识下 IDE 帮我们创建好的 `MainActivity.kt` 这个文件。
+这样配置好是额外支持 Kotlin，也就是说，原来支持的 Java 现在还是支持的。 
 
-![image-20190616191747823](http://ww2.sinaimg.cn/large/006tNc79gy1g437q0mcm6j30sk0cqjtv.jpg)
+以上就是配置开发环境的所有内容，怎么样，很简单吧，Kotlin 语言设计的初衷就是让开发 Android 变得简单（话外音：谁不是呢）。
+
+####Kotlin 一瞥
+
+学习的开始阶段是模仿，在开始基础语法之前，先快速认识 IDE 帮我们创建好的 `MainActivity.kt` 这个文件。
+
+![image-20190617155342369](http://ww3.sinaimg.cn/large/006tNc79gy1g447fyl29dj30ro0dwdhw.jpg)
 
 和 Java 里的 `Activity` 长得还挺像的，也有 `package` `import` `class` 和貌似重载了的 `onCreate` 方法。
 
