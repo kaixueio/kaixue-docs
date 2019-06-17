@@ -2,8 +2,13 @@ package org.kotlinmaster
 
 class Sample {
 
-    var count: Int = 0
 
-    var count2 = 1
+    fun test() {
+
+        var word1: String = "hello"
+
+        var word2 = "world"
+
+    }
 
 }
