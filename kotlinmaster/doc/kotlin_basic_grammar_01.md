@@ -37,9 +37,9 @@ dependencies {
 
 以上就是配置开发环境的所有内容，怎么样，很简单吧，Kotlin 语言设计的初衷就是让开发 Android 变得简单（话外音：哪个语言不是呢）。
 
-####Kotlin 一瞥
+#### Kotlin 一瞥
 
-学习的开始阶段是模仿，在开始基础语法之前，先快速认识下 IDE 帮我们创建好的 MainActivity.kt 这个文件。
+学习的最初阶段是模仿，因此我们先快速认识下 IDE 帮我们创建好的 MainActivity.kt 这个文件。
 
 ![image-20190617155342369](http://ww3.sinaimg.cn/large/006tNc79gy1g447fyl29dj30ro0dwdhw.jpg)
 
@@ -85,13 +85,13 @@ Process finished with exit code 0
 
 随着命令行打印结果，我们完成了 Kotlin 的一次非常棒的旅程。
 
-这就算正式上手 Kotlin 了，总结下几个比较重要的点：
+这就算正式上手 Kotlin 了，总结下：
 
 - 一个 Android 项目要支持 Kotlin，需要在 `project root`  和 `app` 目录下的 `build.gradle` 中加上对应的依赖。
-- 加入一个 Kotlin 文件和加入一个 Java 文件一样简单。
+- Kotlin 文件以 `.kt` 结尾，加入一个 Kotlin 文件和加入一个 Java 文件一样简单。
 - Kotlin 单元测试和 Java 单元测试一样，上手即用。
 
-到这类，准备工作全部完成，让我们一起开始学习基础语法吧。
+到这里，准备工作就全部完成了，让我们一起开始学习基础语法吧。
 
 ---
 
