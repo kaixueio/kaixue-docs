@@ -229,11 +229,16 @@ view!!.setBackgroundColor(Color.RED)
 
 - 变量需要手动初始化，所以不初始化的话报错；
 - 变量默认非空，所以初始化赋值 null 的话报错；
+    - 之后再次赋值为 null 也会报错；
 - 变量用 `?` 设置为可空的时候，使用的时候因为「可能为空」又报错。
 
 关于空安全，最重要的是记住一点：所谓「可空不可空」，关注的全都是使用的时候，即「这个变量在使用时是否可能为空」。
 
 另外，Kotlin 的空安全设计是完全兼容 Java 的，换句话说，Java 里面的 @NonNull 和 @Nullable 注解，在 Kotlin 里调用时同样会触发编译器的空安全检查。
+
+![image-20190617194307505](http://ww4.sinaimg.cn/large/006tNc79gy1g44e2o21h3j30e005yjrp.jpg)
+
+![image-20190617194247150](http://ww1.sinaimg.cn/large/006tNc79gy1g44e2bg9xgj30x603qq3c.jpg)
 
 ### 再谈变量声明与赋值
 
@@ -243,7 +248,7 @@ view!!.setBackgroundColor(Color.RED)
 
 好，我证明给你看。
 
-![image-20190617192716686](http://ww1.sinaimg.cn/large/006tNc79gy1g44dm6ue1bj309g0403yk.jpg)
+![image-20190617195523390](http://ww2.sinaimg.cn/large/006tNc79gy1g44efff9cxj30ci03omxb.jpg)
 
 哇，原来还可以省略类型啊（准确来讲是连同 `:` 和类型一起省略了）。
 
@@ -256,31 +261,25 @@ List<String> names = new ArrayList<>();
 
 类型推断最直接的好处就是可以帮我们简化代码。
 
+> 省略返回类型不等于动态类型，Kotlin 依然是静态类型的。
 
+Kotlin 和 Java 都是 JVM 语言，最终都会编译成字节码。
 
+这里可以使用 Android Studio 提供的查看 Kotlin 字节码的工具：
 
+![image-20190617194808959](http://ww3.sinaimg.cn/large/006tNc79gy1g44e7wxzzvj30w00qu4cy.jpg)
 
+转换之后
 
+![image-20190617195607981](http://ww2.sinaimg.cn/large/006tNc79gy1g44eg7ku8bj313k0jw0vv.jpg)
 
+字节码看不懂啊，没关系，我们点击 **Decompile** 按钮再反编译处理下。
 
+![image-20190617195636558](http://ww1.sinaimg.cn/large/006tNc79gy1g44egq71xlj30iq0iamzc.jpg)
 
-```java
-package org.kotlinmaster.basic_grammar_01;
+反编译出来了一个 Java 文件，我们看到一个 Sample 的类，里面果然是声明了 word1 和 word2。
 
-import androidx.annotation.Nullable;
-
-public class Dict {
-    @Nullable
-    public static String word = "hello";
-}
-```
-
-在 Kotlin 里调用同样会报错：
-
-```kotlin
-Dict.word.length ❌
-Dict.word?.length
-```
+这下你相信了吧，在之后的讲解中，只要是提到某个 Kotlin 语法的变种写法，都可以通过这个转换工具反编译成 Java 文件来查看。
 
 ### getter / setter
 
