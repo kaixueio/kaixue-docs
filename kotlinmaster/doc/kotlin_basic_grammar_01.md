@@ -8,94 +8,65 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言，�
 
 ## 搭建 Kotlin 开发环境
 
-新版的 Android Studio 对 Kotlin 非常友好，可以很方便地新建一个 Kotlin 项目，如图所示。
+新建一个 Android 项目：
 
-![](http://ww4.sinaimg.cn/large/006tNc79gy1g42sd40ajkj318o0rwmzs.jpg)
+![image-20190618165547599](http://ww2.sinaimg.cn/large/006tNc79gy1g45euvu7aqj30q80gu3za.jpg)
 
-这里的语言选择 Kotlin 以便让 IDE 自动帮我们生成支持 Kotlin 的 `build.gradle` 文件。
+语言选择 Kotlin 是为了让项目支持 Kotlin，其实也就 2 个 `build.gradle` 文件有所不同：
 
-重点看 `project root`  和 `app` 目录下的 `build.gradle` 文件和原来 Java 的有什么不同，这里把两个文件不同的地方写在了一起。
+- 项目根目录下的
 
-```groovy
-// project root dir build.gradle start
-ext.kotlin_version = '1.3.31'
-dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-}
-// project root dir build.gradle end
+    ![image-20190618165947454](http://ww4.sinaimg.cn/large/006tNc79gy1g45ez1g8fdj31e40hqdkb.jpg)
 
-// app dir build.gradle start
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions' // 这个之后再讲，现在用不到
+- app 目录下的
 
-dependencies {
-    // 因为 minSdkVersion 是 21 所以后缀加了 jdk7
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-}
-// app dir build.gradle end
-```
+    ![image-20190618170205176](http://ww4.sinaimg.cn/large/006tNc79gy1g45f1fy08dj31i50u07dh.jpg)
 
-如果是现有的项目要支持 Kotlin ，只需要在这两个目录的 `build.gradle` 对应加上上面这些就可以了。
+如果是现有的项目要支持 Kotlin，只需要在这两个目录的 `build.gradle` 加上红色方框内的部分就可以了。
 
-这样配置好之后 Android Studio 额外支持 Kotlin，也就是说，原来支持的 Java 现在还是支持的。 
+来看看 IDE 帮我们创建好的 MainActivity.kt：
 
-以上就是配置开发环境的所有内容，怎么样，很简单吧，Kotlin 语言设计的初衷就是让开发 Android 变得简单（话外音：哪个语言不是呢）。
+> Kotlin 文件都是以 `.kt` 结尾的，Java 则是以 `.java` 结尾。
 
-#### Kotlin 一瞥
+![image-20190618171301284](http://ww1.sinaimg.cn/large/006tNc79gy1g45fctne1nj31200ekjuw.jpg)
 
-学习的最初阶段是模仿，因此我们先快速认识下 IDE 帮我们创建好的 MainActivity.kt 这个文件。
+Java 里有的东西：
 
-![image-20190617155342369](http://ww3.sinaimg.cn/large/006tNc79gy1g447fyl29dj30ro0dwdhw.jpg)
+- `package`
+- `import`
+- `class`
 
-乍一看，和 Java 里的 `Activity` 长得还挺像的，也有 `package`、 `import`、 `class` 这些关键字，还有熟悉的生命周期函数 `onCreate`，不过看起来比相同的 Java 代码量要少很多。
+这些关键字 Java 里也有，概念上也类似，不过其中还是有一些小区别的，但我们现在不用关心。
 
-Kotlin 的文件名是以 `.kt` 结尾的，而 Java 是以 `.java` 结尾。
+Java 里没有的东西：
 
-值得注意的一点是，没看到代码里有分号，事实上 Kotlin 中是**不需要分号**的。
+- `:`
+- `override`
+- `fun`
+- `?`
 
-是不是有点跃跃欲试了？我们自己来搞一个吧。
+这些东西都是 Kotlin 的语法，也先不管，我们自己新建一个来屏蔽掉这些我们不认识的东西。
 
-在同样新建 Java Class 的入口发现一个叫 Kotlin File/Class 的选项，这就是我们新建 Kotlin 文件的入口。
+在新建 Java Class 的入口发现一个叫 Kotlin File/Class 的选项，这就是我们新建 Kotlin 文件的入口。
 
 ![](http://ww3.sinaimg.cn/large/006tNc79gy1g42sk3roflj314a08s40r.jpg)
 
-这里我们先不理其他选项（放心，以后都会掌握的），选择新建 Class，叫 Sample.kt。
+这里我们先不管其他选项，选择新建 Class：
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g42slcl158j30j80akta9.jpg)
+![image-20190618173125004](http://ww3.sinaimg.cn/large/006tNc79gy1g45fvy6g31j30je0aeabo.jpg)
 
-创建完成后的 Sample.kt 内容如下
+创建完成后的 Sample.kt：
 
-```kotlin
-package org.kotlinmaster
+![image-20190618173159412](http://ww2.sinaimg.cn/large/006tNc79gy1g45fwjbnwyj30l406yjru.jpg)
 
-class Sample {
+这个类就没有刚才我们不认识的那些东西了。
 
-}
-```
+至此，Kotlin 开发环境就搭建好了，小结下：
 
-好了，这样我们就有一个自己写的类了。「Kotlin 也没想象得这么难嘛」，的确如此，就像张无忌先学九阳神功再练乾坤大挪移那样，有 Java 基础还怕学不会 Kotlin ？
+- Android 项目要支持 Kotlin，需要在项目根目录和 app 目录下的 `build.gradle` 添加 Kotlin 相关的依赖。
+- Java 文件以 `.java` 结尾，而 Kotlin 文件以 `.kt` 结尾。
 
-再回到项目中，除了 MainActivity.kt 之外，IDE 还帮我们创建一个叫 ExampleUnitTest.kt 的类。
-
-![image-20190617162010177](http://ww1.sinaimg.cn/large/006tNc79gy1g4487iekfcj312c0i0goa.jpg)
-
-Java 里面我们也用过单元测试 JUnit，这里我们先跑一下试试。
-
-![image-20190617162536155](http://ww2.sinaimg.cn/large/006tNc79gy1g448d5owbkj30pe0o4gpu.jpg)
-
-```shell
-Process finished with exit code 0
-```
-
-随着命令行打印结果，我们完成了 Kotlin 的一次非常棒的旅程。
-
-这就算正式上手 Kotlin 了，小结下：
-
-- 一个 Android 项目要支持 Kotlin，需要在 `project root`  和 `app` 目录下的 `build.gradle` 中加上对应的依赖。
-- Kotlin 文件以 `.kt` 结尾，加入一个 Kotlin 文件和加入一个 Java 文件一样简单。
-- Kotlin 单元测试和 Java 单元测试一样，上手即用。
-
-到这里，准备工作就全部完成了，让我们一起开始学习基础语法吧。
+接下来，让我们一起开始学习基础语法吧。
 
 ---
 
