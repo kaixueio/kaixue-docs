@@ -88,7 +88,7 @@ var name: String
 
 这个提示是在说，属性需要在声明的同时初始化，除非你把它声明成抽象的。
 
-> Java 里的 field 在 Kotlin 里叫 Property，不过它们其实不一样，Kotlin 的 Property 功能会多些。
+Java 里的 field 在 Kotlin 里叫 Property，不过它们其实不一样，Kotlin 的 Property 功能会多些。
 
 变量还能抽象？嗯，这是 Kotlin 的功能，不过这里先不理它，后面会讲到。
 
