@@ -52,51 +52,33 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
 
 不过……你先别往你的项目里贴。最好先按照上面的上面那样，新建一个基于 Kotlin 的项目，学一学再说。
 
+## MainActivity.kt
 
+创建完新项目以后，来看看 Android Studio 帮我们创建好的 `MainActivity.kt`：
 
-来看看 IDE 帮我们创建好的 MainActivity.kt：
+> Kotlin 文件都是以 `.kt` 结尾的，就像 Java 文件是以 `.java` 结尾。
 
-Kotlin 文件都是以 `.kt` 结尾的，Java 则是以 `.java` 结尾。
+![image-20190619140243705](http://ww4.sinaimg.cn/large/006tNc79gy1g46fh41bohj31200ekwn2.jpg)
 
-![image-20190618171301284](http://ww1.sinaimg.cn/large/006tNc79gy1g45fctne1nj31200ekjuw.jpg)
+乍一看，`package` `import` `class` 这些 Java 里的东西，Kotlin 也有；但是也有一些在 Java 里没见过的。
 
-Java 里有的东西：
+为了暂时避开这些干扰，我们自己新建一个文件。
 
-- `package`
-- `import`
-- `class`
-
-这些关键字 Java 里也有，概念上也类似，不过其中还是有一些小区别的，但我们现在不用关心。
-
-Java 里没有的东西：
-
-- `:`
-- `override`
-- `fun`
-- `?`
-
-还有一点，Kotlin 里是**没有分号**的，这点区别于 Java。
-
-这些东西都是 Kotlin 的语法，也先不管，我们自己新建一个来屏蔽掉这些我们不认识的东西。
-
-在新建 Java Class 的入口发现一个叫 Kotlin File/Class 的选项，这就是我们新建 Kotlin 文件的入口。
+在新建 Java Class 的入口旁边可以看见一个叫 "Kotlin File/Class" 的选项，这就是我们新建 Kotlin 文件的入口：
 
 ![](http://ww3.sinaimg.cn/large/006tNc79gy1g42sk3roflj314a08s40r.jpg)
 
-这里我们先不管其他选项，选择新建 Class：
+<img src="http://ww3.sinaimg.cn/large/006tNc79gy1g46g2qpkfvj30kg0br7ei.jpg" width=300 />
+
+弹出的对话框里默认选择的 `Kind` 是 `File`。把它改成 `Class`，然后 OK：
 
 ![image-20190618173125004](http://ww3.sinaimg.cn/large/006tNc79gy1g45fvy6g31j30je0aeabo.jpg)
 
-创建完成后的 Sample.kt：
+创建完成后的 `Sample.kt`：
 
 ![image-20190618173159412](http://ww2.sinaimg.cn/large/006tNc79gy1g45fwjbnwyj30l406yjru.jpg)
 
 这个类就没有刚才我们不认识的那些东西了。
-
-至此，Kotlin 开发环境就搭建好了，小结下：
-
-- Android 项目要支持 Kotlin，需要在项目根目录和 app 目录下的 `build.gradle` 添加 Kotlin 相关的依赖。
-- Java 文件以 `.java` 结尾，而 Kotlin 文件以 `.kt` 结尾。
 
 接下来，让我们一起开始学习基础语法吧。
 
