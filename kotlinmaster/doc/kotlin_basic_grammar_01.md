@@ -4,7 +4,7 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
 
 在这个大环境下，很多公司的移动开发岗也已经把 Kotlin 作为面试的考察点之一，甚至作为简历筛选的必要条件，学会并掌握 Kotlin 成了 Android 开发者的当务之急。
 
-「Kotlin 真的有那么好吗」「到底要不要学 Kotlin」这样的问题很快就要过时了，码上开学这个项目的目的也并不在于向各位安利 Kotlin，而在于怎样让希望学习 Kotlin 的人最快速地上手。
+「Kotlin 真的有那么好吗」「到底要不要学 Kotlin」这样的问题很快就要过时了，码上开学这个项目的目的并不在于向各位安利 Kotlin，而在于怎样让希望学习 Kotlin 的人最快速地上手。
 
 我们的目的非常明确：这是一份给 Android 工程师的 Kotlin 上手指南。其中：
 
@@ -30,7 +30,7 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
 
 1. 帮你自动创建出的 `MainActivity` 是用 Kotlin 写的：
 
-   （图）
+   ![image-20190702174651460](http://ww1.sinaimg.cn/large/006tNc79gy1g4ln0c4itij30pm0caabv.jpg)
 
    > 扫一眼就好，不用读代码，我们后面都会讲。
 
@@ -50,7 +50,7 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
 
 如果是现有的项目要支持 Kotlin，只需要像上面这两幅图这样，把这两个 `build.gradle`  中红色方框里的几行代码贴在你的项目里就可以了。
 
-不过……你先别往你的项目里贴。最好先按照上面的上面那样，新建一个基于 Kotlin 的项目，学一学再说。
+建议还是先按照上面那样新建一个基于 Kotlin 的项目，练习一下。
 
 ## MainActivity.kt
 
@@ -70,7 +70,7 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
 
 <img src="http://ww3.sinaimg.cn/large/006tNc79gy1g46g2qpkfvj30kg0br7ei.jpg" width=300 />
 
-弹出的对话框里默认选择的 `Kind` 是 `File`。把它改成 `Class`，然后 OK：
+弹出的对话框里默认选择的 Kind 是 File。把它改成 Class，然后 OK：
 
 ![image-20190618173125004](http://ww3.sinaimg.cn/large/006tNc79gy1g45fvy6g31j30je0aeabo.jpg)
 
@@ -80,7 +80,7 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
 
 这个类就没有刚才我们不认识的那些东西了。
 
-接下来，让我们一起开始学习基础语法吧。
+接下来，让我们开始学习基础语法吧。
 
 ---
 
@@ -88,23 +88,36 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
 
 ### 变量的声明与赋值
 
+我们回忆下 Java 里声明一个 String 类型的变量的写法：
+
+```java
+String name;
+```
+
 Kotlin 里声明一个变量要这么写：
 
 ```kotlin
 var name: String
 ```
 
-但如果真这么写，会报错：
+这里有几处不同：
+
+- 有一个 `var` 关键字
+- 类型和变量名位置互换了
+- 中间是用冒号分隔的
+- 结尾没有分号（对，Kotlin 里面不需要分号，这点真的只是格式上的不同）
+
+看上去只是格式有些不同，但如果真这么写，IDE 会报错：
 
 ![image-20190618174946052](http://ww2.sinaimg.cn/large/006tNc79gy1g45gf14gukj30g405s3yv.jpg)
 
 这个提示是在说，属性需要在声明的同时初始化，除非你把它声明成抽象的。
 
-Java 里的 field 在 Kotlin 里叫 Property，不过它们其实不一样，Kotlin 的 Property 功能会多些。
+那什么是属性呢？Java 里的 field 在 Kotlin 里叫 Property 属性，不过它们其实不一样，Kotlin 的 Property 功能会多些。
 
-变量还能抽象？嗯，这是 Kotlin 的功能，不过这里先不理它，后面会讲到。
+变量居然还能抽象？嗯，这是 Kotlin 的功能，不过这里先不理它，后面会讲到。
 
-为什么要初始化？因为 Kotlin 的变量是没有默认值的，这点不像 Java，Java 的 field 有默认值：
+鉴于只要满足上面提到的 or 的条件之一，我们看看前面半句，属性为什么要初始化？因为 Kotlin 的变量是没有默认值的，这点不像 Java，Java 的 field 有默认值：
 
 ```java
 String name; // 默认值是 null
