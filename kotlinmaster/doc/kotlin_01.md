@@ -1,4 +1,4 @@
-# Kotlin 基础语法（一）
+# Kotlin 的变量、函数和类型
 
 Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。这对于开发者来讲意味着，将来所有的官方示例会首选 Kotlin，并且 Google 对 Kotlin 在开发、构建等各个方面的支持也会更优先。
 
@@ -12,7 +12,8 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
   - 我们会带着你一步步地、有节奏地学习，让你轻松愉快地学会 Kotlin；
   - 但这里不会有完整的 API 清单。如果你想查看 API，可以去看 Kotlin 官方文档。
 - 这虽然只是一份「上手」指南，我们也不会刻意展示过于深入的内容，但所有你需要了解的技术细节，一个都不会少。
-- 我们针对的是 Android 工程师，所以所有的视频和文章讲解以及示例代码，全都会以 Android 开发场景为基础，所用的开发环境也是 Android Studio。如果能顺便让一些其他领域的 Java 开发者从这里获益当然更好，但只能是顺便:joy:。
+- 我们针对的是 Android 工程师，因此所有的视频和文章讲解以及示例代码，全都会以 Android 开发场景为基础，所用的开发环境也是 Android Studio。如果能顺便让一些其他领域的 Java 开发者从这里获益当然更好，但只能是顺便:joy:。
+- 讲解中呈现的代码段部分，以「👆」「👇」「👈」「👉」形式标注代码中需要关注的地方，并以「…」省略了我们暂时不需要关心的代码。
 
 ## 为项目添加 Kotlin 语言的支持
 
@@ -20,17 +21,31 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
 
 ### 新建支持 Kotlin 的 Android 项目
 
-如果你要新建一个支持 Kotlin 的 Android 项目，只需要在配置界面把语言选为 Kotlin：
+如果你要新建一个支持 Kotlin 的 Android 项目，只需要如下操作：
 
-![image-20190618165547599](http://ww2.sinaimg.cn/large/006tNc79gy1g45euvu7aqj30q80gu3za.jpg)
+- File -> New -> New Project …
+- Choose your project -> Phone and Tablet -> Empty Activity
+- Configure your project  -> Language 选择 「Kotlin」
 
-像上面这样，语言选择 Kotlin，别的都和创建一个普通的 Android 项目一样，创建出的项目就会是基于 Kotlin 的了。
+别的都和创建一个普通的 Android 项目一样，创建出的项目就会是基于 Kotlin 的了。
 
 所谓「基于 Kotlin」，意思有两点：
 
 1. 帮你自动创建出的 `MainActivity` 是用 Kotlin 写的：
 
-   ![image-20190702174651460](http://ww1.sinaimg.cn/large/006tNc79gy1g4ln0c4itij30pm0caabv.jpg)
+   ```kotlin
+   package org.kotlinmaster
+   
+   import android.os.Bundle
+   import androidx.appcompat.app.AppCompatActivity
+   
+   class MainActivity : AppCompatActivity() {
+       override fun onCreate(savedInstanceState: Bundle?) {
+           super.onCreate(savedInstanceState)
+           setContentView(R.layout.activity_main)
+       }
+   }
+   ```
 
    > 扫一眼就好，不用读代码，我们后面都会讲。
 
@@ -38,47 +53,94 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
 
    - 项目根目录下的 `build.gradle`：
 
-     ![image-20190618165947454](http://ww4.sinaimg.cn/large/006tNc79gy1g45ez1g8fdj31e40hqdkb.jpg)
+     ```groovy
+     buildscript {
+         👇
+         ext.kotlin_version = '1.3.41'
+         repositories {
+             ...
+         }
+         dependencies {
+             classpath 'com.android.tools.build:gradle:3.5.0-beta05'
+             👇
+             classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+         }
+     }
+     ```
 
    - app 目录下的 `build.gradle`：
 
-     ![image-20190618170205176](http://ww4.sinaimg.cn/large/006tNc79gy1g45f1fy08dj31i50u07dh.jpg)
+     ```groovy
+     apply plugin: 'com.android.application'
+     👇
+     apply plugin: 'kotlin-android'
+     ...
+     
+     android {
+         ...
+     }
+     
+     dependencies {
+         implementation fileTree(dir: 'libs', include: ['*.jar'])
+         👇
+         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+         ...
+     }
+     
+     ```
 
 也就是说，你创建一个新项目，记得把语言选择为 Kotlin，项目创建完成后你就可以用 Kotlin 来写它了。
 
 ### 给现有项目添加 Kotlin 支持
 
-如果是现有的项目要支持 Kotlin，只需要像上面这两幅图这样，把这两个 `build.gradle`  中红色方框里的几行代码贴在你的项目里就可以了。
+如果是现有的项目要支持 Kotlin，只需要像上面这样操作，把这两个 `build.gradle`  标注的代码贴在你的项目里就可以了。
 
 建议还是先按照上面那样新建一个基于 Kotlin 的项目，练习一下。
 
 ## MainActivity.kt
 
-创建完新项目以后，来看看 Android Studio 帮我们创建好的 `MainActivity.kt`：
+前面我们提到，如果新建的项目是基于 Kotlin 的，Android Studio 会帮我们创建好 `MainActivity`，它其实是有一个 `.kt` 的文件后缀名（打开的时候可以看到）。
 
 > Kotlin 文件都是以 `.kt` 结尾的，就像 Java 文件是以 `.java` 结尾。
 
-![image-20190619140243705](http://ww4.sinaimg.cn/large/006tNc79gy1g46fh41bohj31200ekwn2.jpg)
+我们再来审视下这个 `MainActivity.kt` 里到底有些什么：
 
-乍一看，`package` `import` `class` 这些 Java 里的东西，Kotlin 也有；但是也有一些在 Java 里没见过的。
+```kotlin
+package org.kotlinmaster
+  👆
+import android.os.Bundle
+  👆
+import androidx.appcompat.app.AppCompatActivity
+               	  👇
+class MainActivity : AppCompatActivity() {
+  👆
+       👇    👇             			   👇     👇
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
+}
+```
+
+乍一看，「👆」标注的 `package` `import` `class` 这些 Java 里的东西，Kotlin 也有；但是也有一些以「👇」标注的在 Java 里是没见过的。
 
 为了暂时避开这些干扰，我们自己新建一个文件。
 
-在新建 Java Class 的入口旁边可以看见一个叫 "Kotlin File/Class" 的选项，这就是我们新建 Kotlin 文件的入口：
-
-![](http://ww3.sinaimg.cn/large/006tNc79gy1g42sk3roflj314a08s40r.jpg)
-
-<img src="http://ww3.sinaimg.cn/large/006tNc79gy1g46g2qpkfvj30kg0br7ei.jpg" width=300 />
-
-弹出的对话框里默认选择的 Kind 是 File。把它改成 Class，然后 OK：
-
-![image-20190618173125004](http://ww3.sinaimg.cn/large/006tNc79gy1g45fvy6g31j30je0aeabo.jpg)
+- 在新建 Java Class 的入口下面可以看见一个叫 「Kotlin File/Class」 的选项，这就是我们新建 Kotlin 文件的入口
+- New Kotlin File/Class
+    - Name: Sample
+    - Kind: Class
 
 创建完成后的 `Sample.kt`：
 
-![image-20190618173159412](http://ww2.sinaimg.cn/large/006tNc79gy1g45fwjbnwyj30l406yjru.jpg)
+```kotlin
+package org.kotlinmaster
 
-这个类就没有刚才我们不认识的那些东西了。
+class Sample {
+}
+```
+
+这个类仅包含 `package` 和 `class` 两个关键字，我们姑且先看成和 Java 差不多（其实真的就是差不多）的概念，这样就都是我们熟悉的东西了。
 
 接下来，让我们开始学习基础语法吧。
 
