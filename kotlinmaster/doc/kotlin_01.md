@@ -103,7 +103,7 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
 
 > Kotlin 文件都是以 `.kt` 结尾的，就像 Java 文件是以 `.java` 结尾。
 
-我们再来审视下这个 `MainActivity.kt` 里到底有些什么：
+我们再来观察下这个 `MainActivity.kt` 里到底有些什么：
 
 ```kotlin
 package org.kotlinmaster
@@ -152,14 +152,24 @@ class Sample {
 
 我们回忆下 Java 里声明一个 String 类型的变量的写法：
 
+> 这里讲一个 Java 和 Kotlin 命名由来的小插曲。
+>
+> 我们知道 Java 就是著名的爪哇岛，爪哇岛盛产咖啡，据说就是一群研究出 Java 语言的牛人们在为它命名时由于闻到香浓的咖啡味，遂决定采用此名称。
+>
+> Kotlin 来源于芬兰湾中的 Kotlin 岛。
+>
+> 因此，我们以「☕️」开头来表示 Java 代码段，「🏝️」开头来表示 Kotlin 代码段。
+
 ```java
-String name;
+☕️
+View v;
 ```
 
-Kotlin 里声明一个变量要这么写：
+Kotlin 里声明一个变量的格式是这样的：
 
 ```kotlin
-var name: String
+🏝️
+var v: View
 ```
 
 这里有几处不同：
@@ -167,34 +177,55 @@ var name: String
 - 有一个 `var` 关键字
 - 类型和变量名位置互换了
 - 中间是用冒号分隔的
-- 结尾没有分号（对，Kotlin 里面不需要分号，这点真的只是格式上的不同）
+- 结尾没有分号（对，Kotlin 里面不需要分号）
 
-看上去只是格式有些不同，但如果真这么写，IDE 会报错：
+看上去只是语法格式有些不同，但如果真这么写，IDE 会报错：
 
-![image-20190618174946052](http://ww2.sinaimg.cn/large/006tNc79gy1g45gf14gukj30g405s3yv.jpg)
+```kotlin
+🏝️
+class Sample {
+    var v: View
+    // 👆这样写 IDE 会报如下错误
+    // Property must be initialized or be abstract
+}
+```
 
 这个提示是在说，属性需要在声明的同时初始化，除非你把它声明成抽象的。
 
-那什么是属性呢？Java 里的 field 在 Kotlin 里叫 Property 属性，不过它们其实不一样，Kotlin 的 Property 功能会多些。
+- 那什么是属性呢？这里可以简单类比 Java 的 field 来理解 Kotlin 的 Property，虽然它们其实有些不一样，Kotlin 的 Property 功能会多些。
 
-变量居然还能抽象？嗯，这是 Kotlin 的功能，不过这里先不理它，后面会讲到。
+- 变量居然还能声明成抽象？嗯，这是 Kotlin 的功能，不过这里先不理它，后面会讲到。
 
-鉴于只要满足上面提到的 or 的条件之一，我们看看前面半句，属性为什么要初始化？因为 Kotlin 的变量是没有默认值的，这点不像 Java，Java 的 field 有默认值：
+属性为什么要求初始化呢？因为 Kotlin 的变量是没有默认值的，这点不像 Java，Java 的 field 有默认值：
 
 ```java
-String name; // 默认值是 null
-int count; // 默认值是 0
+☕️
+String name; // 👈 默认值是 null
+int count; // 👈 默认值是 0
 ```
 
 但这些 Kotlin 是没有的。不过其实，Java 也只是 field 有默认值，局部变量也是没有默认值的，如果不给它初始值也会报错：
 
-![image-20190618180036907](http://ww2.sinaimg.cn/large/006tNc79gy1g45gqbk9s2j30h605gweu.jpg)
+```java
+☕️
+void run() {
+    int count;
+    count++; 
+    // 👆IDE 报错，Variable 'count' might not have been initialized
+}
+```
 
-好，那我们就给它一个默认值 null 吧。
+既然这样，那我们就给它一个默认值 null 吧。
 
-![image-20190618180232613](http://ww3.sinaimg.cn/large/006tNc79gy1g45gsbviiaj30ks0603yy.jpg)
+```kotlin
+🏝️
+class Sample {
+    var v: View = null
+    // 👆这样写 IDE 仍然会报错，Null can not be a value of a non-null type View
+}
+```
 
-又不行，告诉我需要赋一个非空的值给它才行，怎么办？Java 的那套不管用了，算了我还是用 Java 吧。
+又不行，告诉我需要赋一个非空的值给它才行，怎么办？Java 的那套不管用了。
 
 其实这都是 Kotlin 的空安全设计相关的内容。很多人尝试上手 Kotlin 之后快速放弃，就是因为搞不明白它的空安全设计，导致代码各种拒绝编译，最终选择放弃。所以咱先别急，我先来给你讲一下 Kotlin 的空安全设计。
 
