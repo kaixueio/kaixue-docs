@@ -1,8 +1,8 @@
 # Kotlin 的变量、函数和类型
 
-Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。这对于开发者来讲意味着，将来所有的官方示例会首选 Kotlin，并且 Google 对 Kotlin 在开发、构建等各个方面的支持也会更优先。
+在 Google I/O 2019 上，Google 宣布 Kotlin 成为 Android 的第一开发语言。这对于开发者来讲意味着，将来所有的官方示例会首选 Kotlin，并且 Google 对 Kotlin 在开发、构建等各个方面的支持也会更优先。
 
-在这个大环境下，很多公司的移动开发岗也已经把 Kotlin 作为面试的考察点之一，甚至作为简历筛选的必要条件，学会并掌握 Kotlin 成了 Android 开发者的当务之急。
+在这个大环境下，Kotlin 已经作为很多公司的移动开发岗面试的考察点之一，甚至作为 HR 简历筛选的必要条件。因此，学会并掌握 Kotlin 成了 Android 开发者的当务之急。
 
 「Kotlin 真的有那么好吗」「到底要不要学 Kotlin」这样的问题很快就要过时了，码上开学这个项目的目的并不在于向各位安利 Kotlin，而在于怎样让希望学习 Kotlin 的人最快速地上手。
 
@@ -12,12 +12,13 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
   - 我们会带着你一步步地、有节奏地学习，让你轻松愉快地学会 Kotlin；
   - 但这里不会有完整的 API 清单。如果你想查看 API，可以去看 Kotlin 官方文档。
 - 这虽然只是一份「上手」指南，我们也不会刻意展示过于深入的内容，但所有你需要了解的技术细节，一个都不会少。
-- 我们针对的是 Android 工程师，因此所有的视频和文章讲解以及示例代码，全都会以 Android 开发场景为基础，所用的开发环境也是 Android Studio。如果能顺便让一些其他领域的 Java 开发者从这里获益当然更好，但只能是顺便:joy:。
-- 讲解中呈现的代码段部分，以「👆」「👇」「👈」「👉」形式标注代码中需要关注的地方，并以「…」省略了我们暂时不需要关心的代码。
+- 我们针对的是 Android 工程师，因此所有的视频和文章讲解以及示例代码，全都会以 Android 开发场景为基础，所用的开发环境也是 Android Studio。如果这份指南能顺便让一些其他领域的 Java 开发者获益当然更好，但仅仅是顺便:joy:。
+- 讲解中呈现的代码段部分，我会以「👆」「👇」「👈」「👉」形式标注代码中需要关注的地方，并以「…」省略了读者暂时不需要关心的代码。
+- Android 开发者使用 Android Studio 作为开发的 IDE，以下所有的 IDE 都是指 Android Studio。
 
 ## 为项目添加 Kotlin 语言的支持
 
-要为项目添加 Kotlin 语言的支持，非常简单。
+学习 Kotlin 的第一步就是要为项目添加 Kotlin 语言的支持，这非常简单。
 
 ### 新建支持 Kotlin 的 Android 项目
 
@@ -31,7 +32,7 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
 
 所谓「基于 Kotlin」，意思有两点：
 
-1. 帮你自动创建出的 `MainActivity` 是用 Kotlin 写的：
+1. IDE 帮你自动创建出的 `MainActivity` 是用 Kotlin 写的：
 
    ```kotlin
    package org.kotlinmaster
@@ -49,7 +50,7 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
 
    > 扫一眼就好，不用读代码，我们后面都会讲。
 
-2. 项目的 2 个 `bulid.gradle` 文件比传统的 Android 项目多了几行：
+2. 项目中的 2 个 `bulid.gradle` 文件比 Java 的 Android 项目多了几行代码，它们的作用是添加 Kotlin 的依赖：
 
    - 项目根目录下的 `build.gradle`：
 
@@ -89,21 +90,21 @@ Google 在 I/O 2019 上，宣布 Kotlin 成为 Android 的第一开发语言。�
      
      ```
 
-也就是说，你创建一个新项目，记得把语言选择为 Kotlin，项目创建完成后你就可以用 Kotlin 来写它了。
+也就是说，如果你是要创建一个新项目，记得把语言选择为 Kotlin，项目创建完成后你就可以用 Kotlin 来写它了。
 
 ### 给现有项目添加 Kotlin 支持
 
-如果是现有的项目要支持 Kotlin，只需要像上面这样操作，把这两个 `build.gradle`  标注的代码贴在你的项目里就可以了。
+如果是现有的项目要支持 Kotlin，只需要像上面这样操作，把两个 `build.gradle`  中标注的代码对应贴到你的项目里就可以了。
 
-建议还是先按照上面那样新建一个基于 Kotlin 的项目，练习一下。
+笔者建议刚开始学习的时候还是新建一个基于 Kotlin 的项目，按照上面的步骤练习一下。
 
-## MainActivity.kt
+## 初识 MainActivity.kt
 
-前面我们提到，如果新建的项目是基于 Kotlin 的，Android Studio 会帮我们创建好 `MainActivity`，它其实是有一个 `.kt` 的文件后缀名（打开的时候可以看到）。
+前面我们提到，如果新建的项目是基于 Kotlin 的，IDE 会帮我们创建好 `MainActivity`，它其实是有一个 `.kt` 的文件后缀名（打开的时候可以看到）。
 
 > Kotlin 文件都是以 `.kt` 结尾的，就像 Java 文件是以 `.java` 结尾。
 
-我们再来观察下这个 `MainActivity.kt` 里到底有些什么：
+我们看看这个 `MainActivity.kt` 里到底有些什么：
 
 ```kotlin
 package org.kotlinmaster
@@ -140,7 +141,7 @@ class Sample {
 }
 ```
 
-这个类仅包含 `package` 和 `class` 两个关键字，我们姑且先看成和 Java 差不多（其实真的就是差不多）的概念，这样就都是我们熟悉的东西了。
+这个类仅包含 `package` 和 `class` 两个关键字，我们暂时先看成和 Java 差不多（其实真的就是差不多）的概念，这样就都是我们熟悉的东西了。
 
 接下来，让我们开始学习基础语法吧。
 
@@ -150,15 +151,15 @@ class Sample {
 
 ### 变量的声明与赋值
 
-我们回忆下 Java 里声明一个 String 类型的变量的写法：
-
 > 这里讲一个 Java 和 Kotlin 命名由来的小插曲。
 >
 > 我们知道 Java 就是著名的爪哇岛，爪哇岛盛产咖啡，据说就是一群研究出 Java 语言的牛人们在为它命名时由于闻到香浓的咖啡味，遂决定采用此名称。
 >
 > Kotlin 来源于芬兰湾中的 Kotlin 岛。
 >
-> 因此，我们以「☕️」开头来表示 Java 代码段，「🏝️」开头来表示 Kotlin 代码段。
+> 因此，我们在代码段的开头以「☕️」来表示 Java 代码段，「🏝️」来表示 Kotlin 代码段。
+
+我们回忆下 Java 里声明一个 String 类型的变量的写法：
 
 ```java
 ☕️
@@ -192,16 +193,16 @@ class Sample {
 
 这个提示是在说，属性需要在声明的同时初始化，除非你把它声明成抽象的。
 
-- 那什么是属性呢？这里可以简单类比 Java 的 field 来理解 Kotlin 的 Property，虽然它们其实有些不一样，Kotlin 的 Property 功能会多些。
+- 那什么是属性呢？这里我们可以简单类比 Java 的 field 来理解 Kotlin 的 Property，虽然它们其实有些不一样，Kotlin 的 Property 功能会多些。
 
-- 变量居然还能声明成抽象？嗯，这是 Kotlin 的功能，不过这里先不理它，后面会讲到。
+- 变量居然还能声明成抽象的？嗯，这是 Kotlin 的功能，不过这里先不理它，后面会讲到。
 
 属性为什么要求初始化呢？因为 Kotlin 的变量是没有默认值的，这点不像 Java，Java 的 field 有默认值：
 
 ```java
 ☕️
-String name; // 👈 默认值是 null
-int count; // 👈 默认值是 0
+String name; // 👈默认值是 null
+int count; // 👈默认值是 0
 ```
 
 但这些 Kotlin 是没有的。不过其实，Java 也只是 field 有默认值，局部变量也是没有默认值的，如果不给它初始值也会报错：
@@ -215,7 +216,7 @@ void run() {
 }
 ```
 
-既然这样，那我们就给它一个默认值 null 吧。
+既然这样，那我们就给它一个默认值 null 吧，遗憾的是你会发现仍然报错。
 
 ```kotlin
 🏝️
@@ -225,19 +226,28 @@ class Sample {
 }
 ```
 
-又不行，告诉我需要赋一个非空的值给它才行，怎么办？Java 的那套不管用了。
+又不行，IDE 告诉我需要赋一个非空的值给它才行，怎么办？Java 的那套不管用了。
 
-其实这都是 Kotlin 的空安全设计相关的内容。很多人尝试上手 Kotlin 之后快速放弃，就是因为搞不明白它的空安全设计，导致代码各种拒绝编译，最终选择放弃。所以咱先别急，我先来给你讲一下 Kotlin 的空安全设计。
+其实这都是 Kotlin 的空安全设计相关的内容。很多人尝试上手 Kotlin 之后快速放弃，就是因为搞不明白它的空安全设计，导致代码各种拒绝编译，最终只能放弃。所以咱先别急，我先来给你讲一下 Kotlin 的空安全设计。
 
 ### Kotlin 的空安全设计
 
-简单来说就是通过 IDE 的提示来避免调用 null 对象，从而避免 NullPointerException。其实 androidx 就有的，用一个注解就可以标记变量是否可能为空，然后 IDE 会帮助检测和提示：
+简单来说就是通过 IDE 的提示来避免调用 null 对象，从而避免 NullPointerException。其实在 androidx 里就有支持的，用一个注解就可以标记变量是否可能为空，然后 IDE 会帮助检测和提示，我们来看下面这段 Java 代码：
 
-![image-20190618181345475](http://ww2.sinaimg.cn/large/006tNc79gy1g45h3zlw4vj30re04o3yy.jpg)
+```java
+☕️
+@NonNull
+View view = null;
+// 👆IDE 会提示警告，'null' is assigned to a variable that is annotated with @NotNull
+```
 
-而到了 Kotlin 这里，就有了语言级别的默认支持，而且从警告变成了报错（编译失败）：
+而到了 Kotlin 这里，就有了语言级别的默认支持，而且提示的级别从 warning 变成了 error（拒绝编译）：
 
-![image-20190618181424759](http://ww1.sinaimg.cn/large/006tNc79gy1g45h4ofyn0j30i003i3yq.jpg)
+```kotlin
+🏝️
+var view: View = null
+// 👆IDE 会提示错误，Null can not be a value of a non-null type View
+```
 
 在 Kotlin 里面，所有的变量默认都是不允许为空的，如果你给它赋值 null，就会报错，像上面那样。
 
@@ -245,81 +255,134 @@ class Sample {
 
 不过，还是有些场景，变量的值真的无法保证空与否，比如你要从服务器取一个 JSON 数据，并把它解析成一个 User 对象：
 
-![image-20190604173433383](http://ww4.sinaimg.cn/large/006tNc79gy1g449vf0i82j30sm0480sv.jpg)
+```kotlin
+🏝️
+class User {
+    var name: String = null // 👈这样写会报错，但该变量无法保证空与否
+}
+```
 
 这个时候，空值就是有意义的。对于这些可以为空值的变量，你可以在类型右边加一个 `?` 号，解除它的非空限制：
 
-![image-20190604173503812](http://ww1.sinaimg.cn/large/006tNc79gy1g449w2j9z9j30oi03kt8u.jpg)
+```kotlin
+🏝️
+class User {
+    var name: String? = null
+}
+```
 
 加了问号之后，一个 Kotlin 变量就像 Java 变量一样没有非空的限制，自由自在了。
 
 你除了在初始化的时候可以给它赋值为空值，在代码里的任何地方也都可以：
 
-![image-20190618182209270](http://ww2.sinaimg.cn/large/006tNc79gy1g45hcqd9idj30po08gwfx.jpg)
+```kotlin
+🏝️
+var name: String? = "Mike"
+...
+name = null // 👈原来不是空值，赋值为空值
+```
 
 这种类型之后加 `?` 的写法，在 Kotlin 里叫**可空类型**。
 
-不过，可空类型的变量会有新的问题：
+不过，当我们了解了可空类型的变量后，会有新的问题：
 
 由于对空引用的调用会导致空指针异常，所以 Kotlin 在可空变量直接调用的时候 IDE 会报错：
 
-![image-20190618182525781](http://ww4.sinaimg.cn/large/006tNc79gy1g45hg50qy3j310409mjtl.jpg)
+```kotlin
+🏝️
+var view: View? = null
+view.setBackgroundColor(Color.RED)
+// 👆这样写会报错，Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type View?
+```
 
-「可能为空」的变量，Kotlin 不允许用。那怎么办？用之前检查一下吧：
+「可能为空」的变量，Kotlin 不允许用。那怎么办？我们尝试用之前检查一下，但似乎 IDE 不接受这种做法：
 
-![image-20190601213438929](http://ww3.sinaimg.cn/large/006tNc79gy1g44anzrjp3j31ao066jsi.jpg)
+```kotlin
+🏝️
+if (view != null) {
+    view.setBackgroundColor(Color.RED)
+    // 👆这样写会报错，Smart cast to 'View' is impossible, because 'view' is a mutable property that could have been changed by this time
+} 
+```
 
-哎？这怎么还报错？这个报错的意思是即使你检查了非空也不能保证下面调用的时候就是非空（多线程情况下，其他线程可能把它再改成空的）。
+这个报错的意思是即使你检查了非空也不能保证下面调用的时候就是非空，因为在多线程情况下，其他线程可能把它再改成空的。
 
-不过 Kotlin 里其实不是这么玩的，而是用 `?.`：
+那么 Kotlin 里是这么解决这个问题的呢？它用的不是 `.` 而是用 `?.`：
 
-![image-20190618182658493](http://ww2.sinaimg.cn/large/006tNc79gy1g45hhqjzcbj30gw01wjrh.jpg)
+```kotlin
+🏝️
+view?.setBackgroundColor(Color.RED)
+```
 
-也就是说，如果你要在 Kotlin 里使用一个可能为空的变量，代码大概是这样的：
-
-![image-20190601215028877](http://ww3.sinaimg.cn/large/006tNc79gy1g45hint48uj31ew0ekjt8.jpg)
-
-这个写法同样会对变量做一次非空确认之后再调用方法，这是 Kotlin 的写法，并且它可以做到线程安全，所以这种写法叫做  **safe call**。
+这个写法同样会对变量做一次非空确认之后再调用方法，这是 Kotlin 的写法，并且它可以做到线程安全，因此这种写法叫做「**safe call**」。
 
 另外还有一种双感叹号的用法：
 
-![image-20190618182939108](http://ww2.sinaimg.cn/large/006tNc79gy1g45hkj81wqj30hc01waa5.jpg)
+```kotlin
+🏝️
+view!!.setBackgroundColor(Color.RED)
+```
 
-意思是告诉编译器，我保证这里的 view 一定是非空的，编译器你不要帮我做检查了，有什么后果我自己承担。
-
-![âåå§ ç´§ç®å å­æç©º ä¸æç½éª¨ç²¾âçå¾çæç´¢ç»æ](http://ww3.sinaimg.cn/large/006tNc79gy1g45hop35j2j3085064aa1.jpg)
-
-这种「肯定不会为空」的断言式的调用叫做 **non-null asserted call**。
+意思是告诉编译器，我保证这里的 view 一定是非空的，编译器你不要帮我做检查了，有什么后果我自己承担。这种「肯定不会为空」的断言式的调用叫做 「**non-null asserted call**」。
 
 一旦用了非空断言，实际上和 Java 就没什么两样了，但也就享受不到 Kotlin 的空安全设计带来的好处了（在编译时做检查，而不是运行时抛异常）。
 
-以上就是 Kotlin 空安全设计。
+以上就是 Kotlin 的空安全设计。
 
 理解了它之后再来看变量声明，跟 Java 虽然完全不一样，只是写法上不同而已。
 
 很多人在上手的时候都被变量声明搞懵，原因就是 Kotlin 的空安全设计所导致的这些报错：
 
-- 变量需要手动初始化，所以不初始化的话报错；
+- 变量需要手动初始化，如果不初始化的话会报错；
 - 变量默认非空，所以初始化赋值 null 的话报错，之后再次赋值为 null 也会报错；
 - 变量用 `?` 设置为可空的时候，使用的时候因为「可能为空」又报错。
 
+明白了空安全设计的原理后，就很容易能够解决上面的问题了。
+
 关于空安全，最重要的是记住一点：所谓「可空不可空」，关注的全都是使用的时候，即「这个变量在使用时是否可能为空」。
 
-另外，Kotlin 的这种空安全设计在与 Java 的互相调用上是完全兼容的，Java 里面的 @Nullable 注解，在 Kotlin 里调用时同样会触发编译器的空安全检查。
+另外，Kotlin 的这种空安全设计在与 Java 的互相调用上是完全兼容的，这里的兼容指：
 
-![image-20190617194307505](http://ww4.sinaimg.cn/large/006tNc79gy1g44e2o21h3j30e005yjrp.jpg)
+- Java 里面的 @Nullable 注解，在 Kotlin 里调用时同样需要使用 `?.`。
 
-![image-20190617194247150](http://ww1.sinaimg.cn/large/006tNc79gy1g44e2bg9xgj30x603qq3c.jpg)
+    ```java
+    ☕️
+    @Nullable
+    String name;
+    ```
 
-空安全我们讲了这么多，但是有些时候我们声明一个变量是不会让它为空的：
+    ```kotlin
+    🏝️
+    name?.length
+    ```
 
-![image-20190618201102556](http://ww2.sinaimg.cn/large/006tNc79gy1g45ki11atnj308e01mwef.jpg)
+- Java 里面的 @Nullable 和 @NonNull 注解，在转换成 Kotlin 后对应的就是可空变量和非空变量。
 
-比如这个 view，其实在实际场景中我们希望它一直是非空的。
+    ```java
+    ☕️
+    @Nullable
+    String name;
+    @NonNull
+    String value = "hello";
+    ```
 
-但如果你这么写：
+    ```kotlin
+    🏝️
+    var name: String? = null
+    var value: String = "hello"
+    ```
 
-![image-20190618201359804](http://ww2.sinaimg.cn/large/006tNc79gy1g45kl3k8qjj30n203mt94.jpg)
+空安全我们讲了这么多，但是有些时候我们声明一个变量是不会让它为空的，比如 view，其实在实际场景中我们希望它一直是非空的，可空并没有业务上的实际意义，使用 `?.` 影响代码可读性。
+
+但如果你在 `MainActivity`  里这么写：
+
+```kotlin
+🏝️
+class MainActivity : AppCompatActivity() {
+    👇
+    var view: View = findViewById(R.id.tvContent)
+}
+```
 
 虽然编译器不会报错，运行起来就程序崩溃了，原因是 findViewById() 是在 onCreate 之后才能调用。
 
@@ -331,7 +394,10 @@ Kotlin 给我们提供了一个选项：延迟初始化。
 
 具体是这么写的：
 
-![image-20190604171730123](http://ww3.sinaimg.cn/large/006tNc79gy1g45knzhm9yj30py032q2x.jpg)
+```kotlin
+🏝️
+lateinit var view: View
+```
 
 这个 `lateinit` 的意思是：告诉编译器我没法第一时间就初始化，但我肯定会在使用它之前完成初始化的。
 
@@ -339,7 +405,15 @@ Kotlin 给我们提供了一个选项：延迟初始化。
 
 然后我们就可以在 onCreate 中进行初始化了：
 
-![image-20190618202428127](http://ww4.sinaimg.cn/large/006tNc79gy1g45kw003toj30ou080wfr.jpg)
+```kotlin
+🏝️
+lateinit var view: View
+override fun onCreate(...) {
+    ...
+    👇
+    view = findViewById(R.id.tvContent)
+}
+```
 
 当然，变量声明除了这么写：
 
