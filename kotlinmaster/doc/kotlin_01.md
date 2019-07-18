@@ -41,16 +41,13 @@
    import androidx.appcompat.app.AppCompatActivity
    
    class MainActivity : AppCompatActivity() {
-       override fun onCreate(savedInstanceState: Bundle?) {
-           super.onCreate(savedInstanceState)
-           setContentView(R.layout.activity_main)
-       }
+       ...
    }
    ```
-
+   
    > 扫一眼就好，不用读代码，我们后面都会讲。
-
-2. 项目中的 2 个 `bulid.gradle` 文件比 Java 的 Android 项目多了几行代码，它们的作用是添加 Kotlin 的依赖：
+   
+2. 项目中的 2 个 `bulid.gradle` 文件比 Java 的 Android 项目多了几行代码（以「👇」标注），它们的作用是添加 Kotlin 的依赖：
 
    - 项目根目录下的 `build.gradle`：
 
@@ -98,7 +95,7 @@
 
 笔者建议刚开始学习的时候还是新建一个基于 Kotlin 的项目，按照上面的步骤练习一下。
 
-## 初识 MainActivity.kt
+### 初识 MainActivity.kt
 
 前面我们提到，如果新建的项目是基于 Kotlin 的，IDE 会帮我们创建好 `MainActivity`，它其实是有一个 `.kt` 的文件后缀名（打开的时候可以看到）。
 
@@ -137,8 +134,7 @@ class MainActivity : AppCompatActivity() {
 ```kotlin
 package org.kotlinmaster
 
-class Sample {
-}
+class Sample {}
 ```
 
 这个类仅包含 `package` 和 `class` 两个关键字，我们暂时先看成和 Java 差不多（其实真的就是差不多）的概念，这样就都是我们熟悉的东西了。
@@ -284,7 +280,7 @@ name = null // 👈原来不是空值，赋值为空值
 
 这种类型之后加 `?` 的写法，在 Kotlin 里叫**可空类型**。
 
-不过，当我们了解了可空类型的变量后，会有新的问题：
+不过，当我们使用了可空类型的变量后，会有新的问题：
 
 由于对空引用的调用会导致空指针异常，所以 Kotlin 在可空变量直接调用的时候 IDE 会报错：
 
@@ -356,7 +352,7 @@ view!!.setBackgroundColor(Color.RED)
     name?.length
     ```
 
-- Java 里面的 @Nullable 和 @NonNull 注解，在转换成 Kotlin 后对应的就是可空变量和非空变量。
+- Java 里面的 @Nullable 和 @NonNull 注解，在转换成 Kotlin 后对应的就是可空变量和不可空变量，至于怎么将 Java 代码转换为 Kotlin，Android Studio 给我们提供了很方便的工具（但并不完美），后面会讲。
 
     ```java
     ☕️
@@ -384,7 +380,7 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-虽然编译器不会报错，运行起来就程序崩溃了，原因是 findViewById() 是在 onCreate 之后才能调用。
+虽然编译器不会报错，但程序一旦运行起来就 crash 了，原因是 findViewById() 是在 onCreate 之后才能调用。
 
 那怎么办呢？其实我们很想告诉编译器「我很确定我用的时候绝对不为空，但第一时间我没法给它赋值」。
 
@@ -407,6 +403,7 @@ lateinit var view: View
 
 ```kotlin
 🏝️
+👇
 lateinit var view: View
 override fun onCreate(...) {
     ...
@@ -426,7 +423,7 @@ var name: String = "Mike"
 var name = "Mike"
 ```
 
-这个叫做「类型推断」，它跟动态类型是不一样的：
+这个特性叫做「类型推断」，它跟动态类型是不一样的，我们不能像使用 Groovy 或者 JavaScript 那样使用在 Kotlin 里这么写：
 
 ```kotlin
 🏝️
@@ -435,3 +432,201 @@ name = 1
 // 👆会报错，The integer literal does not conform to the expected type String
 ```
 
+```groovy
+// Groovy
+def a = "haha"
+a = 1
+// 👆这种先赋值字符串再赋值数字的方式在 Groovy 里是可以的
+```
+
+「动态类型」是指变量的类型在运行时可以改变；而「类型推断」是你在代码里不用写变量类型，编译器在编译的时候会帮你补上。因此，Kotlin 是一门静态语言。
+
+### val 和 var
+
+声明变量的方式也不止 var 一种，我们还可以使用 val：
+
+```kotlin
+🏝️
+val size = 18
+```
+
+val 是 Kotlin 在 Java 的「变量」类型之外，又增加的一种变量类型：只读变量。它只能赋值一次，不能修改。而 var 是一种可读可写变量。
+
+> var 是 variable 的缩写，val 是 value 的缩写。
+
+val 和 Java 中的 final 类似：
+
+```java
+☕️
+final int size = 18;
+```
+
+不过其实它们还是有些不一样的，这个我们之后再讲。总之直接进行重新赋值是不行的。
+
+### 可见性
+
+看到这里，我们似乎都没有在 Kotlin 里看到类似 Java 里的 public、protected、private 这些表示变量可见性的修饰符，因为在 Kotlin 里变量默认就是 **public** 的，而对于其他可见性修饰符，我们之后会讲，这里先不用关心。
+
+至此，我相信你对变量这部分已经了解得差不多了，可以根据前面的例子动手尝试尝试。
+
+## 函数
+
+Kotlin 除了变量声明外，函数的声明方式也和 Java 的方法不一样。Java 的方法（method）在 Kotlin 里叫函数（function），其实没啥区别，或者说其中的区别我们可以忽略掉。对任何编程语言来讲，变量就是用来存储数据，而函数就是用来处理数据。
+
+### 函数的声明
+
+我们先来看看 Java 里的方法是怎么写的：
+
+```java
+☕️
+Food cook(String name) {
+	...
+}
+```
+
+而到了 Kotlin，函数的声明是这样：
+
+```kotlin
+🏝️
+👇                      👇
+fun cook(name: String): Food {
+    ...
+}
+```
+
+- 以 fun 关键字开头
+- 返回值写在了函数和参数后面
+
+那如果没有返回值该怎么办？Java 里是返回 void：
+
+```java
+☕️
+void main() {
+   ...
+}
+```
+
+Kotlin 里是返回 Unit，并且可以省略：
+
+```kotlin
+🏝️
+			 👇
+fun main(): Unit {}
+// Unit 返回类型可以省略
+fun main() {}
+```
+
+函数参数也可以有可空的控制，根据前面说的空安全设计，在传递时需要注意：
+
+```kotlin
+🏝️
+// 👇可空变量传给不可空参数，报错
+String myName : String? = "rengwuxian"
+fun cook(name: String) : Food {}
+cook(myName)
+  
+// 👇可空变量传给可空参数，正常运行
+String myName : String? = "rengwuxian"
+fun cook(name: String?) : Food {}
+cook(myName)
+
+// 👇不可空变量传给不可空参数，正常运行
+String myName : String = "rengwuxian"
+fun cook(name: String) : Food {}
+cook(myName)
+```
+
+### 可见性
+
+函数如果不加可见性修饰符的话，默认的可见范围和变量一样也是 public 的。
+
+### 属性的 getter/setter 函数
+
+我们知道，在 Java 里面的 field 经常会带有 getter/setter 函数：
+
+```java
+☕️
+public class User {
+	String name;
+	public String getName() {
+		return this.name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+}
+```
+
+它们的作用就是可以自定义函数内部实现来达到「钩子」的效果，比如下面这种：
+
+```java
+☕️
+public class User {
+	String name;
+	public String getName() {
+		return this.name + " nb";
+	}
+	public void setName(String name) {
+		this.name = "Cute " + name;
+	}
+}
+```
+
+在 Kotlin 里，这种 getter / setter 是怎么运作的呢？
+
+```kotlin
+🏝️
+class User {
+    var name = "Mike"
+    fun run() {
+        name = "Mary"
+        // 👆的写法实际上是👇这么调用的
+        // setName("Mary")
+        // 建议自己试试，IDE 的代码补全功能会在你打出 setn 的时候直接提示 name 而不是 setName
+        
+        println(name)
+        // 👆的写法实际上是👇这么调用的
+        // print(getName())
+        // IDE 的代码补全功能会在你打出 getn 的时候直接提示 name 而不是 getName
+    }
+}
+```
+
+那么我们如何来操作前面提到的「钩子」呢？看下面这段代码：
+
+```kotlin
+🏝️
+class User {
+    var name = "Mike"
+        👇       👇
+        get() {
+            return field + " nb"
+        }
+        👇   👇 
+        set(value) {
+            field = "Cute " + value
+        }
+}
+```
+
+格式上和 Java 有一些区别：
+
+- getter / setter 函数有了专门的关键字 get 和 set
+- getter / setter 函数位于 var 所声明的变量下面
+- setter 函数参数是 value
+
+除此之外还多了一个叫 field 的东西，它和 Java 里面的 field 完全不是一个概念，这个东西叫做「**Backing Fields**」，中文翻译是**幕后字段**或**后备字段**（马云背后的女人😝），我们可以类比 Java 代码中的 `this.name` 来理解它，相当于每一个 var 内部的一个变量。
+
+我们前面讲过 val 是只读变量，只读的意思就是说 val 声明的变量不能进行重新赋值，也就是说不能调用 setter 函数，因此，val 声明的变量是不会有 setter 函数的，但它可以有 getter 函数：
+
+```kotlin
+🏝️
+val name = "Mike"
+    get() {
+        return field + " nb"
+    }
+```
+
+也就是说，val 所声明的只读变量，在取值的时候仍然可能被修改，这也是和 Java 里的 final 的不同之处。
+
+关于「钩子」的作用，除了修改取值和赋值，也可以加一些自己的逻辑，就像我们在 Activity 的生命周期函数里做的事情一样。
