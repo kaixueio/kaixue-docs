@@ -724,7 +724,7 @@ public class MainActivity extends AppCompatActivity {
 
 - 类的继承的写法，Java 里用的是 `extends`，而在 Kotlin 里使用 `:`，但其实 `:` 不仅可以表示继承，还可以表示 Java 中的 `implement`。
 
-    举个例子，假设我们有一个人 interface 叫 Imple：
+    举个例子，假设我们有一个 interface 叫 Imple：
 
     ```kotlin
     🏝️
@@ -854,4 +854,3 @@ public class MainActivity extends AppCompatActivity {
         override fun test() {}
     }
     ```
-
