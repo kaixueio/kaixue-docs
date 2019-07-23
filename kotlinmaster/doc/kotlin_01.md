@@ -109,10 +109,10 @@ package org.kotlinmaster
 import android.os.Bundle
   👆
 import androidx.appcompat.app.AppCompatActivity
-               	  👇
+                  👇
 class MainActivity : AppCompatActivity() {
   👆
-       👇    👇             			   👇     👇
+       👇    👇                            👇     👇
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -510,7 +510,7 @@ Kotlin 里是返回 Unit，并且可以省略：
 
 ```kotlin
 🏝️
-			 👇
+            👇
 fun main(): Unit {}
 // Unit 返回类型可以省略
 fun main() {}
@@ -696,4 +696,162 @@ var str: String = "string"
 ### 类和对象
 
 现在可以来看看我们的老朋友 `MainActivity` 了，重新认识下它：
+
+```kotlin
+🏝️
+...
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+    }
+}
+```
+
+我们可以对比 Java 的代码来看有哪些不同：
+
+```java
+☕️
+...
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        ...
+    }
+}
+```
+
+- 首先是类的可见性，Java 中的 public 在 Kotlin 中可以省略，Kotlin 的类默认是 public 的。
+
+- 类的继承的写法，Java 里用的是 `extends`，而在 Kotlin 里使用 `:`，但其实 `:` 不仅可以表示继承，还可以表示 Java 中的 `implement`。
+
+    举个例子，假设我们有一个人 interface 叫 Imple：
+
+    ```kotlin
+    🏝️
+    interface Imple {}
+    ```
+
+    > Kotlin 里定义一个 interface 和 Java 没什么区别。
+
+    ```java
+    ☕️
+    public class Main2Activity extends AppCompatActivity implements Imple { }
+    ```
+
+    ```kotlin
+    🏝️
+    class MainActivity : AppCompatActivity(), Imple {}
+    ```
+
+- 构造方法的写法不同。
+
+    - Java 里省略了默认的构造函数：
+
+    - ```java
+        ☕️
+        public class MainActivity extends AppCompatActivity {
+            // 👇默认构造函数
+            public MainActivity() {
+            }
+        }
+        ```
+
+    - Kotlin 里我们注意到  AppCompatActivity 后面的 `()`，这其实也是一种省略的写法，等价于：
+
+    - ```kotlin
+        🏝️                   
+        class MainActivity constructor() : AppCompatActivity() {
+                                👆
+        }
+        ```
+
+        不过其实完整的写法是这样的：
+
+        ```kotlin
+        🏝️
+        // 👇注意这里 AppCompatActivity 后面没有 '()'
+        class MainActivity : AppCompatActivity {
+            constructor() {
+            }
+        }
+        ```
+
+        Kotlin 把构造函数单独用了一个关键字来和其他的 fun 做区分。
+    
+- override 的不同
+
+    - Java 里面 @Override 是注解的形式。
+    - Kotlin 里的 override 变成了关键字。
+    - Kotlin 省略了 protected 关键字，也就是说，Kotlin 里的 override 函数的可见性是继承自父类的。
+
+除了以上这些明显的不同之外，还有一些不同点从代码上看不出来，但当你写一个类去继承 `MainActivity` 时就会发现：
+
+- Kotlin 里的 MainActivity 无法继承：
+
+    ```kotlin
+    🏝️
+    // 👇写法会报错，This type is final, so it cannot be inherited from
+    class NewActivity: MainActivity() {
+    }
+    ```
+
+    原因是 Kotlin 里的类默认是 final 的，而 Java 里只有加了 `final ` 关键字的类才是 final 的。
+
+    那么有什么办法解除 final 限制么？我们可以使用 `open` 来做这件事：
+
+    ```kotlin
+    🏝️
+    open class MainActivity : AppCompatActivity() {}
+    ```
+
+    这样一来，我们就可以继承了。
+
+    ```kotlin
+    🏝️
+    class NewActivity: MainActivity() {}
+    ```
+
+    但是要注意，此时 NewActivity 仍然是 final 的，也就是说，`open` 没有遗传性。
+
+    而刚才说到的 `override` 是有遗传性的：
+
+    ```kotlin
+    🏝️
+    class NewActivity : MainActivity() {
+        // 👇onCreate 仍然是 override 的
+        override fun onCreate(savedInstanceState: Bundle?) {
+            ...
+        }
+    }
+    ```
+
+    如果要关闭 `override` 的遗传性，只需要这样即可：
+
+    ```kotlin
+    🏝️
+    open class MainActivity : AppCompatActivity() {
+        // 👇加了 final 关键字，作用和 Java 里面一样，关闭了 override 的遗传性
+        final override fun onCreate(savedInstanceState: Bundle?) {
+            ...
+        }
+    }
+    ```
+
+- Kotlin 里除了新增了 `open` 关键字之外，也有和 Java 一样的 `abstract` 关键字，它俩的区别就是 `abstract` 关键字修饰的类无法直接实例化，并且通常来说会和 `abstract` 修饰的函数一起出现，当然，也可以没有这个 `abstract` 函数。
+
+    ```kotlin
+    🏝️
+    abstract class MainActivity : AppCompatActivity() {
+        abstract fun test()
+    }
+    ```
+
+    但是子类如果要实例化，还是需要实现这个 abstract 函数的：
+
+    ```kotlin
+    🏝️
+    class NewActivity : MainActivity() {
+        override fun test() {}
+    }
+    ```
 
