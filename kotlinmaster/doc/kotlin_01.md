@@ -728,19 +728,19 @@ public class MainActivity extends AppCompatActivity {
 
     ```kotlin
     🏝️
-    interface Imple {}
+    interface Impl {}
     ```
 
     > Kotlin 里定义一个 interface 和 Java 没什么区别。
 
     ```java
     ☕️
-    public class Main2Activity extends AppCompatActivity implements Imple { }
+    public class Main2Activity extends AppCompatActivity implements Impl { }
     ```
 
     ```kotlin
     🏝️
-    class MainActivity : AppCompatActivity(), Imple {}
+    class MainActivity : AppCompatActivity(), Impl {}
     ```
 
 - 构造方法的写法不同。
@@ -854,3 +854,102 @@ public class MainActivity extends AppCompatActivity {
         override fun test() {}
     }
     ```
+
+当我们声明好一个类之后，我们就可以实例化它了，实例化在 Java 中使用 `new` 关键字：
+
+```java
+☕️
+void main() {
+	Activity activity = new NewActivity(); 
+}
+```
+
+而在 Kotlin 中，实例化一个对象更加简单，没有 `new` 关键字：
+
+```kotlin
+🏝️
+fun main() {
+    var activity: Activity = NewActivity()
+}
+```
+
+通过 `MainActivity` 的学习，我们知道了 Java 和 Kotlin 中关于类的声明主要关注以下几个方面：
+
+- 类的可见性和开放性
+- 构造方法
+- 继承和 override 函数
+
+### 类型的判断和强转
+
+刚才讲的实例化的例子中，我们实际上是把子类对象赋值给父类的变量，这个概念在 Java 里叫多态，Kotlin 也有这个特性，但在实际工作中我们很可能会遇到需要使用子类才有的函数。
+
+比如我们先在子类中定义一个函数：
+
+```kotlin
+🏝️
+class NewActivity : MainActivity() {
+    fun action() {}
+}
+```
+
+那么接下来这么写是无法调用该函数的：
+
+```kotlin
+🏝️
+fun main() {
+    var activity: Activity = NewActivity()
+    // 👆activity 是无法调用 NewActivity 的 action 方法的
+}
+```
+
+在 Java 里，需要先使用 `instanceof` 关键字判断类型，再通过强转来调用：
+
+```java
+☕️
+void main() {
+	Activity activity = new NewActivity();
+    if (activity instanceof NewActivity) {
+        ((NewActivity) activity).action();
+    }
+}
+```
+
+Kotlin 里同样有类似解决方案，使用 `is` 关键字进行类型判断，并且因为类型推断，可以帮助我们省略强转的写法：
+
+```kotlin
+🏝️
+fun main() {
+    var activity: Activity = NewActivity()
+    if (activity is NewActivity) {
+        // 👇的强转由于类型判断被省略了
+        activity.action()
+    }
+}
+```
+
+那么能不能不进行类型判断，直接进行强转调用呢？可以使用 `as` 关键字：
+
+```kotlin
+🏝️
+fun main() {
+    var activity: Activity = NewActivity()
+    (activity as NewActivity).action()
+}
+```
+
+这种写法如果强转类型操作是正确的当然没问题，但如果强转成一个错误的类型，程序就会抛出一个异常。
+
+我们更希望能进行安全的强转，就像 Kotlin 的空安全设计一样。
+
+这一点，Kotlin 的设计自然也考虑到了，我们可以使用 `as?` 来解决：
+
+```kotlin
+🏝️
+fun main() {
+    var activity: Activity = NewActivity()
+    // 👇'(activity as? NewActivity)' 之后是一个可空类型的对象，所以，需要使用 '?.' 来调用
+    (activity as? NewActivity)?.action()
+}
+```
+
+它的意思就是说如果强转成功就执行之后的调用，如果强转不成功就不执行。
