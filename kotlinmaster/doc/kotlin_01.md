@@ -480,7 +480,7 @@ Kotlin 除了变量声明外，函数的声明方式也和 Java 的方法不一�
 ```java
 ☕️
 Food cook(String name) {
-	...
+    ...
 }
 ```
 
@@ -547,13 +547,13 @@ cook(myName)
 ```java
 ☕️
 public class User {
-	String name;
-	public String getName() {
-		return this.name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+    String name;
+    public String getName() {
+        return this.name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 }
 ```
 
@@ -562,13 +562,13 @@ public class User {
 ```java
 ☕️
 public class User {
-	String name;
-	public String getName() {
-		return this.name + " nb";
-	}
-	public void setName(String name) {
-		this.name = "Cute " + name;
-	}
+    String name;
+    public String getName() {
+        return this.name + " nb";
+    }
+    public void setName(String name) {
+        this.name = "Cute " + name;
+    }
 }
 ```
 
@@ -860,7 +860,7 @@ public class MainActivity extends AppCompatActivity {
 ```java
 ☕️
 void main() {
-	Activity activity = new NewActivity(); 
+    Activity activity = new NewActivity(); 
 }
 ```
 
@@ -907,7 +907,7 @@ fun main() {
 ```java
 ☕️
 void main() {
-	Activity activity = new NewActivity();
+    Activity activity = new NewActivity();
     if (activity instanceof NewActivity) {
         ((NewActivity) activity).action();
     }
