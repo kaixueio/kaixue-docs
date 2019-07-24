@@ -303,7 +303,7 @@ if (view != null) {
 
 这个报错的意思是即使你检查了非空也不能保证下面调用的时候就是非空，因为在多线程情况下，其他线程可能把它再改成空的。
 
-那么 Kotlin 里是这么解决这个问题的呢？它用的不是 `.` 而是用 `?.`：
+那么 Kotlin 里是这么解决这个问题的呢？它用的不是 `.` 而是 `?.`：
 
 ```kotlin
 🏝️
@@ -319,9 +319,7 @@ view?.setBackgroundColor(Color.RED)
 view!!.setBackgroundColor(Color.RED)
 ```
 
-意思是告诉编译器，我保证这里的 view 一定是非空的，编译器你不要帮我做检查了，有什么后果我自己承担。这种「肯定不会为空」的断言式的调用叫做 「**non-null asserted call**」。
-
-一旦用了非空断言，实际上和 Java 就没什么两样了，但也就享受不到 Kotlin 的空安全设计带来的好处了（在编译时做检查，而不是运行时抛异常）。
+意思是告诉编译器，我保证这里的 view 一定是非空的，编译器你不要帮我做检查了，有什么后果我自己承担。这种「肯定不会为空」的断言式的调用叫做 「**non-null asserted call**」。一旦用了非空断言，实际上和 Java 就没什么两样了，但也就享受不到 Kotlin 的空安全设计带来的好处（在编译时做检查，而不是运行时抛异常）了。
 
 以上就是 Kotlin 的空安全设计。
 
@@ -441,6 +439,8 @@ a = 1
 
 「动态类型」是指变量的类型在运行时可以改变；而「类型推断」是你在代码里不用写变量类型，编译器在编译的时候会帮你补上。因此，Kotlin 是一门静态语言。
 
+除了变量赋值这个场景，类型推断的其他场景我们之后也会遇到。
+
 ### val 和 var
 
 声明变量的方式也不止 var 一种，我们还可以使用 val：
@@ -538,7 +538,7 @@ cook(myName)
 
 ### 可见性
 
-函数如果不加可见性修饰符的话，默认的可见范围和变量一样也是 public 的。
+函数如果不加可见性修饰符的话，默认的可见范围和变量一样也是 public 的，但有一种情况例外，这里简单提一下，就是遇到了 `override` 关键字的时候，下面会讲到。
 
 ### 属性的 getter/setter 函数
 
@@ -598,7 +598,7 @@ class User {
 🏝️
 class User {
     var name = "Mike"
-        👇       👇
+        👇
         get() {
             return field + " nb"
         }
@@ -617,7 +617,7 @@ class User {
 
 除此之外还多了一个叫 field 的东西，它和 Java 里面的 field 完全不是一个概念，这个东西叫做「**Backing Fields**」，中文翻译是**幕后字段**或**后备字段**（马云背后的女人😝），我们可以类比 Java 代码中的 `this.name` 来理解它，相当于每一个 var 内部的一个变量。
 
-我们前面讲过 val 是只读变量，只读的意思就是说 val 声明的变量不能进行重新赋值，也就是说不能调用 setter 函数，因此，val 声明的变量是不会有 setter 函数的，但它可以有 getter 函数：
+我们前面讲过 val 是只读变量，只读的意思就是说 val 声明的变量不能进行重新赋值，也就是说不能调用 setter 函数，因此，val 声明的变量是不能重写 setter 函数的，但它可以重写 getter 函数：
 
 ```kotlin
 🏝️
@@ -627,7 +627,7 @@ val name = "Mike"
     }
 ```
 
-也就是说，val 所声明的只读变量，在取值的时候仍然可能被修改，这也是和 Java 里的 final 的不同之处。
+val 所声明的只读变量，在取值的时候仍然可能被修改，这也是和 Java 里的 final 的不同之处。
 
 关于「钩子」的作用，除了修改取值和赋值，也可以加一些自己的逻辑，就像我们在 Activity 的生命周期函数里做的事情一样。
 
@@ -699,7 +699,6 @@ var str: String = "string"
 
 ```kotlin
 🏝️
-...
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         ...
@@ -711,7 +710,6 @@ class MainActivity : AppCompatActivity() {
 
 ```java
 ☕️
-...
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -776,15 +774,15 @@ public class MainActivity extends AppCompatActivity {
         }
         ```
 
-        Kotlin 把构造函数单独用了一个关键字来和其他的 fun 做区分。
+        Kotlin 把构造函数单独用了一个 `constructor` 关键字来和其他的 `fun` 做区分。
     
 - override 的不同
 
-    - Java 里面 @Override 是注解的形式。
-    - Kotlin 里的 override 变成了关键字。
-    - Kotlin 省略了 protected 关键字，也就是说，Kotlin 里的 override 函数的可见性是继承自父类的。
+    - Java 里面 `@Override` 是注解的形式。
+    - Kotlin 里的 `override` 变成了关键字。
+    - Kotlin 省略了 `protected` 关键字，也就是说，Kotlin 里的 `override` 函数的可见性是继承自父类的。
 
-除了以上这些明显的不同之外，还有一些不同点从代码上看不出来，但当你写一个类去继承 `MainActivity` 时就会发现：
+除了以上这些明显的不同之外，还有一些不同点从上面的代码里看不出来，但当你写一个类去继承 `MainActivity` 时就会发现：
 
 - Kotlin 里的 MainActivity 无法继承：
 
@@ -811,7 +809,7 @@ public class MainActivity extends AppCompatActivity {
     class NewActivity: MainActivity() {}
     ```
 
-    但是要注意，此时 NewActivity 仍然是 final 的，也就是说，`open` 没有遗传性。
+    但是要注意，此时 NewActivity 仍然是 final 的，也就是说，`open` 没有父类到子类的遗传性。
 
     而刚才说到的 `override` 是有遗传性的：
 
@@ -837,7 +835,7 @@ public class MainActivity extends AppCompatActivity {
     }
     ```
 
-- Kotlin 里除了新增了 `open` 关键字之外，也有和 Java 一样的 `abstract` 关键字，它俩的区别就是 `abstract` 关键字修饰的类无法直接实例化，并且通常来说会和 `abstract` 修饰的函数一起出现，当然，也可以没有这个 `abstract` 函数。
+- Kotlin 里除了新增了 `open` 关键字之外，也有和 Java 一样的 `abstract` 关键字，这俩关键字的区别就是 `abstract` 关键字修饰的类无法直接实例化，并且通常来说会和 `abstract` 修饰的函数一起出现，当然，也可以没有这个 `abstract` 函数。
 
     ```kotlin
     🏝️
@@ -877,7 +875,8 @@ fun main() {
 
 - 类的可见性和开放性
 - 构造方法
-- 继承和 override 函数
+- 继承
+- override 函数
 
 ### 类型的判断和强转
 
@@ -914,7 +913,7 @@ void main() {
 }
 ```
 
-Kotlin 里同样有类似解决方案，使用 `is` 关键字进行类型判断，并且因为类型推断，可以帮助我们省略强转的写法：
+Kotlin 里同样有类似解决方案，使用 `is` 关键字进行「类型判断」，并且因为编译器能够进行类型推断，可以帮助我们省略强转的写法：
 
 ```kotlin
 🏝️
@@ -953,3 +952,18 @@ fun main() {
 ```
 
 它的意思就是说如果强转成功就执行之后的调用，如果强转不成功就不执行。
+
+---
+
+好了，关于 Kotlin 的变量、函数和类型的内容就讲到这里，给你留 2 道思考题吧：
+
+1. 子类重写父类的 `override` 函数，能否修改它的可见性？
+
+2. 以下的写法有什么区别？
+
+    ```kotlin
+    🏝️
+    activity as? NewActivity
+    activity as NewActivity?
+    activity as? NewActivity?
+    ```
