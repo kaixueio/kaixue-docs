@@ -263,3 +263,85 @@ class User constructor() {
 }
 ```
 
+### `final`
+
+在 Java 中如果我们想声明一个只读字段或者变量，直接在类型前加上 final 关键字：
+
+``` java
+☕️
+final int final1 = 1;
+
+void method(final String final2) {
+  System.out.println(final2);
+  final Date final3 = new Date();
+  System.out.println(final3);
+}
+```
+
+对应的，在 Kotlin 中上面这段代码这样写：
+
+``` kotlin
+🏝️
+val fina1 = 1
+
+fun method(final2: String) {
+    println(final2)
+    val final3 = Date()
+    println(final3)
+}
+```
+
+可以看到不同点主要有：
+
+- final 变成 val，由于类型推断，类型可以省略不写，写法上简短了一些。
+- Kotlin 方法参数默认是 val 类型，所以参数前不需要写 val 关键字。
+
+上一篇文章讲过 `var` 是 variable 的缩写，而这里的 `val` 是 value 的缩写，从命名上也能看出只读的含义。
+
+相比 Java 中通过额外添加 final 前缀来表示只读，Kotlin 的只读声明简化了很多，只是把 var 最后一个字母改成 l，大大增加了开发者使用只读类型的频率。虽然只是减少了一个单词，但考虑到变量声明的频率，总体效果还是很可观的。这种优化使得在该加只读限制的地方加上限制，减少了出现错误的概率，从而提高代码质量。
+
+#### `val`自定义 getter
+
+不过 `val` 和 `final` 还是有一点区别的，虽然 `val` 修饰的变量不能二次赋值，但可以通过自定义变量的 getter 方法来让变量每次被访问时返回动态计算的值：
+
+``` kotlin
+val size: Int
+		get() {
+      return items.size
+    }
+```
+
+前面说到类的属性类型可以通过初始化代码进行类型推断，除此之外也可以通过 getter 方法的返回值推断，而且 Kotlin 中可以通过 `=` 直接连接函数表达式，所以上面这段代码可以简化为：
+
+``` kotlin
+val size get() = items.size
+```
+
+不过这个属于特殊用法，一般情况下 `val` 还是对应于 Java 中的 `final` 使用的。一个可能的应用是用于简化一些没有参数的属性类方法调用：
+
+``` kotlin
+fun isEmpty(): Boolean {
+  return items.size == 0
+}
+```
+
+可以简化为：
+
+``` kotlin
+val isEmpty: Boolean
+		get() {
+      return items.size == 0
+    }
+```
+
+上面的方法和属性的调用方式分别如下：
+
+``` kotlin
+any.isEmpty()
+any.isEmpty
+```
+
+少了一对括号，可以让代码简洁一些。
+
+### `static` property / function
+
