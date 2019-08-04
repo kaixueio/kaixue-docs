@@ -573,3 +573,163 @@ topLevelFunction()
 
 写在顶级的方法或者变量有个好处，在 Android Studio 中写代码时，IDE 很容易根据你写的方法前几个字母自动联想出相应的方法，提高了写代码的效率，而且可以防止项目中的重复代码。
 
+顶级函数不写在类中可能有一个问题：如果在不同文件中声明命名相同的函数，使用的时候会不会混淆？我们来看一个例子：
+
+* 在 `org.kotlinmaster.library` 包下有一个方法 method：
+
+  ``` kotlin
+  package org.kotlinmaster.library1
+  
+  fun method() {
+    println("library1 method()")
+  }
+  ```
+
+* 在 `org.kotlinmaster.library2` 包下也有一个同名方法：
+
+  ``` kotlin
+  package org.kotlinmaster.library2
+  
+  fun method() {
+    println("library2 method()")
+  }
+  ```
+
+我们看看在使用的时候如果同时调用这两个同名方法：
+
+```kotlin
+import org.kotlinmaster.library1.method
+
+fun test() {
+  method()
+  org.kotlinmaster.library2.method()
+}
+```
+
+可以看到当出现两个同名顶级函数时，会通过加上包前缀来区分，这也印证了顶级函数是属于包的特性。
+
+#### 对比
+
+那在实际使用中，我们该使用哪一种呢？`companion object`？`object` ？还是 `top-level` ？
+
+其实一般来说，如果你想写工具类，那直接创建一个文件，里面全都写成 `top-level` functions 就行了；但 `companion object` 和 `object` 是可以有父类和接口的，所以你利用这点可以对你的全局函数进行一些功能扩展和延伸。
+
+所以简单的判断原则是：能写在 `top-level` 就写在 `top-level`，但如果需要继承别的类或者实现接口，就用 `companion object` 或者直接用 `object`。
+
+### 常量
+
+首先我们来看看 Java 中怎么声明一个常量：
+
+``` java
+public class Sample {
+  public static final int CONST_NUMBER = 1;
+}
+```
+
+然后我们看看 Kotlin 中怎么声明一个变量：
+
+``` kotlin
+class Sample {
+  companion object {
+    const val CONST_NUMBER = 1
+  }
+}
+```
+
+可以发现不同点有：
+
+- 必须声明在类的伴随对象内，因为常量是静态的。
+- 通过 Kotlin 新增的 `const` 关键字修饰。
+
+除此之外还有一个区别是 Kotlin 中只有基本类型和 String 类型可以声明成常量，原因是 Kotlin 中的常量指的是 compile-time constant 编译时常量。它的意思是「编译器在编译的时候就知道这个东西在每个调用处的实际值」，因此可以在编译时直接把这个值硬编码到代码里使用的地方。
+
+而非基础或者 String 类型可以通过调用对象的方法改变对象内部的值，这样这个变量就不是常量了，我们来看一个 Java 的例子，比如一个 User 类：
+
+``` java
+public class User {
+  public User(int id, String name) {
+    this.id = id;
+    this.name = name;
+  }
+  
+  int id;
+  String name;
+}
+```
+
+我们在使用的地方声明一个 `static final` 的 User，它是不能二次赋值的：
+
+``` java
+static final User user = new User(123, "rengwuxian");
+```
+
+但是可以通过访问这个类的成员变量改变它的值：
+
+``` java
+user.name = "zhukai";
+```
+
+所以相比 Java 里声明的常量，Kotlin 的常量限制更严格，更加符合常量的定义。
+
+### 数组和集合
+
+#### 数组
+
+声明一个 String 数组，Java 中的写法：
+
+``` java
+String[] strs = {"a", "b", "c"};
+```
+
+Kotlin 中的写法:
+
+``` kotlin
+val strs: Array<String> = arrayOf("a", "b", "c")
+```
+
+可以看到 Kotlin 中的数组是一个拥有泛型的类，创建方法也是泛型方法，和集合数据类型一样。
+
+Kotlin 中获取或者设置数组数据和 Java 一样可以使用方括号加下标的方式索引：
+
+``` kotlin
+println(strs[0])
+strs[1] = "B"
+```
+
+初次之外，Kotlin 的 Array 类型还可以使用 `get()` 和 `set()` 方法取值和赋值：
+
+``` kotlin
+println(strs.get(0))
+strs.set(1, "B")
+```
+
+第二种方式有点像集合类型，这正是 Kotlin 中将数组泛型化的原因：使对数组的操作像集合一样功能更强大，由于泛型化，Kotlin 可以通过扩展方法的方式给数组增加很多有用的工具方法：
+
+- `contains()`
+- `first()`
+- `find()`
+
+这样数组的实用性就大大增加了。
+
+Kotlin 的数组编译成字节码时使用的仍然是 Java 的数组，但在语言层面是泛型实现，这样会失去协变 (covariance) 特性，就是在 Kotlin 中字类数组对象不能赋值给父类的数组：
+
+``` kotlin
+val strs: Array<String> = arrayOf("a", "b", "c")
+val anys: Array<Any> = strs // ❌
+```
+
+而这在 Java 中是可以的：
+
+``` java
+String[] strs = {"a", "b", "c"};
+Object[] objs = strs; // ✅
+```
+
+关于协变的问题，这里就先不展开，后面讲泛型的时候会提到。
+
+#### 集合
+
+
+
+
+
