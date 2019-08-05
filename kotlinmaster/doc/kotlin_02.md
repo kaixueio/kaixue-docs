@@ -38,6 +38,7 @@ class User {
 Kotlin 除了这种和 Java 类似的构造器之外还引入了 「主构造器 primary constructor」，可以让你的代码更加直观和简洁：
 
 ``` kotlin
+🏝️
 class User(val id: Int, val name: String) {}
 ```
 
@@ -48,18 +49,21 @@ class User(val id: Int, val name: String) {}
 Kotlin 中每个类只能有一个主构造器，属于类头部的一部分，位于类名之后：
 
 ``` kotlin
+🏝️
 class User constructor(name: String) {}
 ```
 
 如果需要限制构造器的可见性或者给构造器添加注解直接放在 constructor 前面：
 
 ``` kotlin
+🏝️
 class User private @Inject constructor(name: String) {}
 ```
 
 当不需要修饰时可以省略掉关键字 constructor：
 
 ``` kotlin
+🏝️
 class User(name: String) {}
 ```
 
@@ -84,6 +88,7 @@ init {
 一个 Kotlin 类中可以有多个初始化代码块，它们的执行顺序和创建的顺序是一致的：
 
 ``` kotlin
+🏝️
 class User {
   init {
     println("First init block.")
@@ -104,6 +109,7 @@ Second init block.
 当类中存在属性初始化代码时，执行的优先级和初始化代码块是同级的：
 
 ``` kotlin
+🏝️
 class User {
   val firstProperty = "First property.".also { println(it) }
   init {
@@ -128,6 +134,7 @@ Second init block.
 由此可见属性初始化代码和初始化代码块处于同一个执行上下文，另一个证据是这两块代码都可以访问主构造器的参数：
 
 ``` kotlin
+🏝️
 class User(name: String) {
   val length: Int = name.length
   init {
@@ -139,12 +146,14 @@ class User(name: String) {
 Kotlin 还有一种简洁的写法用于将主构造器中的参数声明为属性，并用参数值初始化属性：
 
 ``` kotlin
+🏝️
 class User(val name: String, val age: Int) {}
 ```
 
 这种写法等价于：
 
 ``` kotlin
+🏝️
 class User(name: String, age: Int) {
   val name: String = name
   val age: Int = age
@@ -173,6 +182,7 @@ public class User {
 Kotlin 中的次构造器和 Java 类似写在类中，通过 constructor 表示，并且关键字不可以省略：
 
 ``` kotlin
+🏝️
 class User {
   private val name: String
   constructor(name: String) {
@@ -185,6 +195,7 @@ class User {
 写次构造器时，如果存在主构造器，需要通过代理的方式引用到主构造器：
 
 ``` kotlin
+🏝️
 class User(val name: String) {
   private var age: Int = 0
   constructor(name: String, age: Int) : this(name) {
@@ -196,6 +207,7 @@ class User(val name: String) {
 上面这段代码属于直接代理主构造器，也可以通过间接的方式代理主构造器：
 
 ``` kotlin
+🏝️
 class User(val name: String) {
 	var age: Int = 0
   var gender: String = "male"
@@ -213,6 +225,7 @@ class User(val name: String) {
 被代理构造器的初始化代码总是先执行，而初始化代码块属于主构造器的一部分，所以初始化代码块在所有的次构造器代码之前执行：
 
 ``` kotlin
+🏝️
 class User constructor(name: String) {
   init {
     println("Init block.")
@@ -233,6 +246,7 @@ Secondary constructor.
 即使没有声明主构造器，初始化代码块也先于次构造器执行，这时次构造器相当于代理了一个空的主构造器：
 
 ``` kotlin
+🏝️
 class User {
   init {
     println("Init block.")
@@ -253,6 +267,7 @@ Secondary Constructor.
 上面这段代码等价于：
 
 ``` kotlin
+🏝️
 class User constructor() {
   init {
     println("Init block.")
@@ -305,6 +320,7 @@ fun method(final2: String) {
 不过 `val` 和 `final` 还是有一点区别的，虽然 `val` 修饰的变量不能二次赋值，但可以通过自定义变量的 getter 方法来让变量每次被访问时返回动态计算的值：
 
 ``` kotlin
+🏝️
 val size: Int
 		get() {
       return items.size
@@ -314,12 +330,14 @@ val size: Int
 前面说到类的属性类型可以通过初始化代码进行类型推断，除此之外也可以通过 getter 方法的返回值推断，而且 Kotlin 中可以通过 `=` 直接连接函数表达式，所以上面这段代码可以简化为：
 
 ``` kotlin
+🏝️
 val size get() = items.size
 ```
 
 不过这个属于特殊用法，一般情况下 `val` 还是对应于 Java 中的 `final` 使用的。一个可能的应用是用于简化一些没有参数的属性类方法调用：
 
 ``` kotlin
+🏝️
 fun isEmpty(): Boolean {
   return items.size == 0
 }
@@ -328,6 +346,7 @@ fun isEmpty(): Boolean {
 可以简化为：
 
 ``` kotlin
+🏝️
 val isEmpty: Boolean
 		get() {
       return items.size == 0
@@ -350,6 +369,7 @@ any.isEmpty
 在 Java 中我们定义类级别的属性或者方法是通过在类中定义静态属性或者方法：
 
 ``` java
+☕️
 class A {
   public static int property = 1;
   public static void method() {
@@ -361,6 +381,7 @@ class A {
 这样我们就可以不需要创建该类的实例，直接通过类名调用静态变量或者方法：
 
 ``` java
+☕️
 int variable = A.property;
 A.method();
 ```
@@ -368,6 +389,7 @@ A.method();
 那么在 Kotlin 中如果我们想实现类似的功能该怎么做呢，在类中我们可以创建一个叫作 `companion object` 的东西，将我们想定义的静态属性和方法放在其中：
 
 ``` kotlin
+🏝️
 class A {
   companion object {
     val property: Int = 1
@@ -381,6 +403,7 @@ class A {
 这样我们在调用的时候可以像 Java 的静态变量和方法一样去调用：
 
 ``` kotlin
+🏝️
 val variable = A.property
 A.method()
 ```
@@ -394,6 +417,7 @@ A.method()
 `object` 字面意思是对象，与 Java 中通过 `new` 创建一个类的对象不同，Kotlin 中可以通过 `object` 直接创建一个对象实例：
 
 ``` kotlin
+🏝️
 object A {
   val number: Int = 1
   fun method() {
@@ -405,6 +429,7 @@ object A {
 和类的定义类似，不过 `class` 关键字替换成 `object` ，调用方式如下：
 
 ``` kotlin
+🏝️
 val result = A.number + 1
 A.method()
 ```
@@ -414,6 +439,7 @@ A.method()
 我们来看看 Java 中要实现上面这个单例类需要怎么做：
 
 ``` java
+☕️
 public class A {
 
     private static A sInstance;
@@ -439,6 +465,7 @@ public class A {
 调用的时候：
 
 ``` java
+☕️
 int result = A.getInstance().number + 1;
 A.getInstance().method()
 ```
@@ -448,6 +475,7 @@ A.getInstance().method()
 通过 `object` 创建的对象也可以继承别的类或者接口，和创建一个类是一样的：
 
 ``` kotlin
+🏝️
 open class A {
     open fun method() {
         println("A.method()")
@@ -475,6 +503,7 @@ object C : A(), B {
 有时我们需要改变类方法的实现，但因为改动很少不想创建该类的子类，Java 中是通过创建匿名内部类来实现这个目的：
 
 ``` java
+☕️
 ViewPager.SimpleOnPageChangeListener listener = new ViewPager.SimpleOnPageChangeListener() {
 	@Override
 	public void onPageSelected(int position) {
@@ -486,6 +515,7 @@ ViewPager.SimpleOnPageChangeListener listener = new ViewPager.SimpleOnPageChange
 Kotlin 中通过 `object` 创建一个继承该类的对象和对象表达式来实现：
 
 ``` kotlin
+🏝️
 val listener = object: ViewPager.SimpleOnPageChangeListener() {
     override fun onPageSelected(position: Int) {
         // override
@@ -496,7 +526,8 @@ val listener = object: ViewPager.SimpleOnPageChangeListener() {
 和 Java 创建匿名类的方式很相似，你可以简单理解为通过 object 创建一个匿名内部类。这里需要注意的是，`=` 后的语句不能单独存在，因为对象表达式是指将对象赋值给一个变量或者作为参数传递给方法，如果没有 `=` 以及前面的变量，这段代码就不能称为对象表达式，就会报错：
 
 ``` kotlin
-		 👇 // compile error: Name expected
+🏝️
+     👇 // compile error: Name expected
 object: ViewPager.SimpleOnPageChangeListener() {
     override fun onPageSelected(position: Int) {
         // override
@@ -511,6 +542,7 @@ object: ViewPager.SimpleOnPageChangeListener() {
 前面我们说到访问对象中的变量或者方法时直接通过类名引用，就像 Java 的静态变量和方法一样，不同的是不需要在每个变量和方法前面用 `static` 修饰，因为 `object` 创建的对象内所有变量和方法默认都是静态的，没得选。如果我们只想让类中的一部分方法和变量是静态的该怎么做呢：
 
 ``` kotlin
+🏝️
 class A {
   object B {
     var c: Int = 0
@@ -521,12 +553,14 @@ class A {
 如上，我们可以在类中创建一个对象，这样我们把需要静态的变量或方法放在内部对象 B 中，外部可以通过如下的方式调用该静态变量：
 
 ``` kotlin
+🏝️
 A.B.c
 ```
 
 类中嵌套的对象可以用 `companion` 修饰：
 
 ``` kotlin
+🏝️
 class A {
   companion object B {
     var c: Int = 0
@@ -537,12 +571,14 @@ class A {
 `companion` 可以理解为伴随、伴生，表示修饰的对象和外部类绑定，这样的好处是调用的时候可以省掉对象名：
 
 ``` kotlin
+🏝️
 A.c
 ```
 
 当有 `companion` 修饰时，对象的名字也可以省略掉：
 
 ``` kotlin
+🏝️
 class A {
   companion object {
     var c: Int = 0
@@ -557,6 +593,7 @@ class A {
 不同于 Java 所有的方法和变量都必须写在类中，Kotlin 可以在类外写变量和方法，这个称之为「top-level property/function」即顶层声明。
 
 ``` kotlin
+🏝️
 package com.hencoder.plus
 
 fun topLevelFuncion() {
@@ -566,6 +603,7 @@ fun topLevelFuncion() {
 这样写的属性和函数，不属于任何 `class`，而是直接属于 `package`，它和静态变量、静态方法一样是全局的，但用起来更方便：你在其它地方用的时候，就连类名都不用写：
 
 ``` kotlin
+🏝️
 import com.hencoder.plus.topLevelFunction
 
 topLevelFunction()
@@ -578,6 +616,7 @@ topLevelFunction()
 * 在 `org.kotlinmaster.library` 包下有一个方法 method：
 
   ``` kotlin
+  🏝️
   package org.kotlinmaster.library1
   
   fun method() {
@@ -588,6 +627,7 @@ topLevelFunction()
 * 在 `org.kotlinmaster.library2` 包下也有一个同名方法：
 
   ``` kotlin
+  🏝️
   package org.kotlinmaster.library2
   
   fun method() {
@@ -598,6 +638,7 @@ topLevelFunction()
 我们看看在使用的时候如果同时调用这两个同名方法：
 
 ```kotlin
+🏝️
 import org.kotlinmaster.library1.method
 
 fun test() {
@@ -621,6 +662,7 @@ fun test() {
 首先我们来看看 Java 中怎么声明一个常量：
 
 ``` java
+☕️
 public class Sample {
   public static final int CONST_NUMBER = 1;
 }
@@ -629,6 +671,7 @@ public class Sample {
 然后我们看看 Kotlin 中怎么声明一个变量：
 
 ``` kotlin
+🏝️
 class Sample {
   companion object {
     const val CONST_NUMBER = 1
@@ -646,6 +689,7 @@ class Sample {
 而非基础或者 String 类型可以通过调用对象的方法改变对象内部的值，这样这个变量就不是常量了，我们来看一个 Java 的例子，比如一个 User 类：
 
 ``` java
+☕️
 public class User {
   public User(int id, String name) {
     this.id = id;
@@ -660,12 +704,14 @@ public class User {
 我们在使用的地方声明一个 `static final` 的 User，它是不能二次赋值的：
 
 ``` java
+☕️
 static final User user = new User(123, "rengwuxian");
 ```
 
 但是可以通过访问这个类的成员变量改变它的值：
 
 ``` java
+☕️
 user.name = "zhukai";
 ```
 
@@ -678,12 +724,14 @@ user.name = "zhukai";
 声明一个 String 数组，Java 中的写法：
 
 ``` java
+☕️
 String[] strs = {"a", "b", "c"};
 ```
 
 Kotlin 中的写法:
 
 ``` kotlin
+🏝️
 val strs: Array<String> = arrayOf("a", "b", "c")
 ```
 
@@ -692,6 +740,7 @@ val strs: Array<String> = arrayOf("a", "b", "c")
 Kotlin 中获取或者设置数组数据和 Java 一样可以使用方括号加下标的方式索引：
 
 ``` kotlin
+🏝️
 println(strs[0])
 strs[1] = "B"
 ```
@@ -699,6 +748,7 @@ strs[1] = "B"
 初次之外，Kotlin 的 Array 类型还可以使用 `get()` 和 `set()` 方法取值和赋值：
 
 ``` kotlin
+🏝️
 println(strs.get(0))
 strs.set(1, "B")
 ```
@@ -714,6 +764,7 @@ strs.set(1, "B")
 Kotlin 的数组编译成字节码时使用的仍然是 Java 的数组，但在语言层面是泛型实现，这样会失去协变 (covariance) 特性，就是在 Kotlin 中字类数组对象不能赋值给父类的数组：
 
 ``` kotlin
+🏝️
 val strs: Array<String> = arrayOf("a", "b", "c")
 val anys: Array<Any> = strs // ❌
 ```
@@ -721,6 +772,7 @@ val anys: Array<Any> = strs // ❌
 而这在 Java 中是可以的：
 
 ``` java
+☕️
 String[] strs = {"a", "b", "c"};
 Object[] objs = strs; // ✅
 ```
@@ -740,6 +792,7 @@ Object[] objs = strs; // ✅
 Java 中创建一个列表：
 
 ``` java
+☕️
 List<String> strList = new ArrayList<>();
 strList.add("a");
 strList.add("b");
@@ -749,12 +802,14 @@ strList.add("c");
 Kotlin 中创建一个列表：
 
 ``` kotlin
+🏝️
 val strList = listOf("a", "b", "c")
 ```
 
 首先能看到的是 Kotlin 中创建一个 `List` 特别的简单，一句代码搞定，有点像创建数组的代码。而且 Kotlin 中的 `List` 多了一个特性：支持 covariant (协变)。也就是说，可以吧子类的 `List` 赋值给父类的 `List`：
 
 ``` kotlin
+🏝️
 val strs: List<String> = listOf("a", "b", "c")
 val anys: List<Any> = strs // ✅
 ```
@@ -762,6 +817,7 @@ val anys: List<Any> = strs // ✅
 这在 Java 中是会报错的：
 
 ``` java
+☕️
 List<String> strList = new ArrayList<>();
 // 👇 compile error: incompatible types
 List<Object> objList = strList;
@@ -772,6 +828,7 @@ List<Object> objList = strList;
 Java 中创建一个 `Set`：
 
 ``` java
+☕️
 Set<String> strSet = new HashSet<>();
 strSet.add("a");
 strSet.add("b");
@@ -781,6 +838,7 @@ strSet.add("c");
 Kotlin 中创建相同的 `Set`：
 
 ``` kotlin
+🏝️
 val strSet = setOf("a", "b", "c")
 ```
 
@@ -791,6 +849,7 @@ val strSet = setOf("a", "b", "c")
 Java 中创建一个 `Map`：
 
 ``` java
+☕️
 Map<String, Integer> map = new HashMap<>();
 map.put("key1", 1);
 map.put("key2", 2);
@@ -801,12 +860,14 @@ map.put("key4", 3);
 Kotlin 中创建一个 `Map`：
 
 ``` kotlin
+🏝️
 val map = mapOf("key1" to 1, "key2" to 2, "key3" to 3, "key4" to 3)
 ```
 
 和上面两种集合类型相似创建代码很简单，一行搞定。Kotlin 中的 Map 除了和 Java 中的一样可以使用 `get()` 根据键获取对应的值，还可以使用方括号的方式获取：
 
 ``` kotlin
+🏝️
 val value1 = map.get("key1")
 val value2 = map["key2"]
 ```
@@ -814,6 +875,7 @@ val value2 = map["key2"]
 类似的，Kotlin 中也可以用方括号的方式改变 `Map` 中键对应的值：
 
 ``` kotlin
+🏝️
 val map = mutableMapOf("key1" to 1, "key2" to 2)
 map.put("key1", 2)
 map["key1"] = 2
@@ -822,12 +884,14 @@ map["key1"] = 2
 因为 `Map` 存储的是键值对，所以 `mapOf` 的参数是 `Pair` 类型，表示一对键值。这里的 `"key1" to 1` 表示创建一个 `Pair` 对象，是调用 `to()` 函数的简写，也可以写作：
 
 ```kotlin
+🏝️
 "key1".to(1)
 ```
 
 `to()` 函数定义如下：
 
 ``` kotlin
+🏝️
 public infix fun <A, B> A.to(that: B): Pair<A, B> = Pair(this, that)
 ```
 
@@ -844,6 +908,7 @@ public infix fun <A, B> A.to(that: B): Pair<A, B> = Pair(this, that)
 可以看到，有 mutable 前缀的方法创建的可变的集合。不可变的集合可以通过 `toMutable*()` 系方法转换成可变的集合：
 
 ``` kotlin
+🏝️
 val strList = listOf("a", "b", "c")
 strList.toMutableList()
 val strSet = setOf("a", "b", "c")
@@ -867,6 +932,7 @@ Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数�
 Java 中如果没有可见性修饰符，表示包内可见，只有在同一个 `package` 可以引用：
 
 ``` java
+☕️
 package org.kotlinmaster.library;
 
 class User {
@@ -874,6 +940,7 @@ class User {
 ```
 
 ``` java
+☕️
 package org.kotlinmaster.library;
 
 public class Example {
@@ -884,6 +951,7 @@ public class Example {
 ```
 
 ``` java
+☕️
 package org.kotlinmaster;
 
 import org.kotlinmaster.library.User; // ❌
@@ -915,6 +983,7 @@ module 表示一组共同编译的 kotlin 文件，常见的形式有：
 在 Java 中有一个很类似的方式禁止客户端访问 library 中特定方法：`@hide`，在需要禁止的方法注释里加上 `@hide` 表示此方法对使用者隐藏：
 
 ``` java
+☕️
 /**
 * @hide
 */
@@ -939,6 +1008,7 @@ public void hideMethod() {
 在 Java 中可以访问内部类的 `private` 变量：
 
 ``` java
+☕️
 public class Outter {
 
     public static void method() {
@@ -955,6 +1025,7 @@ public class Outter {
 在 Kotlin 中是不允许的：
 
 ``` kotlin
+🏝️
 class Outter {
     
     fun method() {
@@ -971,6 +1042,7 @@ class Outter {
 因为 Java 中一个文件只允许一个外部类，所以 `class`  和 `interface` 不允许设置为 `private`，因为声明 `private`  后无法被使用，这样就没有意义。而 Kotlin 允许同一个文件声明多个 `class` 和 top-level 的方法和属性，所以 Kotlin 中允许 `class` 和 `interface` 声明为 `private`，因为同个文件中的别的成员可以访问：
 
 ``` kotlin
+🏝️
 private interface Interface {
     fun method()
 }
@@ -991,7 +1063,19 @@ private val result = impl.number * 2
 
 ### 思考题
 
-1. 
+1. 次级构造器写在初始化代码块之前，谁先执行？
+
+2. `phoneCount` 和 `phoneCount1` 有什么区别？
+
+   ``` kotlin
+   class User {
+       val phones = mutableListOf<String>()
+       val phoneCount = phones.size
+       val phoneCount1 get() = phones.size
+   }
+   ```
+
+3. 同一个文件中，一个类的 `private` 属性可以被另一个类访问吗？
 
 
 
