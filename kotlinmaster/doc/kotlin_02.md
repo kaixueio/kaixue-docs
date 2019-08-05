@@ -729,6 +729,270 @@ Object[] objs = strs; // ✅
 
 #### 集合
 
+大多数编程语言里都有集合这个数据结构，用来表示一组数目可变的具有类似性质的数据集合。常见的集合类型有三种：`List`、`Set` 和 `Map`，它们的含义分别如下：
+
+1. `List` 以固定顺序存储一组数据，`List` 中的元素可以重复。
+2. `Set` 存储一组互不相等的元素，`Set` 中的元素通常是没有固定顺序的。
+3. `Map` 存储 键-值 对的数据集合，键互不相等，但不同的键可以对应相同的值。
+
+##### List
+
+Java 中创建一个列表：
+
+``` java
+List<String> strList = new ArrayList<>();
+strList.add("a");
+strList.add("b");
+strList.add("c");
+```
+
+Kotlin 中创建一个列表：
+
+``` kotlin
+val strList = listOf("a", "b", "c")
+```
+
+首先能看到的是 Kotlin 中创建一个 `List` 特别的简单，一句代码搞定，有点像创建数组的代码。而且 Kotlin 中的 `List` 多了一个特性：支持 covariant (协变)。也就是说，可以吧子类的 `List` 赋值给父类的 `List`：
+
+``` kotlin
+val strs: List<String> = listOf("a", "b", "c")
+val anys: List<Any> = strs // ✅
+```
+
+这在 Java 中是会报错的：
+
+``` java
+List<String> strList = new ArrayList<>();
+// 👇 compile error: incompatible types
+List<Object> objList = strList;
+```
+
+##### Set
+
+Java 中创建一个 `Set`：
+
+``` java
+Set<String> strSet = new HashSet<>();
+strSet.add("a");
+strSet.add("b");
+strSet.add("c");
+```
+
+Kotlin 中创建相同的 `Set`：
+
+``` kotlin
+val strSet = setOf("a", "b", "c")
+```
+
+和 `List` 类似，一句代码创建一个 `Set`，同样具有 covariant (协变) 特性。
+
+##### Map
+
+Java 中创建一个 `Map`：
+
+``` java
+Map<String, Integer> map = new HashMap<>();
+map.put("key1", 1);
+map.put("key2", 2);
+map.put("key3", 3);
+map.put("key4", 3);
+```
+
+Kotlin 中创建一个 `Map`：
+
+``` kotlin
+val map = mapOf("key1" to 1, "key2" to 2, "key3" to 3, "key4" to 3)
+```
+
+和上面两种集合类型相似创建代码很简单，一行搞定。Kotlin 中的 Map 除了和 Java 中的一样可以使用 `get()` 根据键获取对应的值，还可以使用方括号的方式获取：
+
+``` kotlin
+val value1 = map.get("key1")
+val value2 = map["key2"]
+```
+
+类似的，Kotlin 中也可以用方括号的方式改变 `Map` 中键对应的值：
+
+``` kotlin
+val map = mutableMapOf("key1" to 1, "key2" to 2)
+map.put("key1", 2)
+map["key1"] = 2
+```
+
+因为 `Map` 存储的是键值对，所以 `mapOf` 的参数是 `Pair` 类型，表示一对键值。这里的 `"key1" to 1` 表示创建一个 `Pair` 对象，是调用 `to()` 函数的简写，也可以写作：
+
+```kotlin
+"key1".to(1)
+```
+
+`to()` 函数定义如下：
+
+``` kotlin
+public infix fun <A, B> A.to(that: B): Pair<A, B> = Pair(this, that)
+```
+
+`fun` 前面的 `infix` 是中缀修饰，表示调用该函数的时候可以省略 `.` 和括号。
+
+##### 可变集合/不可变集合
+
+上面修改 `Map` 值的例子中，创建函数用的是 `mutableMapOf()` 方法而不是 `mapOf()`，难道只有 `mutableMapOf()` 创建的才可以修改吗？是的，Kotlin 中集合分为两种类型：只读的和可变的。只读的集合在创建的时候就要确定好值，创建好后集合的 size 和元素值都不能改变。
+
+- `listOf()` 创建不可变的 `List`，`mutableListOf()` 创建可变的 `List`。
+- `setOf()` 创建不可变的 `Set`，`mutableSetOf()` 创建可变的 `Set`。
+- `mapOf()` 创建不可变的 `Map`，`mutableMapOf()` 创建可变的 `Map`。
+
+可以看到，有 mutable 前缀的方法创建的可变的集合。不可变的集合可以通过 `toMutable*()` 系方法转换成可变的集合：
+
+``` kotlin
+val strList = listOf("a", "b", "c")
+strList.toMutableList()
+val strSet = setOf("a", "b", "c")
+strSet.toMutableSet()
+val map = mapOf("key1".link(1), "key2" link 2, "key3" link 3, "key4" link 3)
+map.toMutableMap()
+```
+
+然后就可以对集合进行修改了，这里有一点需要注意下：`toMutable*()` 返回的是一个新建的集合，原有的集合还是不可变的。
+
+#### 对比
+
+Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数组的元素个数不能变。那在什么时候用数组呢？
+
+这个问题在 Java 中就存在了？数组和 `List` 的功能类似，`List` 的功能更多一些，数组又一点比 `List` 好：基础类型 (`int[]`、`float[]`) 的数组不用自动装箱，性能好一点。所以在 Kotlin 中也是同样的道理，在一些性能需求比较苛刻的场景，并且元素类型是基础类型时，用数组好一点。不过这里要注意一点，Kotlin 中要用专门的基础类型数组类 (`IntArray` `FloatArray` `LongArray` `DoubleArray`) 才可以免于装箱。
+
+### 可见性修饰符
+
+#### `public`
+
+Java 中如果没有可见性修饰符，表示包内可见，只有在同一个 `package` 可以引用：
+
+``` java
+package org.kotlinmaster.library;
+
+class User {
+}
+```
+
+``` java
+package org.kotlinmaster.library;
+
+public class Example {
+    void method() {
+        new User(); // ✅
+    }
+}
+```
+
+``` java
+package org.kotlinmaster;
+
+import org.kotlinmaster.library.User; // ❌
+
+public class OtherPackageExample {
+    void method() {
+        new User(); // ❌ compile-error: 'org.kotlinmaster.library.User' is not public in 'org.kotlinmaster.library'. Cannot be accessed from outside package
+    }
+}
+```
+
+`package` 外如果要引用，需要在 `class` 前加上可见性修饰符 `public` 表示公开。Kotlin 中如果不写可见性修饰符，就表示公开，和 Java 中加上 `public` 修饰符具有相同效果。在 Kotlin 中也可以加上 `public` 修饰符，不过 IDE 会提示你删掉，因为默认就是 `public` 效果。
+
+#### `internal`
+
+那 Java 的包内可见的可见性在 Kotlin 中可以表示吗？答案是没有了。不过 Kotlin 新增了一种可见性修饰符 `internal`，表示 module 内可见。
+
+##### module
+
+module 表示一组共同编译的 kotlin 文件，常见的形式有：
+
+- Android Studio 里的 module
+- Maven project
+
+`internal` 在写一个 library module 时非常有用，当我们需要创建一个方法仅开放给 module 内部使用，但不想开放给使用者，因为后面可能会修改，这时我们就应该用  `internal` 可见性修饰符。
+
+##### `@hide`
+
+在 Java 中有一个很类似的方式禁止客户端访问 library 中特定方法：`@hide`，在需要禁止的方法注释里加上 `@hide` 表示此方法对使用者隐藏：
+
+``` java
+/**
+* @hide
+*/
+public void hideMethod() {
+}
+```
+
+`@hide`  属于 Javadoc，这种方式在 Android 的 sdk 源码中比较常见，但这种限制不太严格：可以通过反射访问到限制的方法。
+
+#### `protected`
+
+- Java 中 `protected` 表示包内可见 + 子类可见。
+- Kotlin 中 `protected` 表示 `private` + 子类可见。
+
+可见 Kotlin 相比 Java `protected` 的可见范围收窄了，原因是 Kotlin 中不再有包内可见的概念了，相比 Java 的可见性着眼于 `package`，Kotlin 更关心的是 module。
+
+#### `private`
+
+- Java 中的 `private` 表示类中可见，外部包含类可见。
+- Kotlin 中的 `private` 表示类中或所在文件内可见，外部包含类不可见。
+
+在 Java 中可以访问内部类的 `private` 变量：
+
+``` java
+public class Outter {
+
+    public static void method() {
+        Inner inner = new Inner();
+        int result = inner.number * 2; // ✅
+    }
+
+    private static class Inner {
+        private int number = 0;
+    }
+}
+```
+
+在 Kotlin 中是不允许的：
+
+``` kotlin
+class Outter {
+    
+    fun method() {
+        val inner = Inner()
+        val result = inner.number * 2 // ❌ compile-error: Cannot access 'number': it is private in 'Inner'
+    }
+    
+    class Inner {
+        private val number = 1
+    }
+}
+```
+
+因为 Java 中一个文件只允许一个外部类，所以 `class`  和 `interface` 不允许设置为 `private`，因为声明 `private`  后无法被使用，这样就没有意义。而 Kotlin 允许同一个文件声明多个 `class` 和 top-level 的方法和属性，所以 Kotlin 中允许 `class` 和 `interface` 声明为 `private`，因为同个文件中的别的成员可以访问：
+
+``` kotlin
+private interface Interface {
+    fun method()
+}
+
+private class Impl : Interface {
+    val number = 1
+    override fun method() {
+        println("Impl method()")
+    }
+}
+
+private val impl = Impl()
+
+private val result = impl.number * 2
+```
+
+---
+
+### 思考题
+
+1. 
+
 
 
 
