@@ -913,7 +913,7 @@ val strList = listOf("a", "b", "c")
 strList.toMutableList()
 val strSet = setOf("a", "b", "c")
 strSet.toMutableSet()
-val map = mapOf("key1".link(1), "key2" link 2, "key3" link 3, "key4" link 3)
+val map = mapOf("key1" to 1, "key2" to 2, "key3" to 3, "key4" to 3)
 map.toMutableMap()
 ```
 
@@ -1075,7 +1075,17 @@ private val result = impl.number * 2
    }
    ```
 
-3. 同一个文件中，一个类的 `private` 属性可以被另一个类访问吗？
+3. `companion obj` 可以实现接口吗？
+
+4. 下面这段代码有没有问题？为什么？
+
+   ``` kotlin
+   val list = listOf("a", "b", "c")
+   list.toMutableList()
+   list.add("d")
+   ```
+
+5. 同一个文件中，一个类的 `private` 属性可以被另一个类访问吗？
 
 
 
