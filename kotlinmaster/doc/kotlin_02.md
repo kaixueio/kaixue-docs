@@ -100,6 +100,32 @@ init {
 }
 ```
 
+Java 中除了这种初始化代码快，还有静态初始化代码块：
+
+``` java
+☕️
+class Sample {
+     👇
+    static {
+        ...
+    }
+}
+```
+
+在 Kotlin 中类的静态初始化代码块移到了 companion object 「伴生对象」中，至于 companion 是什么，这里先不展开，后文会讲到：
+
+``` kotlin
+🏝️
+class Sample {
+    companion object {
+         👇
+        init {
+            ...
+        }
+    }
+}
+```
+
 一个 Kotlin 类中可以有多个初始化代码块，它们的执行顺序和创建的顺序是一致的：
 
 ``` kotlin
