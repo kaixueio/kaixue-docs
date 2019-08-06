@@ -84,6 +84,8 @@ new User("Kate");
 class User(name: String) {}
 ```
 
+##### `init`
+
 有人可能会问，「如果我想在构造器中执行初始化操作该怎么做呢？」为此 Kotlin 提供了初始化代码块来负责这部分任务：
 
 ``` kotlin
@@ -128,63 +130,65 @@ class Sample {
 }
 ```
 
-一个 Kotlin 类中可以有多个初始化代码块，它们的执行顺序和创建的顺序是一致的：
+- 一个 Kotlin 类中可以有多个初始化代码块，它们的执行顺序和创建的顺序是一致的：
 
-``` kotlin
-🏝️
-class User {
-    init {
-        println("First init block.")
+    ``` kotlin
+    🏝️
+    class User {
+        init {
+            println("First init block.")
+        }
+        init {
+            println("Second init block.")
+        }
     }
-    init {
-        println("Second init block.")
+    ```
+
+    当创建上面这个类的实例时输出如下：
+
+    ``` bash
+    First init block.
+    Second init block.
+    ```
+
+- 当类中存在属性初始化代码时，执行的优先级和初始化代码块是同级的：
+
+    ``` kotlin
+    🏝️
+    class User {
+        val firstProperty = "First property.".also { println(it) }
+        init {
+            println("First init block.")
+        }
+        val secondProperty = "Second property.".also { println(it) }
+        init {
+            println("Second init block.")
+        }
     }
-}
-```
+    ```
 
-当创建上面这个类的实例时输出如下：
+    当创建上面这个类的实例时输出如下：
 
-```
-First init block.
-Second init block.
-```
+    ``` bash
+    First property.
+    First init block.
+    Second property.
+    Second init block.
+    ```
 
-当类中存在属性初始化代码时，执行的优先级和初始化代码块是同级的：
+    由此可见属性初始化代码和初始化代码块处于同一个执行上下文，另一个证据是这两块代码都可以访问主构造器的参数：
 
-``` kotlin
-🏝️
-class User {
-    val firstProperty = "First property.".also { println(it) }
-    init {
-        println("First init block.")
+    ``` kotlin
+    🏝️
+    class User(name: String) {
+        val length: Int = name.length
+        init {
+            println("My name is $name")
+        }
     }
-    val secondProperty = "Second property.".also { println(it) }
-    init {
-        println("Second init block.")
-    }
-}
-```
+    ```
 
-当创建上面这个类的实例时输出如下：
-
-```
-First property.
-First init block.
-Second property.
-Second init block.
-```
-
-由此可见属性初始化代码和初始化代码块处于同一个执行上下文，另一个证据是这两块代码都可以访问主构造器的参数：
-
-``` kotlin
-🏝️
-class User(name: String) {
-    val length: Int = name.length
-    init {
-        println("My name is $name")
-    }
-}
-```
+##### 主构造器属性声明
 
 Kotlin 还有一种简洁的写法用于将主构造器中的参数声明为属性，并用参数值初始化属性：
 
