@@ -219,7 +219,25 @@ class User(val name: String) {
 }
 ```
 
-上面这段代码属于直接代理主构造器，也可以通过间接的方式代理主构造器：
+这里的代理可以理解为调用，就是说次构造器都必须调用到主构造器，Java 中也有类似的概念：
+
+``` java
+☕️
+class Sample {
+    Sample() {
+        System.out.println("first constructor");
+    }
+
+    Sample(String input) {
+        this(); // 👈 和 Kotlin 中次构造器括号右边的 :this() 作用相同，表示调用另外一个构造器
+        System.out.println("second constructor ");
+    }
+}
+```
+
+由于 Java 中没有主次构造器的概念，所以调用别的构造器不是强制的。
+
+前面讲的属于直接代理主构造器，也可以通过间接的方式代理主构造器：
 
 ``` kotlin
 🏝️
