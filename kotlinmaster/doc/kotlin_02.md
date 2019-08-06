@@ -9,24 +9,26 @@ Kotlin 是一门和 Java 很类似的面向对象语言，很多概念都是相�
 ``` java
 ☕️
 public class User {
-  int id;
-  String name;
-  public User(int id, String name) {
-    this.id = id;
-    this.name = name;
-  }
+    int id;
+    String name;
+      👇    👇
+    public User(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
 ```
 
 ``` kotlin
 🏝️
 class User {
-  val id: Int
-  val name: String
-  constructor(id: Int, name: String) {
-    this.id = id
-    this.name = name
-  }
+    val id: Int
+    val name: String
+         👇
+    constructor(id: Int, name: String) {
+        this.id = id
+        this.name = name
+    }
 }
 ```
 
@@ -87,7 +89,7 @@ class User(name: String) {}
 ``` kotlin
 🏝️
 init {
-  ...
+    ...
 }
 ```
 
@@ -96,7 +98,7 @@ init {
 ``` java
 ☕️
 {
-  ...
+    ...
 }
 ```
 
@@ -131,12 +133,12 @@ class Sample {
 ``` kotlin
 🏝️
 class User {
-  init {
-    println("First init block.")
-  }
-  init {
-    println("Second init block.")
-  }
+    init {
+        println("First init block.")
+    }
+    init {
+        println("Second init block.")
+    }
 }
 ```
 
@@ -152,14 +154,14 @@ Second init block.
 ``` kotlin
 🏝️
 class User {
-  val firstProperty = "First property.".also { println(it) }
-  init {
-    println("First init block.")
-  }
-  val secondProperty = "Second property.".also { println(it) }
-  init {
-    println("Second init block.")
-  }
+    val firstProperty = "First property.".also { println(it) }
+    init {
+        println("First init block.")
+    }
+    val secondProperty = "Second property.".also { println(it) }
+    init {
+        println("Second init block.")
+    }
 }
 ```
 
@@ -177,10 +179,10 @@ Second init block.
 ``` kotlin
 🏝️
 class User(name: String) {
-  val length: Int = name.length
-  init {
-    println("My name is $name")
-  }
+    val length: Int = name.length
+    init {
+        println("My name is $name")
+    }
 }
 ```
 
@@ -196,8 +198,8 @@ class User(val name: String, val age: Int) {}
 ``` kotlin
 🏝️
 class User(name: String, age: Int) {
-  val name: String = name
-  val age: Int = age
+    val name: String = name
+    val age: Int = age
 }
 ```
 
@@ -225,11 +227,11 @@ Kotlin 中的次构造器和 Java 类似写在类中，通过 `constructor` 表�
 ``` kotlin
 🏝️
 class User {
-  private val name: String
-  constructor(name: String) {
-    this.name = name
-    println("My name is $name.")
-  }
+    private val name: String
+    constructor(name: String) {
+        this.name = name
+        println("My name is $name.")
+    }
 }
 ```
 
@@ -238,10 +240,10 @@ class User {
 ``` kotlin
 🏝️
 class User(val name: String) {
-  private var age: Int = 0
-  constructor(name: String, age: Int) : this(name) {
-    this.age = age
-  }
+    private var age: Int = 0
+    constructor(name: String, age: Int) : this(name) {
+        this.age = age
+    }
 }
 ```
 
@@ -268,14 +270,14 @@ class Sample {
 ``` kotlin
 🏝️
 class User(val name: String) {
-	var age: Int = 0
-  var gender: String = "male"
-  constructor(name: String, age: Int) : this(name) {
-    this.age = age
-  }
-  constructor(name: String, age: Int, gender: String) : this(name, age) {
-    this.gender = gender
-  }
+	  var age: Int = 0
+    var gender: String = "male"
+    constructor(name: String, age: Int) : this(name) {
+        this.age = age
+    }
+    constructor(name: String, age: Int, gender: String) : this(name, age) {
+        this.gender = gender
+    }
 }
 ```
 
@@ -286,12 +288,12 @@ class User(val name: String) {
 ``` kotlin
 🏝️
 class User constructor(name: String) {
-  init {
-    println("Init block.")
-  }
-  constructor(name: String, age: Int) : this(name) {
-    println("Secondary constructor.")
-  }
+    init {
+        println("Init block.")
+    }
+    constructor(name: String, age: Int) : this(name) {
+        println("Secondary constructor.")
+    }
 }
 ```
 
@@ -307,12 +309,12 @@ Secondary constructor.
 ``` kotlin
 🏝️
 class User {
-  init {
-    println("Init block.")
-  }
-  constructor(name: String) {
-    println("Secondary Constructor.")
-  }
+    init {
+        println("Init block.")
+    }
+    constructor(name: String) {
+        println("Secondary Constructor.")
+    }
 }
 ```
 
@@ -328,12 +330,12 @@ Secondary Constructor.
 ``` kotlin
 🏝️
 class User constructor() {
-  init {
-    println("Init block.")
-  }
-  constructor(name: String) : this() {
-    println("Secondary Constructor.")
-  }
+    init {
+        println("Init block.")
+    }
+    constructor(name: String) : this() {
+        println("Secondary Constructor.")
+    }
 }
 ```
 
@@ -346,9 +348,9 @@ class User constructor() {
 final int final1 = 1;
 
 void method(final String final2) {
-  System.out.println(final2);
-  final Date final3 = new Date();
-  System.out.println(final3);
+    System.out.println(final2);
+    final Date final3 = new Date();
+    System.out.println(final3);
 }
 ```
 
@@ -382,7 +384,7 @@ fun method(final2: String) {
 🏝️
 val size: Int
 		get() {
-      return items.size
+        return items.size
     }
 ```
 
@@ -398,7 +400,7 @@ val size get() = items.size
 ``` kotlin
 🏝️
 fun isEmpty(): Boolean {
-  return items.size == 0
+    return items.size == 0
 }
 ```
 
@@ -408,7 +410,7 @@ fun isEmpty(): Boolean {
 🏝️
 val isEmpty: Boolean
 		get() {
-      return items.size == 0
+        return items.size == 0
     }
 ```
 
@@ -430,10 +432,10 @@ any.isEmpty
 ``` java
 ☕️
 class A {
-  public static int property = 1;
-  public static void method() {
-    println("A.method()")
-  }
+    public static int property = 1;
+    public static void method() {
+        println("A.method()")
+    }
 }
 ```
 
@@ -450,12 +452,12 @@ A.method();
 ``` kotlin
 🏝️
 class A {
-  companion object {
-    val property: Int = 1
-    fun method() {
-      println("A.method()")
+    companion object {
+        val property: Int = 1
+        fun method() {
+            println("A.method()")
+        }
     }
-  }
 }
 ```
 
@@ -478,10 +480,10 @@ A.method()
 ``` kotlin
 🏝️
 object A {
-  val number: Int = 1
-  fun method() {
-    println("A.method()")
-  }
+    val number: Int = 1
+    fun method() {
+        println("A.method()")
+    }
 }
 ```
 
@@ -603,9 +605,9 @@ object: ViewPager.SimpleOnPageChangeListener() {
 ``` kotlin
 🏝️
 class A {
-  object B {
-    var c: Int = 0
-  }
+    object B {
+        var c: Int = 0
+    }
 }
 ```
 
@@ -621,9 +623,9 @@ A.B.c
 ``` kotlin
 🏝️
 class A {
-  companion object B {
-    var c: Int = 0
-  }
+    companion object B {
+        var c: Int = 0
+    }
 }
 ```
 
@@ -639,9 +641,9 @@ A.c
 ``` kotlin
 🏝️
 class A {
-  companion object {
-    var c: Int = 0
-  }
+    companion object {
+        var c: Int = 0
+    }
 }
 ```
 
@@ -679,7 +681,7 @@ topLevelFunction()
   package org.kotlinmaster.library1
   
   fun method() {
-    println("library1 method()")
+      println("library1 method()")
   }
   ```
 
@@ -690,7 +692,7 @@ topLevelFunction()
   package org.kotlinmaster.library2
   
   fun method() {
-    println("library2 method()")
+      println("library2 method()")
   }
   ```
 
@@ -701,8 +703,8 @@ topLevelFunction()
 import org.kotlinmaster.library1.method
 
 fun test() {
-  method()
-  org.kotlinmaster.library2.method()
+    method()
+    org.kotlinmaster.library2.method()
 }
 ```
 
@@ -723,7 +725,7 @@ fun test() {
 ``` java
 ☕️
 public class Sample {
-  public static final int CONST_NUMBER = 1;
+    public static final int CONST_NUMBER = 1;
 }
 ```
 
@@ -732,9 +734,9 @@ public class Sample {
 ``` kotlin
 🏝️
 class Sample {
-  companion object {
-    const val CONST_NUMBER = 1
-  }
+    companion object {
+        const val CONST_NUMBER = 1
+    }
 }
 ```
 
@@ -750,13 +752,13 @@ class Sample {
 ``` java
 ☕️
 public class User {
-  public User(int id, String name) {
-    this.id = id;
-    this.name = name;
-  }
+    public User(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
   
-  int id;
-  String name;
+    int id;
+    String name;
 }
 ```
 
@@ -1122,11 +1124,12 @@ private val result = impl.number * 2
 
 ### 思考题
 
-1. 次级构造器写在初始化代码块之前，谁先执行？
+1. 次构造器写在初始化代码块之前，谁先执行？
 
 2. `phoneCount` 和 `phoneCount1` 有什么区别？
 
    ``` kotlin
+   🏝️
    class User {
        val phones = mutableListOf<String>()
        val phoneCount = phones.size
@@ -1139,6 +1142,7 @@ private val result = impl.number * 2
 4. 下面这段代码有没有问题？为什么？
 
    ``` kotlin
+   🏝️
    val list = listOf("a", "b", "c")
    list.toMutableList()
    list.add("d")
