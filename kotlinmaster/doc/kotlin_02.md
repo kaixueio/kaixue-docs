@@ -1030,22 +1030,9 @@ public class OtherPackageExample {
 
 `package` 外如果要引用，需要在 `class` 前加上可见性修饰符 `public` 表示公开。Kotlin 中如果不写可见性修饰符，就表示公开，和 Java 中加上 `public` 修饰符具有相同效果。在 Kotlin 中也可以加上 `public` 修饰符，不过 IDE 会提示你删掉，因为默认就是 `public` 效果。
 
-#### `internal`
+#### `@hide`
 
-那 Java 的包内可见的可见性在 Kotlin 中可以表示吗？答案是没有了。不过 Kotlin 新增了一种可见性修饰符 `internal`，表示 module 内可见。
-
-##### module
-
-module 表示一组共同编译的 kotlin 文件，常见的形式有：
-
-- Android Studio 里的 module
-- Maven project
-
-`internal` 在写一个 library module 时非常有用，当我们需要创建一个方法仅开放给 module 内部使用，但不想开放给使用者，因为后面可能会修改，这时我们就应该用  `internal` 可见性修饰符。
-
-##### `@hide`
-
-在 Java 中有一个很类似的方式禁止客户端访问 library 中特定方法：`@hide`，在需要禁止的方法注释里加上 `@hide` 表示此方法对使用者隐藏：
+在 Android 的官方 sdk 中，有一些方法只想对 sdk 内可见，不想开放给用户使用，因为这些方法不太稳定，在后续版本中很有可能会修改或删掉。为了实现这个特性，会在方法的注释中添加一个 Javadoc 方法 `@hide`，用来限制客户端访问：
 
 ``` java
 ☕️
@@ -1053,10 +1040,27 @@ module 表示一组共同编译的 kotlin 文件，常见的形式有：
 * @hide
 */
 public void hideMethod() {
+    ...
 }
 ```
 
-`@hide`  属于 Javadoc，这种方式在 Android 的 sdk 源码中比较常见，但这种限制不太严格：可以通过反射访问到限制的方法。
+但这种限制不太严格，可以通过反射访问到限制的方法。针对这个需求，Kotlin 引进了一个限制更为严格的可见性修饰符：`internal`。
+
+#### `internal`
+
+`internal` 表示修饰的类、方法仅对 module 内可见，这里的 module 具体指的是什么呢？它表示一组共同编译的 kotlin 文件，常见的形式有：
+
+- Android Studio 里的 module
+- Maven project
+
+`internal` 在写一个 library module 时非常有用，当我们需要创建一个方法仅开放给 module 内部使用，但不想开放给使用者，因为后面可能会修改，这时我们就应该用  `internal` 可见性修饰符。
+
+#### 包内可见
+
+Java 中的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的可见性修饰符是 `internal`「module  内可见」。为什么会弃用掉包内可见？我觉得有这几个原因：
+
+- Kotlin 鼓励创建 top-level 方法和属性，一个源码文件可以包含多个类，使得 Kotlin 的源码结构更加扁平化，包结构不再像 Java 中那么重要。
+- 为了代码的解耦和可维护性，module 越来越多、越来越小，使得 `internal` 「module 内可见」已经可以满足我们对于代码封装的需求。
 
 #### `protected`
 
