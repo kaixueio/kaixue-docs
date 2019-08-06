@@ -32,7 +32,7 @@ class User {
 
 我们可以发现构造器的写法主要有两点不同：
 
-- Java 中构造器和类同名，Kotlin 中使用 constructor 表示。
+- Java 中构造器和类同名，Kotlin 中使用 `constructor` 表示。
 - Kotlin 构造器没有 public 修饰，因为默认可见性就是公开的，关于可见性修饰符这里我们先不展开，后面会讲到。
 
 Kotlin 除了这种和 Java 类似的构造器之外还引入了 「主构造器 primary constructor」，可以让你的代码更加直观和简洁：
@@ -53,14 +53,29 @@ Kotlin 中每个类只能有一个主构造器，属于类头部的一部分，�
 class User constructor(name: String) {}
 ```
 
-如果需要限制构造器的可见性或者给构造器添加注解直接放在 constructor 前面：
+如果需要限制构造器的可见性，直接放在 `constructor` 前面：
 
 ``` kotlin
 🏝️
-class User private @Inject constructor(name: String) {}
+class User private constructor(name: String) {}
 ```
 
-当不需要修饰时可以省略掉关键字 constructor：
+当需要给构造器添加注解时，也是放在 `constructor` 前面的：
+
+``` kotlin
+🏝️
+class User @JvmOverloads constructor(name: String, sex: String = "male")
+```
+
+这里 `@JvmOverloads` 表示在 jvm 中生成重载的两个构造方法，简单说就是在 Java 中创建 `User` 对象时，既可以传两个参数，也可以只传第一个参数，只传第一个参数时第二个参数为默认值：
+
+``` java
+☕️
+new User("Kate", "female");
+new User("Kate");
+```
+
+当不需要修饰时可以省略掉关键字 `constructor`：
 
 ``` kotlin
 🏝️
@@ -179,7 +194,7 @@ public class User {
 
 #### 次构造器
 
-Kotlin 中的次构造器和 Java 类似写在类中，通过 constructor 表示，并且关键字不可以省略：
+Kotlin 中的次构造器和 Java 类似写在类中，通过 `constructor` 表示，并且关键字不可以省略：
 
 ``` kotlin
 🏝️
