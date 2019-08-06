@@ -1,6 +1,6 @@
 ## Kotlin 里那些「不是那么写的」
 
-Kotlin 是一门和 Java 很类似的面向对象语言，很多概念都是相通的，这为我们 Andriod 开发由 Java 转向 Kotlin 降低了一些门槛。但还有一些不同的写法需要我们注意，这篇文章我们就来看看 Kotlin 里那些「不是那么写的」地方。
+Kotlin 是一门和 Java 很类似的面向对象语言，很多概念都是相通的，这为我们 Android 开发由 Java 转向 Kotlin 降低了一些门槛。但还有一些不同的写法需要我们注意，这篇文章我们就来看看 Kotlin 里那些「不是那么写的」地方。
 
 ### Constructor
 
@@ -11,9 +11,9 @@ Kotlin 是一门和 Java 很类似的面向对象语言，很多概念都是相�
 public class User {
   int id;
   String name;
-  public User(int newId, String newName) {
-    id = newId;
-    name = newName;
+  public User(int id, String name) {
+    this.id = id;
+    this.name = name;
   }
 }
 ```
@@ -23,9 +23,9 @@ public class User {
 class User {
   val id: Int
   val name: String
-  constructor(newId: Int, newName: String) {
-    id = newId
-    name = newName
+  constructor(id: Int, name: String) {
+    this.id = id
+    this.name = name
   }
 }
 ```
