@@ -48,7 +48,7 @@ class User(val id: Int, val name: String) {}
 
 #### 主构造器
 
-Kotlin 中每个类只能有一个主构造器，属于类头部的一部分，位于类名之后：
+Kotlin 中每个类只能有一个主构造器，像下面这样写在类名后面：
 
 ``` kotlin
 🏝️            👇
