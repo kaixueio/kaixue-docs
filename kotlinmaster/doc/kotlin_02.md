@@ -4,7 +4,7 @@ Kotlin 作为一门年轻的高级开发语言，相比上个世纪的老大哥 
 
 ### Constructor
 
-让我们来看看两段分别用 Java 和 Kotlin 写的代码：
+上一篇中简单介绍了 Kotlin 的构造器，这一节我们具体看看 Kotlin 的构造器和 Java 有什么不一样。首先看两段分别用 Java 和 Kotlin 写的 `User` 类：
 
 ``` java
 ☕️
@@ -22,29 +22,32 @@ public class User {
 ``` kotlin
 🏝️
 class User {
+👆 // 没有 public
     val id: Int
     val name: String
          👇
     constructor(id: Int, name: String) {
+   👆 // 没有 public
         this.id = id
         this.name = name
     }
 }
 ```
 
-我们可以发现构造器的写法主要有两点不同：
+可以发现构造器的写法主要有两点不同：
 
 - Java 中构造器和类同名，Kotlin 中使用 `constructor` 表示。
 - Kotlin 构造器没有 public 修饰，因为默认可见性就是公开的，关于可见性修饰符这里我们先不展开，后面会讲到。
 
-Kotlin 除了这种和 Java 类似的构造器之外还引入了 「主构造器 primary constructor」，可以让你的代码更加直观和简洁：
+Kotlin 除了和 Java 类似的构造器之外还引入了 「主构造器 primary constructor」，可以让你的代码更加直观和简洁：
 
 ``` kotlin
 🏝️       👇 // 没有 constructor
 class User(val id: Int, val name: String) {}
+            👆 // 构造器参数直接作为属性声明
 ```
 
-而和 Java 比较类似的构造器在 Kotlin 中称之为 「次构造器 secondary constructor」，接下来我们分别看看这两种构造器。
+而和 Java 比较类似的构造器在 Kotlin 中称之为 「次构造器 secondary constructor」，接下来分别看看这两种构造器。
 
 #### 主构造器
 
@@ -55,7 +58,7 @@ Kotlin 中每个类只能有一个主构造器，像下面这样写在类名后�
 class User constructor(name: String) {}
 ```
 
-如果需要限制构造器的可见性，直接放在 `constructor` 前面：
+如果需要限制构造器的可见性，直接放在 `constructor` 前面，关于可见性本文后面会讲到：
 
 ``` kotlin
 🏝️           👇
@@ -69,7 +72,7 @@ class User private constructor(name: String) {}
 class User @JvmOverloads constructor(name: String, sex: String = "male")
 ```
 
-这里 `@JvmOverloads` 表示在 jvm 中生成重载的两个构造方法，简单说就是在 Java 中创建 `User` 对象时，既可以传两个参数，也可以只传第一个参数，只传第一个参数时第二个参数为默认值：
+这里 `@JvmOverloads` 表示在 Jvm 中生成重载的两个构造方法，简单说就是在 Java 中创建 `User` 对象时，既可以传两个参数，也可以只传第一个参数，此时第二个参数为默认值：
 
 ``` java
 ☕️
@@ -77,7 +80,7 @@ new User("Kate", "female");
 new User("Kate");
 ```
 
-当不需要修饰时可以省略掉关键字 `constructor`：
+当不需要修饰构造器时可以省略掉关键字 `constructor`：
 
 ``` kotlin
 🏝️       👇
@@ -95,7 +98,7 @@ init {
 }
 ```
 
-初始化代码块由 init 关键字和一对大括号构成，这其实不是 Kotlin 创造的新概念，对应的 Java 在类中也有类似的功能，也可以用来完成初始化操作：
+初始化代码块由 init 关键字和一对大括号构成，这其实不是 Kotlin 创造的新概念，对应的 Java 在类中也有类似的功能，用来完成初始化操作：
 
 ``` java
 ☕️
@@ -121,6 +124,7 @@ class Sample {
 ``` kotlin
 🏝️
 class Sample {
+       👇
     companion object {
          👇
         init {
@@ -144,7 +148,7 @@ class Sample {
     }
     ```
 
-    当创建上面这个类的实例时输出如下：
+    实例化时输出：
 
     ``` bash
     First init block.
@@ -167,7 +171,7 @@ class Sample {
     }
     ```
 
-    当创建上面这个类的实例时输出如下：
+    实例化时输出：
 
     ``` bash
     First property.
@@ -192,17 +196,18 @@ class Sample {
 
 ##### 主构造器属性声明
 
-Kotlin 还有一种简洁的写法用于将主构造器中的参数声明为属性，并用参数值初始化属性：
+Kotlin 还有一种简洁的写法用于将主构造器中的参数声明为属性，并用参数值初始化：
 
 ``` kotlin
 🏝️             👇                👇
 class User(val name: String, val age: Int) {}
+           👆 // val/var 表明声明为属性
 ```
 
 这种写法等价于：
 
 ``` kotlin
-🏝️
+🏝️       👇 // 没有 val/var
 class User(name: String, age: Int) {
          👇
     val name: String = name
@@ -232,7 +237,7 @@ public class User {
 
 #### 次构造器
 
-Kotlin 中的次构造器和 Java 类似写在类中，通过 `constructor` 表示，并且关键字不可以省略：
+Kotlin 中的次构造器和 Java 类似，写在类中，通过 `constructor` 表示并且不可以省略：
 
 ``` kotlin
 🏝️
@@ -246,7 +251,7 @@ class User {
 }
 ```
 
-写次构造器时，如果存在主构造器，需要通过代理的方式引用到主构造器：
+写次构造器时，如果存在主构造器，需要调用到主构造器，在括号后面加上 `: this()`：
 
 ``` kotlin
 🏝️
@@ -259,7 +264,7 @@ class User(val name: String) {
 }
 ```
 
-这里的代理可以理解为调用，就是说次构造器都必须调用到主构造器，Java 中也有类似的概念：
+Java 中也有类似的概念：
 
 ``` java
 ☕️
@@ -277,7 +282,7 @@ class Sample {
 
 由于 Java 中没有主次构造器的概念，所以调用别的构造器不是强制的。
 
-前面讲的属于直接代理主构造器，也可以通过间接的方式代理主构造器：
+前面讲的属于直接调用主构造器，也可以通过间接的方式调用主构造器：
 
 ``` kotlin
 🏝️
@@ -295,9 +300,9 @@ class User(val name: String) {
 }
 ```
 
-这段代码里，第二个次构造器就是通过代理第一个次构造器间接代理了主构造器。在代理构造器时，通过 this 关键字引用别的构造器，通过参数定位具体的构造器。
+这段代码里，第二个次构造器就是通过调用第一个次构造器间接调用了主构造器。通过 `this` 关键字引用别的构造器，通过参数定位具体的构造器。
 
-- 被代理构造器的初始化代码总是先执行，而初始化代码块属于主构造器的一部分，所以初始化代码块在所有的次构造器代码之前执行：
+- 被调用构造器的初始化代码总是先执行，而初始化代码块属于主构造器的一部分，所以初始化代码块在所有的次构造器之前执行：
 
     ``` kotlin
     🏝️
@@ -320,7 +325,7 @@ class User(val name: String) {
     Secondary constructor.
     ```
 
-- 即使没有声明主构造器，初始化代码块也先于次构造器执行，这时次构造器相当于代理了一个空的主构造器：
+- 即使没有声明主构造器，初始化代码块也先于次构造器执行，这时次构造器相当于调用了一个空的主构造器：
 
     ``` kotlin
     🏝️
