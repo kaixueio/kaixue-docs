@@ -771,8 +771,8 @@ fun test() {
 
 那在实际使用中，`object`、`companion object` 和 top-level 中该选择哪一种呢？简单来说按照下面这两个条件判断：
 
-- 如果想写工具类的功能，直接创建 top-level 的函数，放在文件中
-- 如果需要继承别的类或者实现接口，就用 `object` 和 `companion object`
+- 如果想写工具类的功能，直接创建 top-level 的函数，放在文件中。
+- 如果需要继承别的类或者实现接口，就用 `object` 和 `companion object`。
 
 ### 常量
 
@@ -801,12 +801,12 @@ class Sample {
 
 发现不同点有：
 
-- Kotlin 的常量必须声明在类的伴随对象内，因为常量是静态的
-- Kotlin 新增了修饰常量的 `const` 关键字
+- Kotlin 的常量必须声明在类的伴随对象内，因为常量是静态的。
+- Kotlin 新增了修饰常量的 `const` 关键字。
 
 除此之外还有一个区别：
 
-- Kotlin 中只有基本类型和 String 类型可以声明成常量
+- Kotlin 中只有基本类型和 String 类型可以声明成常量。
 
 原因是 Kotlin 中的常量指的是 「compile-time constant 编译时常量」。它的意思是「编译器在编译的时候就知道这个东西在每个调用处的实际值」，因此可以在编译时直接把这个值硬编码到代码里使用的地方。
 
@@ -918,9 +918,9 @@ Object[] objs = strs; // success
 
 大多数编程语言都有集合这个数据结构，用来表示一组数目可变、类型相同的数据。常见的集合类型有三种：`List`、`Set` 和 `Map`，它们的含义分别如下：
 
-1. `List` 以固定顺序存储一组元素，元素可以重复
-2. `Set` 存储一组互不相等的元素，通常没有固定顺序
-3. `Map` 存储 键-值 对的数据集合，键互不相等，但不同的键可以对应相同的值
+- `List` 以固定顺序存储一组元素，元素可以重复。
+- `Set` 存储一组互不相等的元素，通常没有固定顺序。
+- `Map` 存储 键-值 对的数据集合，键互不相等，但不同的键可以对应相同的值。
 
 ##### List
 
@@ -1038,9 +1038,9 @@ map["key1"] = 2
 
 上面修改 `Map` 值的例子中，创建函数用的是 `mutableMapOf()` 方法而不是 `mapOf()`，难道只有 `mutableMapOf()` 创建的才可以修改吗？是的，Kotlin 中集合分为两种类型：只读的和可变的。只读的集合在创建的时候就要确定好值，创建好后集合的 size 和元素值都不能改变。
 
-- `listOf()` 创建不可变的 `List`，`mutableListOf()` 创建可变的 `List`
-- `setOf()` 创建不可变的 `Set`，`mutableSetOf()` 创建可变的 `Set`
-- `mapOf()` 创建不可变的 `Map`，`mutableMapOf()` 创建可变的 `Map`
+- `listOf()` 创建不可变的 `List`，`mutableListOf()` 创建可变的 `List`。
+- `setOf()` 创建不可变的 `Set`，`mutableSetOf()` 创建可变的 `Set`。
+- `mapOf()` 创建不可变的 `Map`，`mutableMapOf()` 创建可变的 `Map`。
 
 可以看到，有 mutable 前缀的方法创建的可变的集合。不可变的集合可以通过 `toMutable*()` 系方法转换成可变的集合：
 
@@ -1099,8 +1099,8 @@ map.toMutableMap()
 
 这看起来和 `Iterable` 一样呀，为啥要多此一举使用 `Sequence` 呢？因为 `Sequence` 在两点上实现和 `Iterable` 不一样：
 
-- 调用处理函数处理元素时，`Iterable` 是立即执行， `Sequence` 是懒加载
-- 调用多个处理函数时，`Iterable` 是一个函数遍历完所有元素后再执行下一个函数，`Sequence` 是一个元素执行完所有函数后再遍历下一个元素
+- 调用处理函数处理元素时，`Iterable` 是立即执行， `Sequence` 是懒加载。
+- 调用多个处理函数时，`Iterable` 是一个函数遍历完所有元素后再执行下一个函数，`Sequence` 是一个元素执行完所有函数后再遍历下一个元素。
 
 emmm...好像并不知道是什么意思。没关系，我们结合例子看看这两点不同。
 
@@ -1207,8 +1207,8 @@ emmm...好像并不知道是什么意思。没关系，我们结合例子看看�
 
 在数据比较少时，`Sequence` 相比 `Iterable` 的性能提升不怎么明显，而且为了实现懒加载反而有一些额外性能消耗，带来的收益不一定比成本大。使用的时候该怎么选，简单来说就是：
 
-- 数据量大、遍历函数多，使用 `Sequence`
-- 数据量小、遍历函数少，使用 `Iterable`
+- 数据量大、遍历函数多，使用 `Sequence`。
+- 数据量小、遍历函数少，使用 `Iterable`。
 
 #### 对比
 
@@ -1222,10 +1222,10 @@ Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数�
 
 讲完了数据集合，我们再看看 Kotlin 中的可见性修饰符，Kotlin 中有四种可见性修饰符：`public` `private ` `protected` `internal`：
 
-- `public `：公开，可见性最大，哪里都可以引用
-- `private`：私有，可见性最小，仅对所在类和所在文件可见
-- `protected`：保护，相当于 `private` + 子类可见
-- `internal`：内部，仅对 module 内可见
+- `public `：公开，可见性最大，哪里都可以引用。
+- `private`：私有，可见性最小，仅对所在类和所在文件可见。
+- `protected`：保护，相当于 `private` + 子类可见。
+- `internal`：内部，仅对 module 内可见。
 
 相比 Java 少了一个包内可见修饰符，多了一个 `internal`「module 内可见」。这一节我们结合例子讲讲 Kotlin 这四种可见性修饰符，以及 Kotlin 和 Java 的可见性修饰符的不同。先来看看 `public`：
 
@@ -1299,8 +1299,8 @@ public void hideMethod() {
 
 Java 中的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的可见性修饰符是 `internal`「module  内可见」。为什么会弃用掉包内可见？我觉得有这几个原因：
 
-- Kotlin 鼓励创建 top-level 方法和属性，一个源码文件可以包含多个类，使得 Kotlin 的源码结构更加扁平化，包结构不再像 Java 中那么重要
-- 为了代码的解耦和可维护性，module 越来越多、越来越小，使得 `internal` 「module 内可见」已经可以满足我们对于代码封装的需求
+- Kotlin 鼓励创建 top-level 方法和属性，一个源码文件可以包含多个类，使得 Kotlin 的源码结构更加扁平化，包结构不再像 Java 中那么重要。
+- 为了代码的解耦和可维护性，module 越来越多、越来越小，使得 `internal` 「module 内可见」已经可以满足我们对于代码封装的需求。
 
 #### `protected`
 
@@ -1311,8 +1311,8 @@ Java 中的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近
 
 #### `private`
 
-- Java 中的 `private` 表示类中可见，外部包含类可见
-- Kotlin 中的 `private` 表示类中或所在文件内可见，外部包含类不可见
+- Java 中的 `private` 表示类中可见，外部包含类可见。
+- Kotlin 中的 `private` 表示类中或所在文件内可见，外部包含类不可见。
 
 `private` 在 Java 和 Kotlin 中的区别：
 
