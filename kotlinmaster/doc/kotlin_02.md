@@ -1207,9 +1207,7 @@ private val result = impl.number * 2
    }
    ```
 
-3. `companion obj` 可以实现接口吗？
-
-4. 下面这段代码有没有问题？为什么？
+3. 下面这段代码有没有问题？为什么？
 
    ``` kotlin
    🏝️
