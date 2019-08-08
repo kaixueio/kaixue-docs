@@ -4,7 +4,7 @@ Kotlin 作为一门年轻的高级开发语言，相比上个世纪的老大哥 
 
 ### Constructor
 
-上一篇中简单介绍了 Kotlin 的构造器，这一节我们具体看看 Kotlin 的构造器和 Java 有什么不一样。首先看两段分别用 Java 和 Kotlin 写的 `User` 类：
+上一篇中简单介绍了 Kotlin 的构造器，这一节具体看看 Kotlin 的构造器和 Java 有什么不一样。首先看两段分别用 Java 和 Kotlin 写的 `User` 类：
 
 - Java
 
@@ -41,7 +41,7 @@ Kotlin 作为一门年轻的高级开发语言，相比上个世纪的老大哥 
 可以发现构造器的写法主要有两点不同：
 
 - Java 中构造器和类同名，Kotlin 中使用 `constructor` 表示。
-- Kotlin 构造器没有 public 修饰，因为默认可见性就是公开的，关于可见性修饰符这里我们先不展开，后面会讲到。
+- Kotlin 构造器没有 public 修饰，因为默认可见性就是公开的，关于可见性修饰符这里先不展开，后面会讲到。
 
 Kotlin 除了和 Java 类似的构造器之外还引入了 「主构造器 primary constructor」，可以让你的代码更加直观和简洁：
 
@@ -374,7 +374,7 @@ class User(val name: String) {
 
 ### `final`
 
-上一篇在「 `var` 和 `val`」 这一节中讲到 Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能修改。这里我们具体对比下 Java 和 Kotlin 中的只读变量：
+上一篇在「 `var` 和 `val`」 这一节中讲到 Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能修改。这里具体对比下 Java 和 Kotlin 中的只读变量：
 
 - Java
 
@@ -473,7 +473,7 @@ any.isEmpty // 👈 没有括号
 
 ### `static` property / function
 
-前面讲的 `var` / `val` 变量都是非静态变量，必须先创建一个实例对象才能使用，如果我们想通过类直接引用，就需要用到静态变量和方法。接下来看看 Kotlin 中的静态变量和方法：
+前面讲的 `var` / `val` 变量都是非静态变量，必须先创建一个实例对象才能使用，如果想通过类直接引用，就需要用到静态变量和方法。接下来看看 Kotlin 中的静态变量和方法：
 
 #### Kotlin 中的静态变量和方法
 
@@ -719,7 +719,7 @@ class A {
 }
 ```
 
-这就是我们这节最开始讲到的，和 Java 静态变量或方法的等价写法：`companion object`。
+这就是这节最开始讲到的，和 Java 静态变量或方法的等价写法：`companion object`。
 
 #### top-level property / function 声明
 
@@ -747,7 +747,7 @@ topLevelFunction()
 
 ##### 命名相同的顶级函数
 
-顶级函数不写在类中可能有一个问题：如果在不同文件中声明命名相同的函数，使用的时候会不会混淆？我们来看一个例子：
+顶级函数不写在类中可能有一个问题：如果在不同文件中声明命名相同的函数，使用的时候会不会混淆？来看一个例子：
 
 * 在 `org.kotlinmaster.library` 包下有一个方法 method：
 
@@ -771,7 +771,7 @@ topLevelFunction()
   }
   ```
 
-我们看看在使用的时候如果同时调用这两个同名方法会怎么样：
+在使用的时候如果同时调用这两个同名方法会怎么样：
 
 ```kotlin
 🏝️
@@ -831,7 +831,7 @@ fun test() {
 
 原因是 Kotlin 中的常量指的是 「compile-time constant 编译时常量」，它的意思是「编译器在编译的时候就知道这个东西在每个调用处的实际值」，因此可以在编译时直接把这个值硬编码到代码里使用的地方。
 
-而非基础和 String 类型的变量，可以通过调用对象的方法改变对象内部的值，这样这个变量就不是常量了，我们来看一个 Java 的例子，比如一个 User 类：
+而非基础和 String 类型的变量，可以通过调用对象的方法改变对象内部的值，这样这个变量就不是常量了，来看一个 Java 的例子，比如一个 User 类：
 
 ``` java
 ☕️
@@ -845,7 +845,7 @@ public class User {
 }
 ```
 
-我们在使用的地方声明一个 `static final` 的 User，它是不能二次赋值的：
+在使用的地方声明一个 `static final` 的 User，它是不能二次赋值的：
 
 ``` java
 ☕️
@@ -1100,7 +1100,7 @@ map.toMutableMap()
 
 #### `Sequence`
 
-除了集合 Kotlin 还引入了一个新的容器类型 `Sequence`，它和 `Iterable` 一样用来遍历一组数据并可以对每个元素进行特定的处理，我们先来看看如何创建一个 `Sequence`。
+除了集合 Kotlin 还引入了一个新的容器类型 `Sequence`，它和 `Iterable` 一样用来遍历一组数据并可以对每个元素进行特定的处理，先来看看如何创建一个 `Sequence`。
 
 ##### 创建
 
@@ -1145,7 +1145,7 @@ emmm...好像并不知道是什么意思。没关系，我们结合例子看看�
 
 ##### 懒加载
 
-我们来看一个例子：将一组字符串转大写输出。
+来看一个例子：将一组字符串转大写输出。
 
 -  `Iterable` ：
 
@@ -1260,7 +1260,7 @@ emmm...好像并不知道是什么意思。没关系，我们结合例子看看�
 - `protected`：保护，相当于 `private` + 子类可见。
 - `internal`：内部，仅对 module 内可见。
 
-相比 Java 少了一个包内可见修饰符，多了一个 `internal`「module 内可见」。这一节我们结合例子讲讲 Kotlin 这四种可见性修饰符，以及在 Kotlin 和 Java 中的不同。先来看看 `public`：
+相比 Java 少了一个包内可见修饰符，多了一个 `internal`「module 内可见」。这一节结合例子讲讲 Kotlin 这四种可见性修饰符，以及在 Kotlin 和 Java 中的不同。先来看看 `public`：
 
 #### `public`
 
@@ -1333,7 +1333,7 @@ public void hideMethod() {
 Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的可见性修饰符是 `internal`「module  内可见」。为什么会弃用掉包内可见？我觉得有这几个原因：
 
 - Kotlin 鼓励创建 top-level 方法和属性，一个源码文件可以包含多个类，使得 Kotlin 的源码结构更加扁平化，包结构不再像 Java 中那么重要。
-- 为了代码的解耦和可维护性，module 越来越多、越来越小，使得 `internal` 「module 内可见」已经可以满足我们对于代码封装的需求。
+- 为了代码的解耦和可维护性，module 越来越多、越来越小，使得 `internal` 「module 内可见」已经可以满足对于代码封装的需求。
 
 #### `protected`
 
