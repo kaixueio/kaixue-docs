@@ -1,38 +1,42 @@
 ## Kotlin 里那些「不是那么写的」
 
-Kotlin 作为一门年轻的高级开发语言，相比上个世纪的老大哥 Java，在代码的简洁性和可维护性上有不少的提高。Java 中四五行的代码逻辑，Kotlin 可能一行就搞定了，还有一些容易混淆出错的逻辑，Kotlin 给出了更加清晰合理的控制。这篇文章就让我们对比 Java 来看看 Kotlin 中「不是那么写的」地方。
+Kotlin 作为一门年轻的高级开发语言，相比上个世纪的老大哥 Java，在代码的简洁性和可维护性上都有不少的提高。Java 中四五行的代码逻辑，Kotlin 可能一行就搞定了，还有一些容易混淆出错的逻辑，Kotlin 给出了更加清晰合理的控制。这篇文章就让我们对比 Java 来看看 Kotlin 中「不是那么写的」地方。
 
 ### Constructor
 
 上一篇中简单介绍了 Kotlin 的构造器，这一节我们具体看看 Kotlin 的构造器和 Java 有什么不一样。首先看两段分别用 Java 和 Kotlin 写的 `User` 类：
 
-``` java
-☕️
-public class User {
-    int id;
-    String name;
-      👇    👇
-    public User(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-}
-```
+- Java
 
-``` kotlin
-🏝️
-class User {
-👆 // 没有 public
-    val id: Int
-    val name: String
-         👇
-    constructor(id: Int, name: String) {
-   👆 // 没有 public
-        this.id = id
-        this.name = name
+    ``` java
+    ☕️
+    public class User {
+        int id;
+        String name;
+          👇    👇
+        public User(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
     }
-}
-```
+    ```
+
+- Kotlin
+
+    ``` kotlin
+    🏝️
+    class User {
+    👆 // 没有 public
+        val id: Int
+        val name: String
+             👇
+        constructor(id: Int, name: String) {
+       👆 // 没有 public
+            this.id = id
+            this.name = name
+        }
+    }
+    ```
 
 可以发现构造器的写法主要有两点不同：
 
@@ -58,7 +62,7 @@ Kotlin 中每个类只能有一个主构造器，像下面这样写在类名后�
 class User constructor(name: String) {}
 ```
 
-如果需要限制构造器的可见性，直接放在 `constructor` 前面，关于可见性本文后面会讲到：
+如果需要限制构造器的可见性，直接写在 `constructor` 前面，关于可见性本文后面会讲到：
 
 ``` kotlin
 🏝️           👇
@@ -119,7 +123,7 @@ class Sample {
 }
 ```
 
-在 Kotlin 中类的静态初始化代码块移到了 companion object 「伴生对象」中，至于 companion 是什么，这里先不展开，后文会讲到：
+在 Kotlin 中类的静态初始化代码块移到了 `companion object` 「伴生对象」中，至于 `companion object` 是什么，这里先不展开，后文会讲到：
 
 ``` kotlin
 🏝️
@@ -184,6 +188,7 @@ class Sample {
 
     ``` kotlin
     🏝️
+                👇
     class User(name: String) {
                            👇
         val length: Int = name.length
@@ -251,6 +256,8 @@ class User {
 }
 ```
 
+##### 次构造器需要调用主构造器
+
 写次构造器时，如果存在主构造器，需要调用到主构造器，在括号后面加上 `: this()`：
 
 ``` kotlin
@@ -301,6 +308,10 @@ class User(val name: String) {
 ```
 
 这段代码里，第二个次构造器就是通过调用第一个次构造器间接调用了主构造器。通过 `this` 关键字引用别的构造器，通过参数定位具体的构造器。
+
+##### 调用顺序
+
+初始化代码块永远在次构造器之前执行：
 
 - 被调用构造器的初始化代码总是先执行，而初始化代码块属于主构造器的一部分，所以初始化代码块在所有的次构造器之前执行：
 
@@ -412,7 +423,7 @@ class User(val name: String) {
 
 👇
 val size: Int
-		get() { // 👈
+	get() { // 👈
         return items.size
     }
 ```
@@ -424,28 +435,32 @@ val size: Int
 val size get() = items.size
 ```
 
-不过这个属于特殊用法，一般情况下 `val` 还是对应于 Java 中的 `final` 使用的。一个可能的应用是用于简化一些没有参数的属性类方法调用：
+不过这个属于特殊用法，一般情况下 `val` 还是对应于 Java 中的 `final` 使用的。
 
-``` kotlin
-🏝️
+重写 `val` 变量 `getter()` 方法一个可能的应用是用于简化一些没有参数的属性类方法调用：
 
-👇
-fun isEmpty(): Boolean {
-    return items.size == 0
-}
-```
+- 方法形式：
 
-可以简化为：
-
-``` kotlin
-🏝️
-
-👇        👇 // 没有括号
-val isEmpty: Boolean
-		get() {
+    ``` kotlin
+    🏝️
+    
+    👇
+    fun isEmpty(): Boolean {
         return items.size == 0
     }
-```
+    ```
+
+- `val` 形式：
+
+    ``` kotlin
+    🏝️
+    
+    👇        👇 // 没有括号
+    val isEmpty: Boolean
+    		get() {
+            return items.size == 0
+        }
+    ```
 
 上面的方法和属性的调用方式分别如下：
 
@@ -458,65 +473,69 @@ any.isEmpty // 👈 没有括号
 
 ### `static` property / function
 
+前面讲的 `var` / `val` 变量都是非静态变量，必须先创建一个实例对象才能使用，如果我们想通过类直接引用，就需要用到静态变量和方法。接下来看看 Kotlin 中的静态变量和方法：
+
 #### Kotlin 中的静态变量和方法
 
-在 Java 中我们定义类级别的属性或者方法是通过在类中定义静态属性或者方法：
+Java 和 Kotlin 中声明静态变量和方法：
 
-``` java
-☕️
-class A {
-            👇
-    public static int property = 1;
-            👇
-    public static void method() {
-        println("A.method()")
-    }
-}
-```
+- 在 Java 中：
 
-这样就可以不需要创建该类的实例，直接通过类名调用静态变量或者方法：
-
-``` java
-☕️
-              👇
-int variable = A.property;
-👇
-A.method();
-```
-
-那么在 Kotlin 中如果我们想实现类似的功能该怎么做呢，在类中我们可以创建一个叫作 `companion object` 的东西，将我们想定义的静态属性和方法放在其中：
-
-``` kotlin
-🏝️
-class A {
-       👇 // 新东西
-    companion object {
-        👇 // 和类中声明相似
-        val property: Int = 1
-        fun method() {
+    ``` java
+    ☕️
+    class A {
+                👇
+        public static int property = 1;
+                👇
+        public static void method() {
             println("A.method()")
         }
     }
-}
-```
+    ```
 
-这样我们在调用的时候可以像 Java 的静态变量和方法一样去调用：
+    这样就可以不需要创建该类的实例，直接通过类名调用：
 
-``` kotlin
-🏝️
-              👇
-val variable = A.property
-👇
-A.method()
-```
+    ``` java
+    ☕️
+                  👇
+    int variable = A.property;
+    👇
+    A.method();
+    ```
 
-这个 `companion object`  是什么意思呢，为什么要使用这种方式定义类级别的变量或者方法，我们先来看看什么是 object。
+- 在 Kotlin 中如果想实现类似的功能该怎么做呢，在类中可以创建一个叫作 `companion object` 的东西，将想定义的静态属性和方法放在其中：
+
+    ``` kotlin
+    🏝️
+    class A {
+           👇 // 新东西
+        companion object {
+            👇 // 和类中声明相似
+            val property: Int = 1
+            fun method() {
+                println("A.method()")
+            }
+        }
+    }
+    ```
+
+    这样在调用的时候可以像 Java 一样去调用：
+
+    ``` kotlin
+    🏝️
+                  👇
+    val variable = A.property
+    👇
+    A.method()
+    ```
+
+    这个 `companion object`  是什么意思呢，为什么要使用这种方式定义类级别的变量或者方法，先来看看什么是 object。
 
 #### `object`
 
 ##### `object` 创建单例类
 
-`object` 字面意思是对象，与 Java 中通过 `new` 创建一个类的对象不同，Kotlin 中可以通过 `object` 直接创建一个对象实例：
+`object` 字面意思是对象，与 Java 中需要通过 `new` 创建一个对象不同，Kotlin 中可以通过 `object` 直接创建一个对象实例：
 
 ``` kotlin
 🏝️
@@ -543,7 +562,7 @@ A.method()
 
 看着是不是很像 Java 中的单例，`object` 一个很重要的用途就是声明一个单例类。
 
-我们来看看 Java 中要实现上面这个单例类需要怎么做：
+对比看看 Java 中要实现上面这个单例类需要怎么做：
 
 ``` java
 ☕️
@@ -580,7 +599,7 @@ A.getInstance().method()
 
 可以看到 Java 中为了实现单例类写了大量的模版代码，在没有 Kotlin 的时候大家写多了也就习惯了，直到遇见了 Kotlin 才发现单例类原来可以这么简单，而且调用也比较简洁，不需要 getInstance() 方法。
 
-通过 `object` 创建的对象也可以继承别的类或者接口，和创建一个类是一样的：
+通过 `object` 创建的对象也可以继承别的类或者接口，和创建类是一样的：
 
 ``` kotlin
 🏝️
@@ -608,7 +627,7 @@ object C : A(), B {
 
 ##### `object` 创建匿名类
 
-有时我们需要改变类方法的实现，但因为改动很少不想创建该类的子类，Java 中是通过创建匿名内部类来实现这个目的：
+有时需要改变类方法的实现，但因为改动很少不想创建该类的子类，Java 中是通过创建匿名内部类来实现的：
 
 ``` java
 ☕️                                              👇 
@@ -620,7 +639,7 @@ ViewPager.SimpleOnPageChangeListener listener = new ViewPager.SimpleOnPageChange
 };
 ```
 
-Kotlin 中通过 `object` 创建一个继承该类的对象和对象表达式来实现：
+Kotlin 中通过对象表达式来表示，对象表达式简单说就是 `=` 加上 `object` 声明的对象：
 
 ``` kotlin
 🏝️                 👇 // 没有 object 名字
@@ -648,7 +667,7 @@ object: ViewPager.SimpleOnPageChangeListener() {
 
 ##### `companion object`
 
-前面我们说到访问对象中的变量或者方法时直接通过类名引用，就像 Java 的静态变量和方法一样，不同的是不需要在每个变量和方法前面用 `static` 修饰，因为 `object` 创建的对象内所有变量和方法默认都是静态的，没得选。如果我们只想让类中的一部分方法和变量是静态的该怎么做呢：
+前面说到访问 `object` 中的变量或者方法时直接通过类名引用，就像 Java 的静态变量和方法一样，不同的是不需要在每个变量和方法前面用 `static` 修饰，因为 `object` 创建的对象内所有变量和方法默认都是静态的，没得选。如果只想让类中的一部分方法和变量是静态的该怎么做呢：
 
 ``` kotlin
 🏝️
@@ -660,7 +679,7 @@ class A {
 }
 ```
 
-如上，我们可以在类中创建一个对象，这样我们把需要静态的变量或方法放在内部对象 B 中，外部可以通过如下的方式调用该静态变量：
+如上，可以在类中创建一个对象，把需要静态的变量或方法放在内部对象 B 中，外部可以通过如下的方式调用该静态变量：
 
 ``` kotlin
 🏝️
@@ -704,7 +723,7 @@ class A {
 
 #### top-level property / function 声明
 
-不同于 Java 所有的方法和变量都必须写在类中，Kotlin 可以在类外写变量和方法，这个称之为「top-level property/function」即顶层声明。
+不同于 Java 所有的方法和变量都必须写在类中，Kotlin 可以在类外写变量和方法，这个称之为「top-level property/function」即「顶层声明」。
 
 ``` kotlin
 🏝️
@@ -724,7 +743,7 @@ import com.hencoder.plus.topLevelFunction // 👈 直接 import 方法
 topLevelFunction()
 ```
 
-写在顶级的方法或者变量有个好处，在 Android Studio 中写代码时，IDE 很容易根据你写的方法前几个字母自动联想出相应的方法，提高了写代码的效率，而且可以防止项目中的重复代码。
+写在顶级的方法或者变量有个好处，在 Android Studio 中写代码时，IDE 很容易根据你写的方法前几个字母自动联想出相应的方法，提高了写代码的效率，而且可以减少项目中的重复代码。
 
 ##### 命名相同的顶级函数
 
@@ -752,7 +771,7 @@ topLevelFunction()
   }
   ```
 
-我们看看在使用的时候如果同时调用这两个同名方法：
+我们看看在使用的时候如果同时调用这两个同名方法会怎么样：
 
 ```kotlin
 🏝️
@@ -765,11 +784,11 @@ fun test() {
 }
 ```
 
-可以看到当出现两个同名顶级函数时，会通过加上包前缀来区分，这也印证了顶级函数是属于包的特性。
+可以看到当出现两个同名顶级函数时，IDE 会自动加上包前缀来区分，这也印证了顶级函数是属于包的特性。
 
 #### 对比
 
-那在实际使用中，`object`、`companion object` 和 top-level 中该选择哪一种呢？简单来说按照下面这两个条件判断：
+那在实际使用中，在 `object`、`companion object` 和 top-level 中该选择哪一个呢？简单来说按照下面这两个条件判断：
 
 - 如果想写工具类的功能，直接创建 top-level 的函数，放在文件中。
 - 如果需要继承别的类或者实现接口，就用 `object` 和 `companion object`。
@@ -778,26 +797,28 @@ fun test() {
 
 除了上面讲到的静态变量和方法会用到 `static`，Java 中声明常量时也会用到：
 
-``` java
-☕️
-public class Sample {
-            👇     👇
-    public static final int CONST_NUMBER = 1;
-}
-```
+- Java 中声明常量：
 
-然后看看 Kotlin 中怎么声明一个常量：
-
-``` kotlin
-🏝️
-class Sample {
-       👇 // 在 companion object 内
-    companion object {
-         👇                     👇 // 基础类型
-        const val CONST_NUMBER = 1
+    ``` java
+    ☕️
+    public class Sample {
+                👇     👇
+        public static final int CONST_NUMBER = 1;
     }
-}
-```
+    ```
+
+- Kotlin 中声明常量：
+
+    ``` kotlin
+    🏝️
+    class Sample {
+           👇 // 在 companion object 内
+        companion object {
+             👇                     👇 // 基础类型
+            const val CONST_NUMBER = 1
+        }
+    }
+    ```
 
 发现不同点有：
 
@@ -808,7 +829,7 @@ class Sample {
 
 - Kotlin 中只有基本类型和 String 类型可以声明成常量。
 
-原因是 Kotlin 中的常量指的是 「compile-time constant 编译时常量」。它的意思是「编译器在编译的时候就知道这个东西在每个调用处的实际值」，因此可以在编译时直接把这个值硬编码到代码里使用的地方。
+原因是 Kotlin 中的常量指的是 「compile-time constant 编译时常量」，它的意思是「编译器在编译的时候就知道这个东西在每个调用处的实际值」，因此可以在编译时直接把这个值硬编码到代码里使用的地方。
 
 而非基础和 String 类型的变量，可以通过调用对象的方法改变对象内部的值，这样这个变量就不是常量了，我们来看一个 Java 的例子，比如一个 User 类：
 
@@ -844,45 +865,49 @@ user.name = "Lisi";
 
 ### 数组和集合
 
-前面讲了 Kotlin 中的对象和常量，接下来我们看看另一个编程中常见的主题：数组和集合。
+前面讲了 Kotlin 中的对象和常量，接下来看看另一个编程中常见的主题：数组和集合。
 
 #### 数组
 
-先声明一个 String 数组，Java 中的写法：
+先声明一个 String 数组：
 
-``` java
-☕️
-String[] strs = {"a", "b", "c"};
-      👆        👆
-```
+- Java 中的写法：
 
-Kotlin 中对应的写法:
+    ``` java
+    ☕️
+    String[] strs = {"a", "b", "c"};
+          👆        👆
+    ```
 
-``` kotlin
-🏝️
-val strs: Array<String> = arrayOf("a", "b", "c")
-            👆              👆
-```
+- Kotlin 中的写法：
+
+    ``` kotlin
+    🏝️
+    val strs: Array<String> = arrayOf("a", "b", "c")
+                👆              👆
+    ```
 
 可以看到 Kotlin 中的数组是一个拥有泛型的类，创建方法也是泛型方法，和集合数据类型一样。
 
-Kotlin 中获取或者设置数组元素和 Java 一样可以使用方括号加下标的方式索引：
+##### 取值和修改
 
-``` kotlin
-🏝️
-println(strs[0])
-   👇      👆
-strs[1] = "B"
-```
+- Kotlin 中获取或者设置数组元素和 Java 一样可以使用方括号加下标的方式索引：
 
-除此之外，Kotlin 的 Array 类型还可以使用 `get()` 和 `set()` 方法取值和赋值：
+    ``` kotlin
+    🏝️
+    println(strs[0])
+       👇      👆
+    strs[1] = "B"
+    ```
 
-``` kotlin
-🏝️
-println(strs.get(0))
-     👇      👆
-strs.set(1, "B")
-```
+- 除此之外，Kotlin 的 Array 类型还可以使用 `get()` 和 `set()` 方法取值和赋值：
+
+    ``` kotlin
+    🏝️
+    println(strs.get(0))
+         👇      👆
+    strs.set(1, "B")
+    ```
 
 第二种方式有点像集合类型，这正是 Kotlin 中将数组泛型化的原因：对数组的操作像集合一样功能更强大，由于泛型化 Kotlin 可以通过扩展方法的方式给数组增加很多有用的工具方法：
 
@@ -892,25 +917,29 @@ strs.set(1, "B")
 
 这样数组的实用性就大大增加了。
 
+##### 不支持协变
+
 Kotlin 的数组编译成字节码使用的仍然是 Java 的数组，但在语言层面是泛型实现，这样会失去协变 (covariance) 特性，就是子类数组对象不能赋值给父类的数组变量：
 
-``` kotlin
-🏝️
-val strs: Array<String> = arrayOf("a", "b", "c")
-                  👆
-val anys: Array<Any> = strs // compile-error: Type mismatch
-                👆
-```
+ - Kotlin
 
-而这在 Java 中是可以的：
+    ``` kotlin
+    🏝️
+    val strs: Array<String> = arrayOf("a", "b", "c")
+                      👆
+    val anys: Array<Any> = strs // compile-error: Type mismatch
+                    👆
+    ```
 
-``` java
-☕️
-String[] strs = {"a", "b", "c"};
-  👆
-Object[] objs = strs; // success
-  👆
-```
+- 而这在 Java 中是可以的：
+
+    ``` java
+    ☕️
+    String[] strs = {"a", "b", "c"};
+      👆
+    Object[] objs = strs; // success
+      👆
+    ```
 
 关于协变的问题，这里就先不展开，后面讲泛型的时候会提到。
 
@@ -967,6 +996,14 @@ Object[] objs = strs; // success
 
 对于协变的支持与否，`List` 和数组刚好反过来了。
 
+###### 和数组的区别
+
+Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数组的元素个数不能变。那在什么时候用数组呢？
+
+这个问题在 Java 中就存在了？数组和 `List` 的功能类似，`List` 的功能更多一些，直觉应该用 `List` 。但数组也不是没有优势，基础类型 (`int[]`、`float[]`) 的数组不用自动装箱，性能好一点。
+
+在 Kotlin 中也是同样的道理，在一些性能需求比较苛刻的场景，并且元素类型是基础类型时，用数组好一点。不过这里要注意一点，Kotlin 中要用专门的基础类型数组类 (`IntArray` `FloatArray` `LongArray`) 才可以免于装箱。
+
 ##### Set
 
 - Java 中创建一个 `Set`：
@@ -1014,25 +1051,27 @@ Object[] objs = strs; // success
 
 和上面两种集合类型相似创建代码很简单，一行搞定。
 
-Kotlin 中的 Map 除了和 Java 中的一样可以使用 `get()` 根据键获取对应的值，还可以使用方括号的方式获取：
+###### 取值和修改
 
-``` kotlin
-🏝️               👇
-val value1 = map.get("key1")
-               👇
-val value2 = map["key2"]
-```
+- Kotlin 中的 Map 除了和 Java 中的一样可以使用 `get()` 根据键获取对应的值，还可以使用方括号的方式获取：
 
-类似的，Kotlin 中也可以用方括号的方式改变 `Map` 中键对应的值：
+    ``` kotlin
+    🏝️               👇
+    val value1 = map.get("key1")
+                   👇
+    val value2 = map["key2"]
+    ```
 
-``` kotlin
-🏝️            👇 // 和 mapOf() 有什么区别？下文会讲到
-val map = mutableMapOf("key1" to 1, "key2" to 2)
-    👇
-map.put("key1", 2)
-   👇
-map["key1"] = 2
-```
+- 类似的，Kotlin 中也可以用方括号的方式改变 `Map` 中键对应的值：
+
+    ``` kotlin
+    🏝️            👇 // 和 mapOf() 有什么区别？下文会讲到
+    val map = mutableMapOf("key1" to 1, "key2" to 2)
+        👇
+    map.put("key1", 2)
+       👇
+    map["key1"] = 2
+    ```
 
 ##### 可变集合/不可变集合
 
@@ -1205,33 +1244,27 @@ emmm...好像并不知道是什么意思。没关系，我们结合例子看看�
 
 可以看到，`Sequence` 执行的 `map` 操作相比 `Iterable` 少了三次，避免了不必要的转换操作。
 
+##### 对比
+
 在数据比较少时，`Sequence` 相比 `Iterable` 的性能提升不怎么明显，而且为了实现懒加载反而有一些额外性能消耗，带来的收益不一定比成本大。使用的时候该怎么选，简单来说就是：
 
 - 数据量大、遍历函数多，使用 `Sequence`。
 - 数据量小、遍历函数少，使用 `Iterable`。
 
-#### 对比
-
-Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数组的元素个数不能变。那在什么时候用数组呢？
-
-这个问题在 Java 中就存在了？数组和 `List` 的功能类似，`List` 的功能更多一些，直觉应该用 `List` 。但数组也不是没有优势，基础类型 (`int[]`、`float[]`) 的数组不用自动装箱，性能好一点。
-
-在 Kotlin 中也是同样的道理，在一些性能需求比较苛刻的场景，并且元素类型是基础类型时，用数组好一点。不过这里要注意一点，Kotlin 中要用专门的基础类型数组类 (`IntArray` `FloatArray` `LongArray`) 才可以免于装箱。
-
 ### 可见性修饰符
 
-讲完了数据集合，我们再看看 Kotlin 中的可见性修饰符，Kotlin 中有四种可见性修饰符：`public` `private ` `protected` `internal`：
+讲完了数据集合，再看看 Kotlin 中的可见性修饰符，Kotlin 中有四种可见性修饰符：`public` `private ` `protected` `internal`：
 
 - `public `：公开，可见性最大，哪里都可以引用。
 - `private`：私有，可见性最小，仅对所在类和所在文件可见。
 - `protected`：保护，相当于 `private` + 子类可见。
 - `internal`：内部，仅对 module 内可见。
 
-相比 Java 少了一个包内可见修饰符，多了一个 `internal`「module 内可见」。这一节我们结合例子讲讲 Kotlin 这四种可见性修饰符，以及 Kotlin 和 Java 的可见性修饰符的不同。先来看看 `public`：
+相比 Java 少了一个包内可见修饰符，多了一个 `internal`「module 内可见」。这一节我们结合例子讲讲 Kotlin 这四种可见性修饰符，以及在 Kotlin 和 Java 中的不同。先来看看 `public`：
 
 #### `public`
 
-Java 中如果没写可见性修饰符，表示包内可见，只有在同一个 `package` 可以引用：
+Java 中没写可见性修饰符时，表示包内可见，只有在同一个 `package` 内可以引用：
 
 ``` java
 ☕️                         👇
@@ -1268,7 +1301,7 @@ public class OtherPackageExample {
 
 `package` 外如果要引用，需要在 `class` 前加上可见性修饰符 `public` 表示公开。
 
-Kotlin 中如果不写可见性修饰符，就表示公开，和 Java 中 `public` 修饰符具有相同效果。在 Kotlin 中也可以加上 `public` 修饰符，不过 IDE 会提示你删掉，因为默认就是 `public` 效果。
+Kotlin 中如果不写可见性修饰符，就表示公开，和 Java 中 `public` 修饰符具有相同效果。在 Kotlin 中也可以加上 `public` 修饰符，不过 IDE 会提示你删掉，因为默认就是 `public`。
 
 #### `@hide`
 
@@ -1297,7 +1330,7 @@ public void hideMethod() {
 
 #### Java 的包内可见为什么没了？
 
-Java 中的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的可见性修饰符是 `internal`「module  内可见」。为什么会弃用掉包内可见？我觉得有这几个原因：
+Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的可见性修饰符是 `internal`「module  内可见」。为什么会弃用掉包内可见？我觉得有这几个原因：
 
 - Kotlin 鼓励创建 top-level 方法和属性，一个源码文件可以包含多个类，使得 Kotlin 的源码结构更加扁平化，包结构不再像 Java 中那么重要。
 - 为了代码的解耦和可维护性，module 越来越多、越来越小，使得 `internal` 「module 内可见」已经可以满足我们对于代码封装的需求。
@@ -1407,8 +1440,3 @@ Java 中的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近
    ```
 
 5. 同一个文件中，一个类的 `private` 属性可以被另一个类访问吗？
-
-
-
-
-
