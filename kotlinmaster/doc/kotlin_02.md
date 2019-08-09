@@ -26,12 +26,12 @@ Kotlin 作为一门年轻的高级开发语言，相比上个世纪的老大哥 
     ``` kotlin
     🏝️
     class User {
-    👆 // 没有 public
+    // 👆 没有 public
         val id: Int
         val name: String
              👇
         constructor(id: Int, name: String) {
-       👆 // 没有 public
+     // 👆 没有 public
             this.id = id
             this.name = name
         }
@@ -46,9 +46,9 @@ Kotlin 作为一门年轻的高级开发语言，相比上个世纪的老大哥 
 Kotlin 除了和 Java 类似的构造器之外还引入了 「主构造器 primary constructor」，可以让你的代码更加直观和简洁：
 
 ``` kotlin
-🏝️       👇 // 没有 constructor
+🏝️    // 👇 没有 constructor
 class User(val id: Int, val name: String) {}
-            👆 // 构造器参数直接作为属性声明
+         // 👆 构造器参数直接作为属性声明
 ```
 
 而和 Java 比较类似的构造器在 Kotlin 中称之为 「次构造器 secondary constructor」。一个区分主构造器和次构造器的简单办法是，声明在类的大括号里面的是次构造器，声明在外面的是主构造器。接下来分别看看这两种构造器。
@@ -210,13 +210,13 @@ Kotlin 还有一种简洁的写法用于将主构造器中的参数声明为属�
 ``` kotlin
 🏝️             👇                👇
 class User(val name: String, val age: Int) {}
-           👆 // val/var 表明声明为属性
+        // 👆 val/var 表明声明为属性
 ```
 
 这种写法等价于：
 
 ``` kotlin
-🏝️       👇 // 没有 val/var
+🏝️    // 👇 没有 val/var
 class User(name: String, age: Int) {
          👇
     val name: String = name
@@ -251,7 +251,7 @@ class User {
 🏝️
 class User(val name: String) {
     private var age: Int = 0
-                                           👇 // 这里的 this(name) 调用的是主构造器
+                                        // 👇 这里的 this(name) 调用的是主构造器
     constructor(name: String, age: Int) : this(name) {
         this.age = age
     }
@@ -305,11 +305,11 @@ class User(val name: String) {
     ``` kotlin
     🏝️
     class User constructor(name: String) {
-         👇 // 属于主构造器一部分
+      // 👇 属于主构造器一部分
         init {
             println("Init block.")
         }
-                                               👇 // 次构造器执行前先调用主构造器
+                                            // 👇 次构造器执行前先调用主构造器
         constructor(name: String, age: Int) : this(name) {
             println("Secondary constructor.")
         }
@@ -385,7 +385,7 @@ class User(val name: String) {
   
   👇
   val fina1 = 1
-            👇 // 没有 val
+         // 👇 没有 val
   fun method(final2: String) {
       println(final2)
       👇
@@ -418,7 +418,7 @@ val size: Int
 前面说到类的属性类型可以通过初始化代码进行类型推断，除此之外也可以通过 getter 方法的返回值推断，而且 Kotlin 中可以通过 `=` 直接连接函数表达式，所以上面这段代码可以简化为：
 
 ``` kotlin
-🏝️     👇 // 没有类型声明，类型根据 items.size 推断    
+🏝️  // 👇 没有类型声明，类型根据 items.size 推断    
 val size get() = items.size
 ```
 
@@ -442,7 +442,7 @@ val size get() = items.size
     ``` kotlin
     🏝️
     
-    👇        👇 // 没有括号
+    👇     // 👇 没有括号
     val isEmpty: Boolean
     		get() {
             return items.size == 0
@@ -495,9 +495,9 @@ Java 和 Kotlin 中声明静态变量和方法：
     ``` kotlin
     🏝️
     class A {
-           👇 // 新东西
+        // 👇 新东西
         companion object {
-            👇 // 和类中声明相似
+         // 👇 和类中声明相似
             val property: Int = 1
             fun method() {
                 println("A.method()")
@@ -527,9 +527,9 @@ Java 和 Kotlin 中声明静态变量和方法：
 ``` kotlin
 🏝️
 
-  👇 // class 替换成了 object
+// 👇 class 替换成了 object
 object A {
-    👇 // 和普通类中声明类似
+ // 👇 和普通类中声明类似
     val number: Int = 1
     fun method() {
         println("A.method()")
@@ -541,7 +541,7 @@ object A {
 
 ``` kotlin
 🏝️
-            👇 // 和调用静态变量类似
+         // 👇 和调用静态变量类似
 val result = A.number + 1
 👇 
 A.method()
@@ -578,7 +578,7 @@ public class A {
 调用的时候：
 
 ``` java
-☕️                👇 // 多个方法
+☕️             // 👇 多个方法
 int result = A.getInstance().number + 1;
        👇
 A.getInstance().method()
@@ -629,9 +629,9 @@ ViewPager.SimpleOnPageChangeListener listener = new ViewPager.SimpleOnPageChange
 Kotlin 中通过对象表达式来表示，对象表达式简单说就是 `=` 加上 `object` 声明的对象：
 
 ``` kotlin
-🏝️                 👇 // 没有 object 名字
+🏝️              // 👇 没有 object 名字
 val listener = object: ViewPager.SimpleOnPageChangeListener() {
-						 👆 // 「= 和 object: 」共同组成对象表达式
+		   // 👆 「= 和 object: 」共同组成对象表达式
     override fun onPageSelected(position: Int) {
         // override
     }
@@ -642,7 +642,7 @@ val listener = object: ViewPager.SimpleOnPageChangeListener() {
 
 ``` kotlin
 🏝️
-     👇 // compile error: Name expected
+  // 👇 compile error: Name expected
 object: ViewPager.SimpleOnPageChangeListener() {
     override fun onPageSelected(position: Int) {
         // override
@@ -690,8 +690,7 @@ class A {
 
 ``` kotlin
 🏝️
-A.c
-👆 // B 没了
+A.c // 👈 B 没了
 ```
 
 当有 `companion` 修饰时，对象的名字也可以省略掉：
@@ -699,7 +698,7 @@ A.c
 ``` kotlin
 🏝️
 class A {
-                   👇 // B 没了
+                // 👇 B 没了
     companion object {
         var c: Int = 0
     }
@@ -716,7 +715,7 @@ class A {
 🏝️
 package com.hencoder.plus // 👈 属于 package
 
-👇 // 不在 class/object 内
+// 不在 class/object 内
 fun topLevelFuncion() {
 }
 ```
@@ -799,9 +798,9 @@ fun test() {
     ``` kotlin
     🏝️
     class Sample {
-           👇 // 在 companion object 内
+        // 👇 在 companion object 内
         companion object {
-             👇                     👇 // 基础类型
+             👇                  // 👇 基础类型
             const val CONST_NUMBER = 1
         }
     }
@@ -954,9 +953,9 @@ Kotlin 的数组编译成字节码使用的仍然是 Java 的数组，但在语�
 - Kotlin 中创建一个列表：
 
   ``` kotlin
-  🏝️                👇 // 因为类型推断，省略类型参数 <String>
+  🏝️             // 👇 因为类型推断，省略类型参数 <String>
   val strList = listOf("a", "b", "c") // 👈 一句代码创建、添加元素
-            👆 // 类型推断，省略类型声明 :List<String>
+         // 👆 类型推断，省略类型声明 :List<String>
   ```
 
 首先能看到的是 Kotlin 中创建一个 `List` 特别的简单，一句代码搞定，有点像创建数组的代码。而且 Kotlin 中的 `List` 多了一个特性：支持 covariant (协变)。也就是说，可以把子类的 `List` 赋值给父类的 `List`：
@@ -1007,9 +1006,9 @@ Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数�
 - Kotlin 中创建相同的 `Set`：
 
   ``` kotlin
-  🏝️               👇 // 省略类型参数
+  🏝️            // 👇 省略类型参数
   val strSet = setOf("a", "b", "c") // 👈 一句代码
-           👆 // 省略类型声明
+        // 👆 省略类型声明
   ```
 
 和 `List` 类似，一句代码创建一个 `Set`，同样具有 covariant (协变) 特性。
@@ -1031,9 +1030,9 @@ Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数�
 - Kotlin 中创建一个 `Map`：
 
   ``` kotlin
-  🏝️            👇 // 省略类型参数
+  🏝️         // 👇 省略类型参数
   val map = mapOf("key1" to 1, "key2" to 2, "key3" to 3, "key4" to 3) // 👈 一句代码
-        👆 // 省略类型声明
+     // 👆 省略类型声明
   ```
 
 和上面两种集合类型相似创建代码很简单，一行搞定。
@@ -1052,7 +1051,7 @@ Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数�
 - 类似的，Kotlin 中也可以用方括号的方式改变 `Map` 中键对应的值：
 
     ``` kotlin
-    🏝️            👇 // 和 mapOf() 有什么区别？下文会讲到
+    🏝️         // 👇 和 mapOf() 有什么区别？下文会讲到
     val map = mutableMapOf("key1" to 1, "key2" to 2)
         👇
     map.put("key1", 2)
@@ -1104,17 +1103,17 @@ map.toMutableMap()
     🏝️
     val list = listOf("a", "b", "c")
     list.asSequence()
-     👆 // List 实现了 Iterable 接口
+    // 👆 List 实现了 Iterable 接口
     ```
 
 - 使用 lamda 表达式创建：
 
     ``` kotlin
-    🏝️                             👇 // 第一个元素
+    🏝️                          // 👇 第一个元素
     val sequence = generateSequence(0) { it + 1 }
-                                       👆 // lamda 表达式，负责生成第二个及以后的元素，it 表示前一个元素
+                                    // 👆 lamda 表达式，负责生成第二个及以后的元素，it 表示前一个元素
     println(sequence.take(3).toList())
-                          👆 // 只取 sequence 中前三个元素
+                       // 👆 只取 sequence 中前三个元素
     ```
 
     上面这段代码输出：
@@ -1256,7 +1255,7 @@ Java 中没写可见性修饰符时，表示包内可见，只有在同一个 `p
 ``` java
 ☕️                         👇
 package org.kotlinmaster.library; 
-👇 // 没有可见性修饰符
+// 没有可见性修饰符
 class User {
 }
 
@@ -1364,7 +1363,7 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
       fun method() {
           val inner = Inner()
                               👇
-          val result = inner.number * 2 // ❌ compile-error: Cannot access 'number': it is private in 'Inner'
+          val result = inner.number * 2 // compile-error: Cannot access 'number': it is private in 'Inner'
       }
        👇
       class Inner {
@@ -1394,7 +1393,7 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
           println("Impl method()")
       }
   }
-                      👇 // 在同一个文件中，所以可以访问
+                   // 👇 在同一个文件中，所以可以访问
   private val impl = Impl()
   
   private val result = impl.number * 2
