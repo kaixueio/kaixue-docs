@@ -76,12 +76,16 @@ class User private constructor(name: String) {}
 class User @JvmOverloads constructor(name: String, sex: String = "male")
 ```
 
-这里 `@JvmOverloads` 表示在 Jvm 中生成重载的两个构造方法，简单说就是在 Java 中创建 `User` 对象时，既可以传两个参数，也可以只传第一个参数，此时第二个参数为默认值：
+这里 `@JvmOverloads` 表示在 Jvm 中生成重载的两个构造方法，相当于在 `User` 声明了两个构造器：
 
-``` java
-☕️
-new User("Kate", "female");
-new User("Kate");
+``` kotlin
+🏝️
+class User {
+    constructor(name: String, sex: String) {
+    	...   
+    }
+    constructor(name: String) : this(name, "male")
+}
 ```
 
 当不需要修饰构造器时可以省略掉关键字 `constructor`：
@@ -93,7 +97,7 @@ class User(name: String) {}
 
 ##### `init`
 
-有人可能会问，「如果我想在构造器中执行初始化操作该怎么做呢？」为此 Kotlin 提供了初始化代码块来负责这部分任务：
+如果我想在构造器中执行初始化操作该怎么做呢？为此 Kotlin 提供了初始化代码块来负责这部分任务：
 
 ``` kotlin
 🏝️
@@ -221,24 +225,7 @@ class User(name: String, age: Int) {
 }
 ```
 
-对应于 Java 中的写法：
-
-``` kotlin
-☕️
-public class User {
-                    👇
-    private String name;
-                👇
-    private int age;
-
-    public User(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
-}
-```
-
-相比之下，Kotlin 的写法确实简化了很多。
+相比之下确实简化了很多。
 
 #### 次构造器
 
