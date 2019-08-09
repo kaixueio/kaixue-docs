@@ -542,137 +542,117 @@ Java 和 Kotlin 中声明静态变量和方法：
 
 #### `object`
 
-##### `object` 创建单例类
+`object` 字面意思是对象，与 Java 中需要通过 `new` 创建一个对象不同，Kotlin 中可以通过 `object` 直接创建一个对象实例，一个应用是创建单例类。
 
-`object` 字面意思是对象，与 Java 中需要通过 `new` 创建一个对象不同，Kotlin 中可以通过 `object` 直接创建一个对象实例：
+##### 单例类
 
-``` kotlin
-🏝️
+单例不是一个陌生的概念，在 Android 开发中经常会用到，先来看看一个 Java 单例类的例子。
 
-// 👇 class 替换成了 object
-object A {
- // 👇 和普通类中声明类似
-    val number: Int = 1
-    fun method() {
-        println("A.method()")
-    }
-}
-```
+- Java 中的单例类：
 
-和类的定义类似，不过 `class` 关键字替换成 `object` ，调用方式如下：
-
-``` kotlin
-🏝️
-         // 👇 和调用静态变量类似
-val result = A.number + 1
-👇 
-A.method()
-```
-
-看着是不是很像 Java 中的单例，`object` 一个很重要的用途就是声明一个单例类。
-
-对比看看 Java 中要实现上面这个单例类需要怎么做：
-
-``` java
-☕️
-public class A {
-              👇
-    private static A sInstance;
-            👇
-    public static A getInstance() {
-        if (sInstance == null) {
-            sInstance = new A();
+    ``` java
+    ☕️
+    public class A {
+                  👇
+        private static A sInstance;
+                👇
+        public static A getInstance() {
+            if (sInstance == null) {
+                sInstance = new A();
+            }
+            return sInstance;
         }
-        return sInstance;
+          👇
+        private A() {
+        }
+    
+        public int number = 1;
+    
+        public void method() {
+            System.out.println("A.method()");
+        }
     }
-      👇
-    private A() {
+    ```
+
+    调用的时候：
+
+    ``` java
+    ☕️             // 👇 多个方法
+    int result = A.getInstance().number + 1;
+           👇
+    A.getInstance().method()
+    ```
+
+    可以看到 Java 中为了实现单例类写了大量的模版代码，稍显繁琐。 
+
+- Kotlin 中实现单例类：
+
+    ``` kotlin
+    🏝️
+    
+    // 👇 class 替换成了 object
+    object A {
+     // 👇 和普通类中声明类似
+        val number: Int = 1
+        fun method() {
+            println("A.method()")
+        }
     }
+    ```
 
-    public int number = 1;
+    和类的定义类似，不过 `class` 关键字替换成 `object` ，调用方式如下：
 
-    public void method() {
-        System.out.println("A.method()");
+    ``` kotlin
+    🏝️
+             // 👇 和调用静态变量类似
+    val result = A.number + 1
+    👇 
+    A.method()
+    ```
+
+    和 Java 中的调用方式类似，通过类名直接引用，但比 Java 少了 `getInstance()` 方法，更加简洁。
+
+##### 匿名类
+
+有时需要改变类的实现，但因为改动很少不想创建该类的子类，Java 中通过匿名内部类实现这个目的，而 Kotlin 通过对象表达式实现：
+
+- Java 匿名内部类：
+
+    ``` java
+    ☕️                                              👇 
+    ViewPager.SimpleOnPageChangeListener listener = new ViewPager.SimpleOnPageChangeListener() {
+    	@Override // 👈
+    	public void onPageSelected(int position) {
+    		// override
+    	}
+    };
+    ```
+
+- Kotlin 中通过对象表达式来表示，对象表达式简单说就是 `=` 加上 `object` 声明的对象：
+
+    ``` kotlin
+    🏝️              // 👇 没有 object 名字
+    val listener = object: ViewPager.SimpleOnPageChangeListener() {
+    		   // 👆 「= 和 object: 」共同组成对象表达式
+        override fun onPageSelected(position: Int) {
+            // override
+        }
     }
-}
-```
+    ```
 
-调用的时候：
+    和 Java 创建匿名类的方式很相似，你可以简单理解为通过 object 创建一个匿名内部类。这里需要注意的是，`=` 后的语句不能单独存在，因为对象表达式是指将对象赋值给一个变量或者作为参数传递给方法，如果没有 `=` 以及前面的变量，这段代码就不能称为对象表达式，就会报错：
 
-``` java
-☕️             // 👇 多个方法
-int result = A.getInstance().number + 1;
-       👇
-A.getInstance().method()
-```
-
-可以看到 Java 中为了实现单例类写了大量的模版代码，在没有 Kotlin 的时候大家写多了也就习惯了，直到遇见了 Kotlin 才发现单例类原来可以这么简单，而且调用也比较简洁，不需要 getInstance() 方法。
-
-通过 `object` 创建的对象也可以继承别的类或者接口，和创建类是一样的：
-
-``` kotlin
-🏝️
-open class A {
-    open fun method() {
-        println("A.method()")
+    ``` kotlin
+    🏝️
+      // 👇 compile error: Name expected
+    object: ViewPager.SimpleOnPageChangeListener() {
+        override fun onPageSelected(position: Int) {
+            // override
+        }
     }
-}
+    ```
 
-interface B {
-    fun interfaceMethod()
-}
-  👇      👇   👇
-object C : A(), B {
-
-    override fun method() {
-        println("C.method()")
-    }
-
-    override fun interfaceMethod() {
-        println("C.interfaceMethod()")
-    }
-}
-```
-
-##### `object` 创建匿名类
-
-有时需要改变类方法的实现，但因为改动很少不想创建该类的子类，Java 中是通过创建匿名内部类来实现的：
-
-``` java
-☕️                                              👇 
-ViewPager.SimpleOnPageChangeListener listener = new ViewPager.SimpleOnPageChangeListener() {
-	@Override // 👈
-	public void onPageSelected(int position) {
-		// override
-	}
-};
-```
-
-Kotlin 中通过对象表达式来表示，对象表达式简单说就是 `=` 加上 `object` 声明的对象：
-
-``` kotlin
-🏝️              // 👇 没有 object 名字
-val listener = object: ViewPager.SimpleOnPageChangeListener() {
-		   // 👆 「= 和 object: 」共同组成对象表达式
-    override fun onPageSelected(position: Int) {
-        // override
-    }
-}
-```
-
-和 Java 创建匿名类的方式很相似，你可以简单理解为通过 object 创建一个匿名内部类。这里需要注意的是，`=` 后的语句不能单独存在，因为对象表达式是指将对象赋值给一个变量或者作为参数传递给方法，如果没有 `=` 以及前面的变量，这段代码就不能称为对象表达式，就会报错：
-
-``` kotlin
-🏝️
-  // 👇 compile error: Name expected
-object: ViewPager.SimpleOnPageChangeListener() {
-    override fun onPageSelected(position: Int) {
-        // override
-    }
-}
-```
-
-`object` 后编译器提示这里需要一个对象的名字，因为编译器以为你想创建一个继承 `ViewPager.SimpleOnPageChangeListener` 的对象，而不是一个对象表达式。
+    `object` 后编译器提示这里需要一个对象的名字，因为编译器以为你想创建一个继承 `ViewPager.SimpleOnPageChangeListener` 的对象，而不是一个对象表达式。
 
 ##### `companion object`
 
@@ -728,6 +708,34 @@ class A {
 ```
 
 这就是这节最开始讲到的，和 Java 静态变量或方法的等价写法：`companion object`。
+
+##### 继承类和实现接口
+
+通过 `object` 创建的对象也可以继承别的类或者接口，和创建类是一样的：
+
+``` kotlin
+🏝️
+open class A {
+    open fun method() {
+        println("A.method()")
+    }
+}
+
+interface B {
+    fun interfaceMethod()
+}
+  👇      👇   👇
+object C : A(), B {
+
+    override fun method() {
+        println("C.method()")
+    }
+
+    override fun interfaceMethod() {
+        println("C.interfaceMethod()")
+    }
+}
+```
 
 #### top-level property / function 声明
 
