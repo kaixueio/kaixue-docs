@@ -97,25 +97,100 @@ class User(name: String) {}
 
 ##### `init`
 
-如果我想在构造器中执行初始化操作该怎么做呢？为此 Kotlin 提供了初始化代码块来负责这部分任务：
+- Java 中初始化操作除了可以放在构造器中外，还可以放在初始化代码中：
+
+    ``` java
+    ☕️
+    class User {
+       👇
+    	{
+    		System.out.println("init")
+    	}
+    	User() {
+    		System.out.println("constructor")
+    	}
+    }
+    ```
+
+    实例化 `User` 时输出：
+
+    ``` bash
+    init
+    constructor
+    ```
+
+    可见 Java 中初始化的执行顺序是：
+
+    ``` bash
+    [init] -> [constructor]
+    ```
+
+- Kotlin 中也有类似的初始化代码块，用 `init` 和一对大括号表示：
+
+    ``` kotlin
+    🏝️
+    class User(name: String = "Peter".also { println("primary constructor") }) {
+        👇
+        init {
+            println("init")
+        }   
+    }
+    ```
+
+    实例化 `User` 输出：
+
+    ``` bash
+    primary constructor
+    init
+    ```
+
+    可见 Kotlin 中初始化执行的顺序是：
+
+    ``` bash
+    [primary constructor] -> [init]
+    ```
+
+    和 Java 中初始化的执行顺序不一样。由于 `init` 初始化紧跟主构造器后执行，可以在其中写一些初始化逻辑，弥补主构造器没有代码体（就是一对大括号包起来的代码块）的遗憾。
+
+当类中存在属性初始化代码时，执行的优先级和初始化代码块是同级的：
 
 ``` kotlin
 🏝️
-init {
-    ...
+class User {
+    val firstProperty = "First property.".also { println(it) }
+    init {
+        println("Init block.")
+    }
+    val secondProperty = "Second property.".also { println(it) }
 }
 ```
 
-初始化代码块由 init 关键字和一对大括号构成，这其实不是 Kotlin 创造的新概念，对应的 Java 在类中也有类似的功能，用来完成初始化操作：
+实例化时输出：
 
-``` java
-☕️
-{
-    ...
+``` bash
+First property.
+Init block.
+Second property.
+```
+
+由此可见属性初始化代码和初始化代码块处于同一个执行上下文，另一个证据是这两块代码都可以访问主构造器的参数：
+
+``` kotlin
+🏝️
+            👇
+class User(name: String) {
+                       👇
+    val length: Int = name.length
+    init {
+                              👇
+        println("My name is $name")
+    }
 }
 ```
 
-Java 中除了这种初始化代码快，还有静态初始化代码块：
+###### static init
+
+Java 中除了和实例化绑定的初始化，还有静态初始化：
 
 ``` java
 ☕️
@@ -141,67 +216,6 @@ class Sample {
     }
 }
 ```
-
-- 一个 Kotlin 类中可以有多个初始化代码块，它们的执行顺序和创建的顺序是一致的：
-
-    ``` kotlin
-    🏝️
-    class User {
-        init {
-            println("First init block.")
-        }
-        init {
-            println("Second init block.")
-        }
-    }
-    ```
-
-    实例化时输出：
-
-    ``` bash
-    First init block.
-    Second init block.
-    ```
-
-- 当类中存在属性初始化代码时，执行的优先级和初始化代码块是同级的：
-
-    ``` kotlin
-    🏝️
-    class User {
-        val firstProperty = "First property.".also { println(it) }
-        init {
-            println("First init block.")
-        }
-        val secondProperty = "Second property.".also { println(it) }
-        init {
-            println("Second init block.")
-        }
-    }
-    ```
-
-    实例化时输出：
-
-    ``` bash
-    First property.
-    First init block.
-    Second property.
-    Second init block.
-    ```
-
-    由此可见属性初始化代码和初始化代码块处于同一个执行上下文，另一个证据是这两块代码都可以访问主构造器的参数：
-
-    ``` kotlin
-    🏝️
-                👇
-    class User(name: String) {
-                           👇
-        val length: Int = name.length
-        init {
-                                  👇
-            println("My name is $name")
-        }
-    }
-    ```
 
 ##### 主构造器属性声明
 
