@@ -51,11 +51,11 @@ class User(val id: Int, val name: String) {}
             👆 // 构造器参数直接作为属性声明
 ```
 
-而和 Java 比较类似的构造器在 Kotlin 中称之为 「次构造器 secondary constructor」，接下来分别看看这两种构造器。
+而和 Java 比较类似的构造器在 Kotlin 中称之为 「次构造器 secondary constructor」。一个区分主构造器和次构造器的简单办法是，声明在类的大括号里面的是次构造器，声明在外面的是主构造器。接下来分别看看这两种构造器。
 
 #### 主构造器
 
-Kotlin 中每个类只能有一个主构造器，像下面这样写在类名后面：
+Kotlin 中每个类最多只能有一个主构造器（可以没有），像下面这样写在类名后面：
 
 ``` kotlin
 🏝️            👇
