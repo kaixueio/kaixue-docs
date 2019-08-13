@@ -105,10 +105,10 @@ class User(name: String) {}
        👇
         {
             System.out.println("init")
-    	}
-    	User() {
-    		System.out.println("constructor")
-    	}
+        }
+        User() {
+            System.out.println("constructor")
+        }
     }
     ```
 
