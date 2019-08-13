@@ -219,6 +219,7 @@ Sample.name
     }
     ```
     
+
 可以看到 Java 中为了实现单例类写了大量的模版代码，稍显繁琐。 
     
 - Kotlin 中实现单例类：
@@ -932,7 +933,7 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
 
 ### 思考题
 
-2. `phoneCount` 和 `phoneCount1` 有什么区别？
+1. `phoneCount` 和 `phoneCount1` 有什么区别？
 
    ``` kotlin
    🏝️
@@ -943,4 +944,4 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
    }
    ```
 
-5. 同一个文件中，一个类的 `private` 属性可以被另一个类访问吗？
+2. 同一个文件中，一个类的 `private` 属性可以被另一个类访问吗？
