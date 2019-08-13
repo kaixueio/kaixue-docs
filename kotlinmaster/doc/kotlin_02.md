@@ -155,6 +155,7 @@ public static final String CONST_STRING = "A String"
 🏝️
 class Sample {
     ...
+       👇
     companion object {
         val anotherString = "Another String"
     }
@@ -165,27 +166,48 @@ class Sample {
 
 #### `object`
 
-`object` 字面意思是对象，与 Java 中需要通过 `new` 创建一个对象不同，Kotlin 中可以通过 `object` 直接创建一个对象实例，一个应用是创建单例类。
+Kotlin 里的 `object` ——首字母小写的，不是大写，Java 里的 `Object` 在 Kotlin 里不用了。
+
+> Java 中的 `Object`  在 Kotlin 中换成了 `Any`，和 `Object` 作用一样：作为所有类的基类。
+
+而 `object` 不是类，像 `class` 一样在 Kotlin 中属于关键字：
+
+``` kotlin
+🏝️
+object Sample {
+    ...
+}
+```
+
+它的意思很直接：创建一个类，并且创建一个这个类的对象。这个就是 `object` 的意思：对象。
+
+在代码中如果要使用这个对象，直接通过它的类名就可以访问：
+
+``` kotlin
+🏝️
+Sample.name
+```
+
+这不就是单例么，所以在 Kotlin 中创建单例不用像 Java 中那么复杂，只需要把 `class` 换成 `object` 就可以了。
 
 ##### 单例类
 
-单例不是一个陌生的概念，在 Android 开发中经常会用到，先来看看一个 Java 单例类的例子。
+我们看一个单例的例子，分别用 Java 和 Kotlin 实现的代码：
 
 - Java 中的单例类：
 
     ``` java
     ☕️
     public class A {
-                  👇
         private static A sInstance;
-                👇
+        
         public static A getInstance() {
             if (sInstance == null) {
                 sInstance = new A();
             }
             return sInstance;
         }
-          👇
+    
         private A() {
         }
     
@@ -196,18 +218,9 @@ class Sample {
         }
     }
     ```
-
-    调用的时候：
-
-    ``` java
-    ☕️             // 👇 多个方法
-    int result = A.getInstance().number + 1;
-           👇
-    A.getInstance().method()
-    ```
-
-    可以看到 Java 中为了实现单例类写了大量的模版代码，稍显繁琐。 
-
+    
+可以看到 Java 中为了实现单例类写了大量的模版代码，稍显繁琐。 
+    
 - Kotlin 中实现单例类：
 
     ``` kotlin
@@ -223,23 +236,14 @@ class Sample {
     }
     ```
 
-    和类的定义类似，不过 `class` 关键字替换成 `object` ，调用方式如下：
+    和类的定义类似，不过 `class` 关键字替换成 `object`，相比 Java 的实现简单多了。
 
-    ``` kotlin
-    🏝️
-             // 👇 和调用静态变量类似
-    val result = A.number + 1
-    👇 
-    A.method()
-    ```
-
-    和 Java 中的调用方式类似，通过类名直接引用，但比 Java 少了 `getInstance()` 方法，更加简洁。
 
 ##### 匿名类
 
-有时需要改变类的实现，但因为改动很少不想创建该类的子类，Java 中通过匿名内部类实现这个目的，而 Kotlin 通过对象表达式实现：
+除了单例类，Kotlin 还可以创建 Java 中的匿名类，只是写法上有点不同：
 
-- Java 匿名内部类：
+- Java：
 
     ``` java
     ☕️                                              👇 
@@ -251,7 +255,7 @@ class Sample {
     };
     ```
 
-- Kotlin 中通过对象表达式来表示，对象表达式简单说就是 `=` 加上 `object` 声明的对象：
+- Kotlin：
 
     ``` kotlin
     🏝️              // 👇 没有 object 名字
@@ -263,7 +267,7 @@ class Sample {
     }
     ```
 
-    和 Java 创建匿名类的方式很相似，你可以简单理解为通过 object 创建一个匿名内部类。这里需要注意的是，`=` 后的语句不能单独存在，因为对象表达式是指将对象赋值给一个变量或者作为参数传递给方法，如果没有 `=` 以及前面的变量，这段代码就不能称为对象表达式，就会报错：
+    和 Java 创建匿名类的方式很相似，Kotlin 中这种写法称之为「对象表达式」，对象就是指 `object` 及后面修饰的部分，表达式就指的是 `=`。所以 `object` 及后面的部分不能单独存在，如果没有 `=` 以及前面的变量，这段代码就不能被认为是对象表达式，就会报错：
 
     ``` kotlin
     🏝️
@@ -275,7 +279,7 @@ class Sample {
     }
     ```
 
-    `object` 后编译器提示这里需要一个对象的名字，因为编译器以为你想创建一个继承 `ViewPager.SimpleOnPageChangeListener` 的对象，而不是一个对象表达式。
+    编译器提示 `object` 后需要一个对象的名字，因为编译器以为你想创建一个继承 `ViewPager.SimpleOnPageChangeListener` 的对象，而不是一个对象表达式。
 
 ##### `companion object`
 
@@ -349,13 +353,13 @@ class Sample {
 
 ##### 继承类和实现接口
 
-通过 `object` 创建的对象也可以继承别的类或者接口，和创建类是一样的：
+类可以继承别的类，可以实现接口，那 `object` 可以吗？答案是可以的：
 
 ``` kotlin
 🏝️
 open class A {
     open fun method() {
-        println("A.method()")
+        ...
     }
 }
 
@@ -366,18 +370,26 @@ interface B {
 object C : A(), B {
 
     override fun method() {
-        println("C.method()")
+        ...
     }
 
     override fun interfaceMethod() {
-        println("C.interfaceMethod()")
+        ...
+    }
+}
+
+class D {          // 👇
+    companion object : B {
+        override fun interfaceMethod() {
+            ...
+        }
     }
 }
 ```
 
 #### top-level property / function 声明
 
-不同于 Java 所有的方法和变量都必须写在类中，Kotlin 可以在类外写变量和方法，这个称之为「top-level property/function」即「顶层声明」。
+除了静态方法这种简便的调用方式，Kotlin 还有更方便的东西：「`top-level declaration` 顶层声明」。其实就是把属性和函数的声明不写在 `class` 里面，这个在 Kotlin 里是允许的：
 
 ``` kotlin
 🏝️
@@ -491,7 +503,7 @@ fun test() {
 ☕️
 public class User {
     int id; // 👈 可修改
-    String name; // 👈
+    String name; // 👈 可修改
     public User(int id, String name) {
         this.id = id;
         this.name = name;
@@ -1071,8 +1083,6 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
 
 ### 思考题
 
-1. 次构造器写在初始化代码块之前，谁先执行？
-
 2. `phoneCount` 和 `phoneCount1` 有什么区别？
 
    ``` kotlin
@@ -1082,15 +1092,6 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
        val phoneCount = phones.size
        val phoneCount1 get() = phones.size
    }
-   ```
-
-3. 下面这段代码有没有问题？为什么？
-
-   ``` kotlin
-   🏝️
-   val list = listOf("a", "b", "c")
-   list.toMutableList()
-   list.add("d")
    ```
 
 5. 同一个文件中，一个类的 `private` 属性可以被另一个类访问吗？
