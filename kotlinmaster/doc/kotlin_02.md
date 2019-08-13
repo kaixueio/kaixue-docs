@@ -104,7 +104,7 @@ class User(name: String) {}
     class User {
        👇
         {
-    		System.out.println("init")
+            System.out.println("init")
     	}
     	User() {
     		System.out.println("constructor")
@@ -432,7 +432,7 @@ class User {
 
 👇
 val size: Int
-	get() { // 👈
+    get() { // 👈
         return items.size
     }
 ```
