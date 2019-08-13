@@ -155,7 +155,7 @@ class Sample {}
 >
 > 因此，我们在代码段的开头以「☕️」来表示 Java 代码段，「🏝️」来表示 Kotlin 代码段。
 
-我们回忆下 Java 里声明一个 String 类型的变量的写法：
+我们回忆下 Java 里声明一个 View 类型的变量的写法：
 
 ```java
 ☕️
@@ -521,17 +521,17 @@ fun main() {}
 ```kotlin
 🏝️
 // 👇可空变量传给不可空参数，报错
-String myName : String? = "rengwuxian"
+var myName : String? = "rengwuxian"
 fun cook(name: String) : Food {}
 cook(myName)
   
 // 👇可空变量传给可空参数，正常运行
-String myName : String? = "rengwuxian"
+var myName : String? = "rengwuxian"
 fun cook(name: String?) : Food {}
 cook(myName)
 
 // 👇不可空变量传给不可空参数，正常运行
-String myName : String = "rengwuxian"
+var myName : String = "rengwuxian"
 fun cook(name: String) : Food {}
 cook(myName)
 ```
