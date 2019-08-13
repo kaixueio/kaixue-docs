@@ -103,7 +103,7 @@ class User(name: String) {}
     ☕️
     class User {
        👇
-    	{
+        {
     		System.out.println("init")
     	}
     	User() {
