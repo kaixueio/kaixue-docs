@@ -763,7 +763,7 @@ public class MainActivity extends AppCompatActivity {
         }
         ```
 
-        不过其实完整的写法是这样的：
+        不过其实更像 Java 的写法是这样的：
 
         ```kotlin
         🏝️
@@ -920,7 +920,7 @@ Kotlin 里同样有类似解决方案，使用 `is` 关键字进行「类型判�
 fun main() {
     var activity: Activity = NewActivity()
     if (activity is NewActivity) {
-        // 👇的强转由于类型判断被省略了
+        // 👇的强转由于类型推断被省略了
         activity.action()
     }
 }
