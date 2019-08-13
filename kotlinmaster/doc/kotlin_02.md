@@ -1,6 +1,6 @@
 ## Kotlin 里那些「不是那么写的」
 
-Kotlin 作为一门年轻的高级开发语言，相比上个世纪的老大哥 Java，在代码的简洁性和可维护性上都有不少的提高。Java 中四五行的代码逻辑，Kotlin 可能一行就搞定了，还有一些容易混淆出错的逻辑，Kotlin 给出了更加清晰合理的控制。这篇文章就让我们对比 Java 来看看 Kotlin 中「不是那么写的」地方。
+上期我们讲了 Kotlin 上手最基础的三个点：变量、函数和类型。大家都听说过，Kotlin 完全兼容 Java，这个意思是用 Java 写出来的 class 和 Kotlin 可以完美交互，而不是说你用 Java 的写法去写 Kotlin 也完全没问题，这个是不行的。这期内容我们就讲一下，Kotlin 里那些「不 Java」的写法。
 
 ### Constructor
 
@@ -31,355 +31,53 @@ Kotlin 作为一门年轻的高级开发语言，相比上个世纪的老大哥 
         val name: String
              👇
         constructor(id: Int, name: String) {
-     // 👆 没有 public
+     //👆 没有 public
             this.id = id
             this.name = name
         }
     }
     ```
 
-可以发现构造器的写法主要有两点不同：
+可以发现有两点不同：
 
 - Java 中构造器和类同名，Kotlin 中使用 `constructor` 表示。
 - Kotlin 构造器没有 public 修饰，因为默认可见性就是公开的，关于可见性修饰符这里先不展开，后面会讲到。
 
-Kotlin 除了和 Java 类似的构造器之外还引入了 「主构造器 primary constructor」，可以让你的代码更加直观和简洁：
+#### init
 
-``` kotlin
-🏝️    // 👇 没有 constructor
-class User(val id: Int, val name: String) {}
-         // 👆 构造器参数直接作为属性声明
-```
+还有，Java 里常常配合构造方法一起使用的 init 代码块，在 Kotlin 里的写法也有了一点点改变：你需要给它加一个 init 前缀。
 
-而和 Java 比较类似的构造器在 Kotlin 中称之为 「次构造器 secondary constructor」。一个区分主构造器和次构造器的简单办法是，声明在类的大括号里面的是次构造器，声明在外面的是主构造器。接下来分别看看这两种构造器。
-
-#### 主构造器
-
-Kotlin 中每个类最多只能有一个主构造器（可以没有），像下面这样写在类名后面：
-
-``` kotlin
-🏝️            👇
-class User constructor(name: String) {}
-```
-
-如果需要限制构造器的可见性，直接写在 `constructor` 前面，关于可见性本文后面会讲到：
-
-``` kotlin
-🏝️           👇
-class User private constructor(name: String) {}
-```
-
-当需要给构造器添加注解时，也是放在 `constructor` 前面的：
-
-``` kotlin
-🏝️              👇                                            👇
-class User @JvmOverloads constructor(name: String, sex: String = "male")
-```
-
-这里 `@JvmOverloads` 表示在 Jvm 中生成重载的两个构造方法，相当于在 `User` 声明了两个构造器：
-
-``` kotlin
-🏝️
-class User {
-    constructor(name: String, sex: String) {
-    	...   
-    }
-    constructor(name: String) : this(name, "male")
-}
-```
-
-当不需要修饰构造器时可以省略掉关键字 `constructor`：
-
-``` kotlin
-🏝️       👇
-class User(name: String) {}
-```
-
-##### `init`
-
-- Java 中初始化操作除了可以放在构造器中外，还可以放在初始化代码中：
+- Java
 
     ``` java
     ☕️
-    class User {
+    public class User {
        👇
         {
-            System.out.println("init")
+            // Java init block，第一步
         }
-        User() {
-            System.out.println("constructor")
-        }
-    }
-    ```
-
-    实例化 `User` 时输出：
-
-    ``` bash
-    init
-    constructor
-    ```
-
-    可见 Java 中初始化的执行顺序是：
-
-    ``` bash
-    [init] -> [constructor]
-    ```
-
-- Kotlin 中也有类似的初始化代码块，用 `init` 和一对大括号表示：
-
-    ``` kotlin
-    🏝️
-    class User(name: String = "Peter".also { println("primary constructor") }) {
-        👇
-        init {
-            println("init")
-        }   
-    }
-    ```
-
-    实例化 `User` 输出：
-
-    ``` bash
-    primary constructor
-    init
-    ```
-
-    可见 Kotlin 中初始化执行的顺序是：
-
-    ``` bash
-    [primary constructor] -> [init]
-    ```
-
-    和 Java 中初始化的执行顺序不一样。由于 `init` 初始化紧跟主构造器后执行，可以在其中写一些初始化逻辑，弥补主构造器没有代码体（就是一对大括号包起来的代码块）的遗憾。
-
-当类中存在属性初始化代码时，执行的优先级和初始化代码块是同级的：
-
-``` kotlin
-🏝️
-class User {
-    val firstProperty = "First property.".also { println(it) }
-    init {
-        println("Init block.")
-    }
-    val secondProperty = "Second property.".also { println(it) }
-}
-```
-
-实例化时输出：
-
-``` bash
-First property.
-Init block.
-Second property.
-```
-
-由此可见属性初始化代码和初始化代码块处于同一个执行上下文，另一个证据是这两块代码都可以访问主构造器的参数：
-
-``` kotlin
-🏝️
-            👇
-class User(name: String) {
-                       👇
-    val length: Int = name.length
-    init {
-                              👇
-        println("My name is $name")
-    }
-}
-```
-
-###### static init
-
-Java 中除了和实例化绑定的初始化，还有静态初始化：
-
-``` java
-☕️
-class Sample {
-     👇
-    static {
-        ...
-    }
-}
-```
-
-在 Kotlin 中类的静态初始化代码块移到了 `companion object` 「伴生对象」中，至于 `companion object` 是什么，这里先不展开，后文会讲到：
-
-``` kotlin
-🏝️
-class Sample {
-       👇
-    companion object {
-         👇
-        init {
-            ...
-        }
-    }
-}
-```
-
-##### 主构造器属性声明
-
-Kotlin 还有一种简洁的写法用于将主构造器中的参数声明为属性，并用参数值初始化：
-
-``` kotlin
-🏝️             👇                👇
-class User(val name: String, val age: Int) {}
-        // 👆 val/var 表明声明为属性
-```
-
-这种写法等价于：
-
-``` kotlin
-🏝️    // 👇 没有 val/var
-class User(name: String, age: Int) {
-         👇
-    val name: String = name
-        👇
-    val age: Int = age
-}
-```
-
-相比之下确实简化了很多。
-
-#### 次构造器
-
-Kotlin 中的次构造器和 Java 类似，写在类中，通过 `constructor` 表示并且不可以省略：
-
-``` kotlin
-🏝️
-class User {
-    private val name: String
-        👇
-    constructor(name: String) {
-        this.name = name
-        println("My name is $name.")
-    }
-}
-```
-
-##### 调用主构造器
-
-- Java 在一个构造器中可以通过 `this()` 调用别的构造器：
-
-    ``` java
-    ☕️
-    class Sample {
-        Sample() {
-            // first constructor
-        }
-    
-        Sample(String input) {
-            this(); // 👈 调用另外一个构造器
-            // second constructor
+        public User() {
+            // 构造器，第二步
         }
     }
     ```
 
-    Java 中调用别的构造器是可选的。
-
-- Kotlin 写次构造器时，如果存在主构造器，必须调用主构造器，在括号后面加上 `: this()`：
-
-    ```kotlin
-    🏝️
-    class User(val name: String) {
-        private var age: Int = 0
-                                            // 👇 这里的 this(name) 调用的是主构造器
-        constructor(name: String, age: Int) : this(name) {
-            this.age = age
-        }
-    }
-    ```
-
-    前面讲的属于直接调用主构造器，也可以通过间接的方式调用主构造器：
-
-    ``` kotlin
-    🏝️
-    class User(val name: String) {
-    	  var age: Int = 0
-        var gender: String = "male"
-                                               👇
-        constructor(name: String, age: Int) : this(name) {
-            this.age = age
-        }
-                                                               👇
-        constructor(name: String, age: Int, gender: String) : this(name, age) {
-            this.gender = gender
-        }
-    }
-    ```
-
-    这段代码里，第二个次构造器就是通过调用第一个次构造器间接调用了主构造器。通过 `this` 关键字引用别的构造器，通过参数定位具体的构造器。
-
-##### 调用顺序
-
-前面说到初始化代码紧跟主构造器之后执行，那次构造器和初始化的执行顺序是什么样呢？下面从有主构造器和没主构造器的两种情况分别分析：
-
-- 存在主构造器：
-
-    ``` kotlin
-    🏝️
-    class User constructor(name: String) {
-      // 👇 属于主构造器一部分
-        init {
-            println("Init block.")
-        }
-                                            // 👇 次构造器执行前先调用主构造器
-        constructor(name: String, age: Int) : this(name) {
-            println("Secondary constructor.")
-        }
-    }
-    ```
-
-    实例化 `User` 类输出：
-
-    ``` bash
-    Init block.
-    Secondary constructor.
-    ```
-
-    次构造器会调用主构造器，而初始化代码紧跟主构造器执行，所以次构造器在初始化之后执行不难理解。那如果没有声明主构造器呢？
-
-- 没声明主构造器时：
+- Kotlin
 
     ``` kotlin
     🏝️
     class User {
+        👇
         init {
-            println("Init block.")
+            // Kotlin init block，第一步
         }
-        constructor(name: String) {
-            println("Secondary Constructor.")
+        constructor() {
+            // 构造器，第二步
         }
     }
     ```
 
-    实例化 `User` 类输出：
-
-    ``` bash
-    Init block.
-    Secondary Constructor.
-    ```
-
-    说明即使没有主构造器，初始化代码块也先于次构造器执行，这时次构造器相当于调用了一个空的主构造器：
-
-    ``` kotlin
-    🏝️             👇
-    class User constructor() {
-        init {
-            println("Init block.")
-        }     
-                                     👇
-        constructor(name: String) : this() {
-            println("Secondary Constructor.")
-        }
-    }
-    ```
-
-综合上述可见，主构造器、次构造器和初始化代码块的执行顺序如下：
-
-``` bash
-[primary constructor「主构造器」] -> [init「初始化代码块」] -> [secondary constructor「次构造器」]
-```
+Kotlin 的 init 代码块和 Java 一样，都在实例化时执行，并且执行顺序都在构造器之前。
 
 ### `final`
 
@@ -393,35 +91,37 @@ class User {
   final int final1 = 1;
                👇  
   void method(final String final2) {
-      System.out.println(final2);
        👇
-      final Date final3 = new Date();
-      System.out.println(final3);
+      final String final3 = "The parameter is " + final2;
   }
   ```
-
+  
 - Kotlin
 
   ``` kotlin
   🏝️
-  
   👇
   val fina1 = 1
          // 👇 没有 val
   fun method(final2: String) {
-      println(final2)
       👇
-      val final3 = Date()
-      println(final3)
+      val final3 = "The parameter is " + final2
   }
   ```
 
 可以看到不同点主要有：
 
-- final 变成 val，由于类型推断，类型可以省略不写，写法上简短了一些。
+- final 变成 val。
+- 由于类型推断类型可以省略不写，写法上简短了一些。
 - Kotlin 方法参数默认是 val 类型，所以参数前不需要写 val 关键字。
 
-相比 Java 中通过额外添加 final 前缀来表示只读，Kotlin 的只读声明简化了很多，只是把 var 最后一个字母改成 l，大大增加了开发者使用只读类型的频率。虽然只是减少了一个单词，但考虑到变量声明的频率，总体效果还是很可观的。这种优化使得在该加只读限制的地方加上限制，减少了出现错误的概率，从而提高代码质量。
+上一期说过，`var` 是 variable 的缩写， `val` 是 value 的缩写。
+
+其实我们写 Java 代码的时候，很少会有人用 `final` 的对吧？但是我从 `final` 开始说起，是因为它是一个很好的切入点，来让我们去看一看 Kotlin 里那些「不 Java」的写法。所以稍后几分钟的内容，也都是从 `final` 来展开的。
+
+我们继续说。`final` 用来修饰变量其实是很有用的，但大家都不用；可你如果去看看国内国外的人写的 Kotlin 代码，你会发现很多人的代码里都会有一堆的 `val`。而且这些写 `val` 的人，就是当初那些不写 `final` 的人。为什么？因为 `final`写起来比 `val` 麻烦一点：我需要多写一个单词。虽然只麻烦这一点点，但就导致很多人不写。
+
+这就是一件很有意思的事：从 `final` 到 `val`，只是方便了一点点，但却让它们的使用频率有了巨大的改变。这种改变是会影响到代码质量的：在该加限制的地方加上限制，就可以减少代码出错的概率。
 
 #### `val`自定义 getter
 
@@ -429,7 +129,6 @@ class User {
 
 ``` kotlin
 🏝️
-
 👇
 val size: Int
     get() { // 👈
@@ -437,108 +136,32 @@ val size: Int
     }
 ```
 
-前面说到类的属性类型可以通过初始化代码进行类型推断，除此之外也可以通过 getter 方法的返回值推断，而且 Kotlin 中可以通过 `=` 直接连接函数表达式，所以上面这段代码可以简化为：
-
-``` kotlin
-🏝️  // 👇 没有类型声明，类型根据 items.size 推断    
-val size get() = items.size
-```
-
 不过这个属于特殊用法，一般情况下 `val` 还是对应于 Java 中的 `final` 使用的。
-
-重写 `val` 变量 `getter()` 方法一个可能的应用是用于简化一些没有参数的属性类方法调用：
-
-- 方法形式：
-
-    ``` kotlin
-    🏝️
-    
-    👇
-    fun isEmpty(): Boolean {
-        return items.size == 0
-    }
-    ```
-
-- `val` 形式：
-
-    ``` kotlin
-    🏝️
-    
-    👇     // 👇 没有括号
-    val isEmpty: Boolean
-    		get() {
-            return items.size == 0
-        }
-    ```
-
-上面的方法和属性的调用方式分别如下：
-
-``` kotlin
-any.isEmpty()
-any.isEmpty // 👈 没有括号
-```
-
-少了一对括号，可以让代码简洁一些。
 
 ### `static` property / function
 
-前面讲的 `var` / `val` 变量都是非静态变量，必须先创建一个实例对象才能使用，如果想通过类直接引用，就需要用到静态变量和方法。接下来看看 Kotlin 中的静态变量和方法：
+刚才说到大家都不喜欢写 `final` 对吧？但有一种场景，大家是最喜欢用 `final` 的：常量。
 
-#### Kotlin 中的静态变量和方法
+``` java
+☕️
+public static final String CONST_STRING = "A String"
+```
 
-Java 和 Kotlin 中声明静态变量和方法：
+在 Java 里面写常量，我们用的是 `static` + `final`。而在 Kotlin 里面，除了 `final` 的写法不一样，`static` 的写法些也不一样，而且是更不一样。确切地说：在 `Kotlin` 里，静态变量和静态方法这两个概念被去除了。
 
-- 在 Java 中：
+那如果想在 Kotlin 中像 Java 一样通过类直接引用该怎么办呢？Kotlin 的答案是 `companion object`：
 
-    ``` java
-    ☕️
-    class A {
-                👇
-        public static int property = 1;
-                👇
-        public static void method() {
-            println("A.method()")
-        }
+``` kotlin
+🏝️
+class Sample {
+    ...
+    companion object {
+        val anotherString = "Another String"
     }
-    ```
+}
+```
 
-    这样就可以不需要创建该类的实例，直接通过类名调用：
-
-    ``` java
-    ☕️
-                  👇
-    int variable = A.property;
-    👇
-    A.method();
-    ```
-
-- 在 Kotlin 中如果想实现类似的功能该怎么做呢，在类中可以创建一个叫作 `companion object` 的东西，将想定义的静态属性和方法放在其中：
-
-    ``` kotlin
-    🏝️
-    class A {
-        // 👇 新东西
-        companion object {
-         // 👇 和类中声明相似
-            val property: Int = 1
-            fun method() {
-                println("A.method()")
-            }
-        }
-    }
-    ```
-
-    这样在调用的时候可以像 Java 一样去调用：
-
-    ``` kotlin
-    🏝️
-                  👇
-    val variable = A.property
-    👇
-    A.method()
-    ```
-
-    这个 `companion object`  是什么意思呢，为什么要使用这种方式定义类级别的变量或者方法，先来看看什么是 object。
+哈？为啥 Kotlin 越改越复杂了？不着急，我们先看看 `object` 是个什么东西。
 
 #### `object`
 
@@ -708,6 +331,21 @@ class A {
 ```
 
 这就是这节最开始讲到的，和 Java 静态变量或方法的等价写法：`companion object`。
+
+前面讲到 Kotlin 有类的初始化代码，那有没有 Java 中的静态初始化代码呢？答案是有的，只是不能像 Java 那样放在类中，而是要像静态属性和方法一样放在 `companion object` 中：
+
+``` kotlin
+🏝️
+class Sample {
+       👇
+    companion object {
+         👇
+        init {
+            ...
+        }
+    }
+}
+```
 
 ##### 继承类和实现接口
 
