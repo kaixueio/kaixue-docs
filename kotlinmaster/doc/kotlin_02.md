@@ -145,7 +145,7 @@ val size: Int
 public static final String CONST_STRING = "A String"
 ```
 
-在 Java 里面写常量，我们用的是 `static` + `final`。而在 Kotlin 里面，除了 `final` 的写法不一样，`static` 的写法些也不一样，而且是更不一样。确切地说：在 `Kotlin` 里，静态变量和静态方法这两个概念被去除了。
+在 Java 里面写常量，我们用的是 `static` + `final`。而在 Kotlin 里面，除了 `final` 的写法不一样，`static` 的写法也不一样，而且是更不一样。确切地说：在 `Kotlin` 里，静态变量和静态方法这两个概念被去除了。
 
 那如果想在 Kotlin 中像 Java 一样通过类直接引用该怎么办呢？Kotlin 的答案是 `companion object`：
 
@@ -278,7 +278,7 @@ Sample.name
     }
     ```
 
-    编译器提示 `object` 后需要一个对象的名字，因为编译器以为你想创建一个继承 `ViewPager.SimpleOnPageChangeListener` 的对象，而不是一个对象表达式。
+    编译器提示 `object` 后需要一个对象的名字，因为编译器以为你想创建一个继承 `ViewPager.SimpleOnPageChangeListener` 的对象，而不是一个对象表达式。什么？`object` 声明的对象还可以继承类，别急，下文会讲到。
 
 ##### `companion object`
 
