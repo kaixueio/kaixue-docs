@@ -237,49 +237,6 @@ Sample.name
 
     和类的定义类似，不过 `class` 关键字替换成 `object`，相比 Java 的实现简单多了。
 
-
-##### 匿名类
-
-除了单例类，Kotlin 还可以创建 Java 中的匿名类，只是写法上有点不同：
-
-- Java：
-
-    ``` java
-    ☕️                                              👇 
-    ViewPager.SimpleOnPageChangeListener listener = new ViewPager.SimpleOnPageChangeListener() {
-    	@Override // 👈
-    	public void onPageSelected(int position) {
-    		// override
-    	}
-    };
-    ```
-
-- Kotlin：
-
-    ``` kotlin
-    🏝️              // 👇 没有 object 名字
-    val listener = object: ViewPager.SimpleOnPageChangeListener() {
-    		   // 👆 「= 和 object: 」共同组成对象表达式
-        override fun onPageSelected(position: Int) {
-            // override
-        }
-    }
-    ```
-
-    和 Java 创建匿名类的方式很相似，Kotlin 中这种写法称之为「对象表达式」，对象就是指 `object` 及后面修饰的部分，表达式就指的是 `=`。所以 `object` 及后面的部分不能单独存在，如果没有 `=` 以及前面的变量，这段代码就不能被认为是对象表达式，就会报错：
-
-    ``` kotlin
-    🏝️
-      // 👇 compile error: Name expected
-    object: ViewPager.SimpleOnPageChangeListener() {
-        override fun onPageSelected(position: Int) {
-            // override
-        }
-    }
-    ```
-
-    编译器提示 `object` 后需要一个对象的名字，因为编译器以为你想创建一个继承 `ViewPager.SimpleOnPageChangeListener` 的对象，而不是一个对象表达式。什么？`object` 声明的对象还可以继承类，别急，下文会讲到。
-
 ##### `companion object`
 
 前面说到访问 `object` 中的变量或者方法时直接通过类名引用，就像 Java 的静态变量和方法一样，不同的是不需要在每个变量和方法前面用 `static` 修饰，因为 `object` 创建的对象内所有变量和方法默认都是静态的，没得选。如果只想让类中的一部分方法和变量是静态的该怎么做呢：
@@ -335,20 +292,22 @@ class A {
 
 这就是这节最开始讲到的，和 Java 静态变量或方法的等价写法：`companion object`。
 
-前面讲到 Kotlin 有类的初始化代码，那有没有 Java 中的静态初始化代码呢？答案是有的，只是不能像 Java 那样放在类中，而是要像静态属性和方法一样放在 `companion object` 中：
+- 静态初始化
 
-``` kotlin
-🏝️
-class Sample {
-       👇
-    companion object {
-         👇
-        init {
-            ...
+    前面讲到 Kotlin 有类的初始化代码，那有没有 Java 中的静态初始化代码呢？答案是有的，只是不能像 Java 那样放在类中，而是要像静态属性和方法一样放在 `companion object` 中：
+
+    ```kotlin
+    🏝️
+    class Sample {
+           👇
+        companion object {
+             👇
+            init {
+                ...
+            }
         }
     }
-}
-```
+    ```
 
 ##### 继承类和实现接口
 
@@ -385,6 +344,48 @@ class D {          // 👇
     }
 }
 ```
+
+##### 匿名类
+
+另外，Kotlin 还可以创建 Java 中的匿名类，只是写法上有点不同：
+
+- Java：
+
+    ```java
+    ☕️                                              👇 
+    ViewPager.SimpleOnPageChangeListener listener = new ViewPager.SimpleOnPageChangeListener() {
+    	@Override // 👈
+    	public void onPageSelected(int position) {
+    		// override
+    	}
+    };
+    ```
+
+- Kotlin：
+
+    ```kotlin
+    🏝️              // 👇 没有 object 名字
+    val listener = object: ViewPager.SimpleOnPageChangeListener() {
+    		   // 👆 「= 和 object: 」共同组成对象表达式
+        override fun onPageSelected(position: Int) {
+            // override
+        }
+    }
+    ```
+
+    和 Java 创建匿名类的方式很相似，Kotlin 中这种写法称之为「对象表达式」，对象就是指 `object` 及后面修饰的部分，表达式就指的是 `=`。所以 `object` 及后面的部分不能单独存在，如果没有 `=` 以及前面的变量，这段代码就不能被认为是对象表达式，就会报错：
+
+    ```kotlin
+    🏝️
+      // 👇 compile error: Name expected
+    object: ViewPager.SimpleOnPageChangeListener() {
+        override fun onPageSelected(position: Int) {
+            // override
+        }
+    }
+    ```
+
+    编译器提示 `object` 后需要一个对象的名字，因为编译器以为你想创建一个继承 `ViewPager.SimpleOnPageChangeListener` 的对象，而不是一个对象表达式。
 
 #### top-level property / function 声明
 
