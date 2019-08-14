@@ -54,14 +54,13 @@
     public class User {
        👇
         {
-            // Java init block，第一步
+            // 初始化代码块，先于构造器执行
         }
         public User() {
-            // 构造器，第二步
         }
     }
     ```
-
+    
 - Kotlin
 
     ``` kotlin
@@ -69,15 +68,18 @@
     class User {
         👇
         init {
-            // Kotlin init block，第一步
+            // 初始化代码块，先于构造器执行
         }
         constructor() {
-            // 构造器，第二步
         }
     }
     ```
 
 Kotlin 的 init 代码块和 Java 一样，都在实例化时执行，并且执行顺序都在构造器之前。
+
+// todo 稍微提一下主构造器
+
+// todo 过渡 类 -> open -> not open -> final -> java final -> kotlin val
 
 ### `final`
 
@@ -112,7 +114,6 @@ Kotlin 的 init 代码块和 Java 一样，都在实例化时执行，并且执�
 可以看到不同点主要有：
 
 - final 变成 val。
-- 由于类型推断类型可以省略不写，写法上简短了一些。
 - Kotlin 方法参数默认是 val 类型，所以参数前不需要写 val 关键字。
 
 上一期说过，`var` 是 variable 的缩写， `val` 是 value 的缩写。
@@ -292,19 +293,8 @@ Sample.name
         }
         ```
 
-        和 Java 创建匿名类的方式很相似，Kotlin 中这种写法称之为「对象表达式」，对象就是指 `object` 及后面修饰的部分，表达式就指的是 `=`。所以 `object` 及后面的部分不能单独存在，如果没有 `=` 以及前面的变量，这段代码就不能被认为是对象表达式，就会报错：
+        和 Java 创建匿名类的方式很相似，Kotlin 中这种写法称之为「对象表达式」。
 
-        ``` kotlin
-        🏝️
-          // 👇 compile error: Name expected
-        object: ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageSelected(position: Int) {
-                // override
-            }
-        }
-        ```
-
-        编译器提示 `object` 后需要一个对象的名字，因为编译器以为你想创建一个继承 `ViewPager.SimpleOnPageChangeListener` 的对象，而不是一个对象表达式。
 
 #### `companion object`
 
@@ -363,8 +353,10 @@ class A {
 
 - 静态初始化
 
-    前面讲到 Kotlin 有类的初始化代码，那有没有 Java 中的静态初始化代码呢？答案是有的，只是不能像 Java 那样放在类中，而是要像静态属性和方法一样放在 `companion object` 中：
+    // todo 说法上区别下
 
+    前面讲到 Kotlin 有类的初始化代码，那有没有 Java 中的静态初始化代码呢？答案是有的，只是不能像 Java 那样放在类中，而是要像静态属性和方法一样放在 `companion object` 中：
+    
     ``` kotlin
     🏝️
     class Sample {
@@ -469,7 +461,7 @@ topLevelFunction()
     ``` kotlin
     🏝️
     class Sample {
-        // 👇 在 companion object 内
+           👇
         companion object {
              👇                  // 👇 基础类型
             const val CONST_NUMBER = 1
@@ -518,7 +510,9 @@ user.name = "Lisi";
       👆
 ```
 
-所以相比 Java 里声明的常量，Kotlin 的常量限制更严格，更加符合常量的定义。
+所以相比 Java 里声明的常量，Kotlin 的常量限制更严格，更加符合常量的定义。// todo
+
+// todo 优化过渡 单个变量 -》一组变量
 
 ### 数组和集合
 
@@ -546,6 +540,8 @@ user.name = "Lisi";
 
 可以看到 Kotlin 中的数组是一个拥有泛型的类，创建方法也是泛型方法，和集合数据类型一样。
 
+// todo 提一下后面会讲范型
+
 - 取值和修改
     - Kotlin 中获取或者设置数组元素和 Java 一样可以使用方括号加下标的方式索引：
 
@@ -564,6 +560,8 @@ user.name = "Lisi";
              👇      👆
         strs.set(1, "B")
         ```
+
+    // get / set 放在下面
 
     第二种方式有点像集合类型，这正是 Kotlin 中将数组泛型化的原因：对数组的操作像集合一样功能更强大，由于泛型化 Kotlin 可以通过扩展方法的方式给数组增加很多有用的工具方法：
 
@@ -624,9 +622,8 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
     - Kotlin 中创建一个列表：
 
         ``` kotlin
-        🏝️             // 👇 因为类型推断，省略类型参数 <String>
-        val strList = listOf("a", "b", "c") // 👈 一句代码创建、添加元素
-               // 👆 类型推断，省略类型声明 :List<String>
+        🏝️            
+        val strList = listOf("a", "b", "c")
         ```
 
     首先能看到的是 Kotlin 中创建一个 `List` 特别的简单，一句代码搞定，有点像创建数组的代码。而且 Kotlin 中的 `List` 多了一个特性：支持 covariant (协变)。也就是说，可以把子类的 `List` 赋值给父类的 `List`：
@@ -651,7 +648,7 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
             👆
       ```
 
-    对于协变的支持与否，`List` 和数组刚好反过来了。
+    对于协变的支持与否，`List` 和数组刚好反过来了。// todo 这里只需要了解下就可以了，后面会展开。
 
     
 
@@ -678,9 +675,8 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
     - Kotlin 中创建相同的 `Set`：
 
         ``` kotlin
-        🏝️            // 👇 省略类型参数
-        val strSet = setOf("a", "b", "c") // 👈 一句代码
-              // 👆 省略类型声明
+        🏝️           
+        val strSet = setOf("a", "b", "c")
         ```
 
         
@@ -708,7 +704,7 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
          // 👆 省略类型声明
       ```
 
-    和上面两种集合类型相似创建代码很简单，一行搞定。
+    和上面两种集合类型相似创建代码很简单，一行搞定。// todo to 介绍下，预告下
 
     - 取值和修改
 
@@ -793,16 +789,18 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
     - 调用处理函数处理元素时，`Iterable` 是立即执行， `Sequence` 是懒加载。
     - 调用多个处理函数时，`Iterable` 是一个函数遍历完所有元素后再执行下一个函数，`Sequence` 是一个元素执行完所有函数后再遍历下一个元素。
 
+    // todo 加个预告
+
 ### 可见性修饰符
 
-讲完了数据集合，再看看 Kotlin 中的可见性修饰符，Kotlin 中有四种可见性修饰符：`public` `private ` `protected` `internal`：
+讲完了数据集合，再看看 Kotlin 中的可见性修饰符，Kotlin 中有四种可见性修饰符：`public` `private `  `protected` `internal`：
 
 - `public `：公开，可见性最大，哪里都可以引用。
 - `private`：私有，可见性最小，仅对所在类和所在文件可见。
 - `protected`：保护，相当于 `private` + 子类可见。
 - `internal`：内部，仅对 module 内可见。
 
-相比 Java 少了一个包内可见修饰符，多了一个 `internal`「module 内可见」。这一节结合例子讲讲 Kotlin 这四种可见性修饰符，以及在 Kotlin 和 Java 中的不同。先来看看 `public`：
+相比 Java 少了一个 `default` 「包内可见修饰符」，多了一个 `internal`「module 内可见」。这一节结合例子讲讲 Kotlin 这四种可见性修饰符，以及在 Kotlin 和 Java 中的不同。先来看看 `public`：
 
 #### `public`
 
@@ -970,3 +968,7 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
    ```
 
 2. 同一个文件中，一个类的 `private` 属性可以被另一个类访问吗？
+
+// todo 再润色下
+
+// todo 过渡优化下
