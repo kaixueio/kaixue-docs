@@ -188,56 +188,133 @@ Sample.name
 
 这不就是单例么，所以在 Kotlin 中创建单例不用像 Java 中那么复杂，只需要把 `class` 换成 `object` 就可以了。
 
-##### 单例类
+- 单例类
 
-我们看一个单例的例子，分别用 Java 和 Kotlin 实现的代码：
+    我们看一个单例的例子，分别用 Java 和 Kotlin 实现的代码：
 
-- Java 中的单例类：
+    - Java 中的单例类：
 
-    ``` java
-    ☕️
-    public class A {
-        private static A sInstance;
-        
-        public static A getInstance() {
-            if (sInstance == null) {
-                sInstance = new A();
+        ``` java
+        ☕️
+        public class A {
+            private static A sInstance;
+            
+            public static A getInstance() {
+                if (sInstance == null) {
+                    sInstance = new A();
+                }
+                return sInstance;
             }
-            return sInstance;
+        
+            private A() {
+            }
+        
+            public int number = 1;
+        
+            public void method() {
+                System.out.println("A.method()");
+            }
         }
-    
-        private A() {
-        }
-    
-        public int number = 1;
-    
-        public void method() {
-            System.out.println("A.method()");
-        }
-    }
-    ```
-    
+        ```
 
-可以看到 Java 中为了实现单例类写了大量的模版代码，稍显繁琐。 
-    
-- Kotlin 中实现单例类：
+        可以看到 Java 中为了实现单例类写了大量的模版代码，稍显繁琐。 
+            
+
+    - Kotlin 中实现单例类：
+
+        ``` kotlin
+        🏝️
+        // 👇 class 替换成了 object
+        object A {
+         // 👇 和普通类中声明类似
+            val number: Int = 1
+            fun method() {
+                println("A.method()")
+            }
+        }
+        ```
+
+        和类的定义类似，不过 `class` 关键字替换成 `object`，相比 Java 的实现简单多了。
+
+- 继承类和实现接口
+
+    类可以继承别的类，可以实现接口，那 `object` 可以吗？答案是可以的：
 
     ``` kotlin
     🏝️
+    open class A {
+        open fun method() {
+            ...
+        }
+    }
     
-    // 👇 class 替换成了 object
-    object A {
-     // 👇 和普通类中声明类似
-        val number: Int = 1
-        fun method() {
-            println("A.method()")
+    interface B {
+        fun interfaceMethod()
+    }
+      👇      👇   👇
+    object C : A(), B {
+    
+        override fun method() {
+            ...
+        }
+    
+        override fun interfaceMethod() {
+            ...
+        }
+    }
+    
+    class D {          // 👇
+        companion object : B {
+            override fun interfaceMethod() {
+                ...
+            }
         }
     }
     ```
 
-    和类的定义类似，不过 `class` 关键字替换成 `object`，相比 Java 的实现简单多了。
+- 匿名类
 
-##### `companion object`
+    另外，Kotlin 还可以创建 Java 中的匿名类，只是写法上有点不同：
+
+    - Java：
+
+        ``` java
+        ☕️                                              👇 
+        ViewPager.SimpleOnPageChangeListener listener = new ViewPager.SimpleOnPageChangeListener() {
+        	@Override // 👈
+        	public void onPageSelected(int position) {
+        		// override
+        	}
+        };
+        ```
+
+    - Kotlin：
+
+        ``` kotlin
+        🏝️              // 👇 没有 object 名字
+        val listener = object: ViewPager.SimpleOnPageChangeListener() {
+        		   // 👆 「= 和 object: 」共同组成对象表达式
+            override fun onPageSelected(position: Int) {
+                // override
+            }
+        }
+        ```
+
+        和 Java 创建匿名类的方式很相似，Kotlin 中这种写法称之为「对象表达式」，对象就是指 `object` 及后面修饰的部分，表达式就指的是 `=`。所以 `object` 及后面的部分不能单独存在，如果没有 `=` 以及前面的变量，这段代码就不能被认为是对象表达式，就会报错：
+
+        ``` kotlin
+        🏝️
+          // 👇 compile error: Name expected
+        object: ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                // override
+            }
+        }
+        ```
+
+        编译器提示 `object` 后需要一个对象的名字，因为编译器以为你想创建一个继承 `ViewPager.SimpleOnPageChangeListener` 的对象，而不是一个对象表达式。
+
+#### `companion object`
 
 前面说到访问 `object` 中的变量或者方法时直接通过类名引用，就像 Java 的静态变量和方法一样，不同的是不需要在每个变量和方法前面用 `static` 修饰，因为 `object` 创建的对象内所有变量和方法默认都是静态的，没得选。如果只想让类中的一部分方法和变量是静态的该怎么做呢：
 
@@ -296,7 +373,7 @@ class A {
 
     前面讲到 Kotlin 有类的初始化代码，那有没有 Java 中的静态初始化代码呢？答案是有的，只是不能像 Java 那样放在类中，而是要像静态属性和方法一样放在 `companion object` 中：
 
-    ```kotlin
+    ``` kotlin
     🏝️
     class Sample {
            👇
@@ -308,84 +385,6 @@ class A {
         }
     }
     ```
-
-##### 继承类和实现接口
-
-类可以继承别的类，可以实现接口，那 `object` 可以吗？答案是可以的：
-
-``` kotlin
-🏝️
-open class A {
-    open fun method() {
-        ...
-    }
-}
-
-interface B {
-    fun interfaceMethod()
-}
-  👇      👇   👇
-object C : A(), B {
-
-    override fun method() {
-        ...
-    }
-
-    override fun interfaceMethod() {
-        ...
-    }
-}
-
-class D {          // 👇
-    companion object : B {
-        override fun interfaceMethod() {
-            ...
-        }
-    }
-}
-```
-
-##### 匿名类
-
-另外，Kotlin 还可以创建 Java 中的匿名类，只是写法上有点不同：
-
-- Java：
-
-    ```java
-    ☕️                                              👇 
-    ViewPager.SimpleOnPageChangeListener listener = new ViewPager.SimpleOnPageChangeListener() {
-    	@Override // 👈
-    	public void onPageSelected(int position) {
-    		// override
-    	}
-    };
-    ```
-
-- Kotlin：
-
-    ```kotlin
-    🏝️              // 👇 没有 object 名字
-    val listener = object: ViewPager.SimpleOnPageChangeListener() {
-    		   // 👆 「= 和 object: 」共同组成对象表达式
-        override fun onPageSelected(position: Int) {
-            // override
-        }
-    }
-    ```
-
-    和 Java 创建匿名类的方式很相似，Kotlin 中这种写法称之为「对象表达式」，对象就是指 `object` 及后面修饰的部分，表达式就指的是 `=`。所以 `object` 及后面的部分不能单独存在，如果没有 `=` 以及前面的变量，这段代码就不能被认为是对象表达式，就会报错：
-
-    ```kotlin
-    🏝️
-      // 👇 compile error: Name expected
-    object: ViewPager.SimpleOnPageChangeListener() {
-        override fun onPageSelected(position: Int) {
-            // override
-        }
-    }
-    ```
-
-    编译器提示 `object` 后需要一个对象的名字，因为编译器以为你想创建一个继承 `ViewPager.SimpleOnPageChangeListener` 的对象，而不是一个对象表达式。
 
 #### top-level property / function 声明
 
@@ -411,7 +410,7 @@ topLevelFunction()
 
 写在顶级的方法或者变量有个好处，在 Android Studio 中写代码时，IDE 很容易根据你写的方法前几个字母自动联想出相应的方法，提高了写代码的效率，而且可以减少项目中的重复代码。
 
-##### 命名相同的顶级函数
+- 命名相同的顶级函数
 
 顶级函数不写在类中可能有一个问题：如果在不同文件中声明命名相同的函数，使用的时候会不会混淆？来看一个例子：
 
@@ -439,7 +438,7 @@ topLevelFunction()
 
 在使用的时候如果同时调用这两个同名方法会怎么样：
 
-```kotlin
+``` kotlin
 🏝️
 import org.kotlinmaster.library1.method
                            👆
