@@ -1,8 +1,10 @@
 ## Kotlin 里那些「更方便的」
 
-在上期课程当中，我们学习了 Kotlin 的那些与 Java 写法不同且需要注意的知识点。本节我们讲一讲 Kotlin 中那些还可以这么方便的写法。
+在上期课程当中，我们学习了 Kotlin 的那些与 Java 写法不同且需要注意的知识点。这一期再进阶一点，我们讲一讲 Kotlin 中那些「更方便的」。这些知识点在没学会之前，你也可以正常写 Kotlin，但是学完本期之后能够让你写的更爽。
 
 ### 构造器
+
+#### 主构造函数
 
 上期我们学习了 Kotlin 的 constructor 的写法：
 
@@ -21,53 +23,98 @@ class User {
 
 ```kotlin
 🏝️
-           👇          👇
+               👇      👇
 class User constructor(name: String) {
-  👇
+ 👇
   var name: String = name
 }
 ```
 
-你会发现在上面的例子当中，constructor 构造函数写在了类的头部，在类名之后。原本在构造函数中赋值的 `name` 也被直接放在了属性初始化的时候进行赋值。这就是「主构造器 primary constructor」，在 Kotlin 中一个类只允许有一个主构造器以及一个或者多个次构造函数。
+你会发现在上面的例子当中，constructor 构造函数写在了类的头部，在类名之后。原本在构造函数中赋值的 `name` 也被直接放在了属性初始化的时候进行赋值，这就是「主构造器 primary constructor」。既然有主构造器这样的概念，那么其余写在类中的 constructor 就叫做「次级构造函数」。在 Kotlin 中一个类只允许有一个主构造器以及一个或者多个次构造函数。
 
-这时你会奇怪，「构造函数被放到了类的头部，那构造函数中的参数 `name` 该如何使用呢？」其实可以在以下两个地方使用：
-
-- 可以在属性的初始化中使用：
-
-  ```kotlin
-  🏝️
-  class User constructor(name: String) {
-    var name: String = name
-  }
-  ```
-
-- 另一个是在 `init` 代码块中：
-
-  ```kotlin
-  🏝️
-  class User constructor(name: String) {
-    var name: String
-    👇
-    init {
-      this.name = name
-    }
-  }
-  ```
-
-上面的例子甚至还可以这么写：
+在上方的代码示例中，除了 constructor 还有另外两处用「👇」标注的地方，可以看出主构造函数中的参数 `name` 被类中属性使用进行赋值操作。也就是说，主构造函数中的参数可以被用作类的属性赋值操作，你也许会好奇「那还有没有其他地方可以使用主构造器中的参数呢？」，其实除了可以在属性中进行赋值，还可以在类的 `init` 代码块中使用：
 
 ```kotlin
 🏝️
-class User constructor(var name: String) {
-                       👆
+class User constructor(name: String) {
+  var name: String
+  👇
+  init {
+    this.name = name
+  }
 }
 ```
 
-是不是很方便，原本一个有构造函数以及需要赋值属性的类需要写很多行，现在一行就能搞定！但你也会疑问，那么 `name` 这个属性我还能不能在这个类的其他地方使用呢？别急，在上面的代码中的 primary constructor 的 `name` 参数的左边多了一个 `var` 可变的修饰，这时 Kotlin 会自定帮你创建一个与参数同名的属性，并把这个参数的值作为属性的初始化，这样你就可以在类中使用 `name` 属性啦。当然，你也可以使用 `val` 只读的修饰符。
+那么 `init` 代码块又是什么呢？我们知道在 Java 中，初始化操作除了可以放在构造函数中，还可以放在类的初始代码块中：
+
+```java
+☕️
+class User {
+ 👇
+  {
+    ...
+  }
+  User() {
+    ...
+  }
+}
+```
+
+在 Kotlin 中也有类似的初始化代码块，使用 `init` 关键字修饰后面跟上一对大括号代码块表示：
+
+```kotlin
+🏝️
+class User constructor() {
+    👇
+    init {
+        println("init")
+    }   
+}
+```
+
+Kotlin 中 `init` 代码块的执行时机是紧跟着主构造器之后的，可以写一些初始化逻辑，这就弥补了主构造器没有代码体的遗憾。
+
+这时你会问，「如果我需要对这个构造函数添加注解或者可见性该怎么办呢？」其实也很简单：
+
+```kotlin
+🏝️
+            👇       👇
+class User private @Inject constructor(name: String) {
+  var name: String = name
+}
+```
+
+只需要在类名之后加上你需要的可见性修饰符或者注解。这里关于 `@Inject` 注解的意思就不做过多介绍啦，有兴趣的可以之后查阅相关资料。
+
+如果主构造器不需要注解或者可见性修饰符的时候，其实你可以省略 `constructor` 关键字：
+
+```kotlin
+🏝️
+         👇
+class User(name: String) {
+  var name: String = name
+}
+```
+
+学到这里，你会惊奇的发现文章一开始那段五六行的 `User` 类，已经被我们缩写到只剩三行。那么，有没有可能再继续缩减呢？下面我们来学习如何在主构造函数中声明属性，把上面这段三行的代码缩减到只剩一行！
+
+#### 主构造器里声明属性
+
+上一小节我们学会了主构造函数的概念，其实 Kotlin 中还支持将主构造函数中的参数作为该类的属性，在类中任意使用：
+
+```kotlin
+🏝️
+           👇
+class User(var name: String) {
+           
+}
+```
+
+可以发现上方代码示例中用「👇」标注的 `var` 关键字修饰了主构造函数中的 `name` 参数，这时 Kotlin 会自动帮你在类中创建一个与参数同名的属性（property），并把这个参数的值作为属性的初始化值，这样你就可以在类中使用 `name` 属性啦。当然，你也可以使用 `val` 只读的修饰符。
 
 以上讲了主构造器的使用与简化，结合上期所讲的次构造函数，我们思考下，如果一个类有多个构造函数，应该把哪个写成 primary 的呢？其实很简单，只要把最基本、最通用的那个写成 primary 的就好了，primary constructor 会参与任何一个 constructor 创建对象的初始化过程，所以如果有 `init` 代码块也会在使用次构造函数之前执行。
 
-在没有使用 primary constructor 简化之前，写多个构造函数的代码：
+在没有使用 primary constructor 简化之前，我们写多个构造函数会这样写：
 
 ```kotlin
 🏝️
@@ -105,7 +152,7 @@ class User(person: Person) {
 }
 ```
 
-学完今天对构造函数的简化之后，你甚至可以这样写：
+学完以上主构造函数的知识之后，你就可以这样写：
 
 ```kotlin
 🏝️
@@ -114,6 +161,8 @@ class User(var name: String, var id: String) {
   }
 }
 ```
+
+原本很多行的一个类最终可以简化成两三行搞定，是不是非常的方便。那么学完了对构造函数的简化知识后，接下来，让我们继续学习对普通函数的简化吧。
 
 ### 函数简化
 
@@ -136,7 +185,7 @@ fun sayHi(name: String) {
 fun sayHi(name: String) = println("Hi " + name)
 ```
 
-上面的代码中可以看出，我们把大括号去掉并在函数体前面使用 `=` 符号连接，是不是非常的整洁，这时你会有疑问「这是函数没有返回值的情况，那如果函数有返回值呢？」：
+当函数体中只有一行代码的时候，我们可以把大括号去掉，并在函数体前面使用 `=` 符号连接函数名，是不是非常的整洁。这是函数没有返回值的情况，那如果函数有返回值的时候呢：
 
 ```kotlin
 🏝️
@@ -145,14 +194,14 @@ fun area(width: Int, height: Int): Int {
 }
 ```
 
-当函数返回单个表达式时，我们同样可以省略花括号并使用 `=` 符号连接：
+当函数返回单个表达式时，我们同样可以省略大括号并使用 `=` 符号进行连接：
 
 ```kotlin
 🏝️
 fun area(width: Int, height: Int): Int = width * height
 ```
 
-之前我们学习过，Kotlin 有个「类型推断」的特性，这里函数的返回类型就可以隐藏了：
+之前我们学习过，Kotlin 有个「类型推断」的特性，那么这里函数的返回类型就可以隐藏掉：
 
 ```kotlin
 🏝️
@@ -160,11 +209,11 @@ fun area(width: Int, height: Int): Int = width * height
 fun area(width: Int, height: Int) = width * height
 ```
 
-是不是非常的方便，一个函数可以写的如此简洁。
+是不是非常的方便，一个函数可以写的如此简洁。当我们想对一个函数重载时，在 Java 中是新写一个同名但参数不同的函数，那 Kolin 中是否又更方便的方法呢？接下来我们学习 Kotlin 中的「函数的参数默认值」的知识。
 
 #### 参数默认值
 
-在 Kotlin 中，函数参数可以有默认值，当省略相对应的参数时 Kotlin 会自动使用默认值，在 Java 中可以使用对函数的重载，生成不同参数类型的相同函数：
+在 Java 中一个类中有两个或两个以上函数名相同但参数不同的函数时，这就是函数的重载：
 
 ```java
 ☕️
@@ -177,15 +226,15 @@ public void sayHi() {
 }
 ```
 
-但在 Kotlin 中你可以这么写：
+在 Kotlin 中，允许函数的参数可以有默认值，当省略相对应的参数时 Kotlin 会自动使用默认值，这就相当于 Java 中的函数重载，上面的 Java 代码在 Kotlin 中可以这么写：
 
 ```kotlin
 🏝️
-                         👇
+                           👇
 fun sayHi(name: String = "world") = println("Hi " + name)
 ```
 
-上面两段不同语言的代码，都可以在使用 `sayHi` 函数时选择性的填参数或者不填，在 Kotlin 中：
+上方代码中用「👇」标注的 `world` 就是 `name` 参数的默认值，当使用 `sayHi()` 不传参数时调用该函数，函数中就会使用默认值 `world` 。上面两段不同语言的代码，都可以在使用 `sayHi` 函数时选择性的填参数或者不填，在 Kotlin 中：
 
 ```kotlin
 🏝️
@@ -211,7 +260,7 @@ class B : A() {
 
 ```kotlin
 🏝️
-fun sayHi(name: String = "world", age: String) {
+fun sayHi(name: String = "world", age: Int) {
   ...
 }
 ```
@@ -224,9 +273,8 @@ fun sayHi(name: String = "world", age: String) {
 
 ```kotlin
 🏝️
-                            👇          👇                        👇              
-fun sayHi(name: String = "leavesC", age: Int, isStudent: Boolean = true, isFat: Boolean = true, isTall: Boolean = true) {
-👆                       👆
+                           👇          👇                        👇              
+fun sayHi(name: String = "world", age: Int, isStudent: Boolean = true, isFat: Boolean = true, isTall: Boolean = true) {
   ...
 }
 ```
@@ -242,54 +290,53 @@ sayHi("world", 21, false, true, false)
 
 ```kotlin
 🏝️
-        👇         👇        👇                👇             👇
+       👇          👇           👇              👇             👇
 sayHi(name = "wo", age = 21, isStudent = false, isFat = true, isTall = false)
 ```
 
-可以发现，在调用函数时，我们显示的指定了每个参数的名称，让人一目了然。回到上面讲参数默认值最后提到的那个问题「如果一个有默认值的参数在一个无默认值参数的前面，那么该怎样使用上默认值进行调用呢？」，以此处的 `sayHi` 函数为例，我们可以不用提供所有的参数：
+可以发现，在调用函数时，我们显式的指定了每个参数的名称，让人一目了然。回到上面讲参数默认值最后提到的那个问题「如果一个有默认值的参数在一个无默认值参数的前面，那么该怎样使用上默认值进行调用呢？」，以此处的 `sayHi` 函数为例，我们可以不用提供所有的参数：
 
 ```kotlin
 🏝️
+      👇
 sayHi(age = 21)
-      👆
 ```
 
-只需要在函数调用时，指定好需要的参数的名称就可以了。
+只需要在函数调用时，指定好需要的参数的名称就可以了。此时我们已经学会了好几种函数的方便使用方法，还有没有其他简化技巧呢，下面我们来学习「嵌套函数」。
 
 #### 本地函数（嵌套函数）
 
-在 Kotlin 中提供了一种简洁的方案减少重复的代码：嵌套函数，即一个函数在另一个函数的内部。首先来看下这段代码：
+在 Kotlin 中提供了一种简洁的方案减少重复的代码：嵌套函数，即一个函数可以在另一个函数的内部声明。首先来看下这段代码：
 
 ```kotlin
 🏝️
 fun login(user: String, password: String, illegalStr: String) {
             👇 
   if (user.isEmpty()) {
-    👇                            👇 
+   👇 
     throw IllegalArgumentException(illegalStr)
   }
                 👇 
   if (password.isEmpty()) {
-    👇                            👇 
+   👇 
     throw IllegalArgumentException(illegalStr)
   }
 }
 ```
 
-上面代码中，重复的逻辑很少，你又不想将这段逻辑作为一个单独的函数做到面面俱到，但又有些重复的逻辑实在难受，这时你可以使用局部函数，在 `login` 函数内部添加验证逻辑的函数：
+上面代码中，有重复的判断逻辑，但你又不想将这段逻辑作为一个单独的函数做到面面俱到，但这些重复的逻辑看着实在难受，这时你可以使用局部函数，在 `login` 函数内部添加验证逻辑的函数：
 
 ```kotlin
 🏝️
 fun login(user: String, password: String, illegalStr: String) {
-       👇                     👇
+        👇 
   fun validate(value: String, illegalStr: String) {
     if (value.isEmpty()) {
       throw IllegalArgumentException(illegalStr)
     }
   }
-  👇
+ 👇
   validate(user, illegalStr)
-  👇
   validate(password, illegalStr)
 }
 ```
@@ -299,10 +346,10 @@ fun login(user: String, password: String, illegalStr: String) {
 ```kotlin
 🏝️
 fun login(user: String, password: String, illegalStr: String) {
-               👇
+             👇
   fun validate(value: String) {
     if (value.isEmpty()) {
-                                      👇
+                                        👇
       throw IllegalArgumentException(illegalStr)
     }
   }
@@ -311,13 +358,27 @@ fun login(user: String, password: String, illegalStr: String) {
 }
 ```
 
-这样是不是就简洁很多了。
+这样是不是就简洁很多了。到此，我们学习了函数的 `= ` 连接符、参数默认值、命名参数、嵌套参数，这些知识点都可以将我们平时写的函数进行更方便的简化使用。回过头来看这段代码：
+
+```kotlin
+🏝️
+fun sayHi(name: String = "world") = println("Hi " + name)
+```
+
+如果函数要求多加几个参数，并在 `println` 中输出，会写成这样：
+
+```kotlin
+🏝️
+fun sayHi(name: String = "world", myName: String) = println("Hi " + name + "，my name is " + myName)
+```
+
+上方代码示例中的 `println` 中写了一长串用 `+` 号拼接的字符串，那在 Kotlin 中有没有什么办法进行简化呢，下面我们来学习字符串的那些「更方便的」。
 
 ### 字符串
 
 #### 字符串模板
 
-对于字符串的使用我们已不陌生，前面的课程也讲到了基本类型，Java 对于字符串的使用可以使用 + 符号拼接，Kotlin 同样可以：
+对于字符串的使用我们已不陌生，前面的课程也讲到了基本类型。在 Java 中对于字符串的使用可以使用 `+` 符号拼接，Kotlin 同样可以：
 
 ```kotlin
 🏝️
@@ -325,13 +386,23 @@ val name = "world"
 println("Hi " + name)
 ```
 
-但 Kotlin 可以更加的简洁：
+如果需要拼接的变量越多，那使用 `+` 连接的操作也越多，就会变成这样：
 
 ```kotlin
 🏝️
 val name = "world"
-           👇
-println("Hi $name")
+val myName = "kotlin"
+println("Hi " + name + "，my name is " + myName)
+```
+
+上方代码示例中的 `println` 中写了一长串用 `+` 号拼接的字符串，但 Kotlin 提供了更加方便的对字符串中加入变量的处理：
+
+```kotlin
+🏝️
+val name = "world"
+val myName = "kotlin"
+           👇               👇
+println("Hi $name，my name is $myName") // 输出： Hi world，my name is kotlin
 ```
 
 这就是字符串模板表达式，Kotlin 允许在一段字符串中使用变量进行计算并把结果合并到字符串中进行顺序拼接。也就是以 `$` 符号开头引用一个变量，或者使用花括号添加任意表达式：
@@ -339,8 +410,8 @@ println("Hi $name")
 ```kotlin
 🏝️
 val name = "world"
-              👇
-println("Hi ${name.length + 1}")
+            👇
+println("Hi ${name.length + 1}") // 输出：Hi 6
 ```
 
 如果你想在字符串使用表示字面值的 $ 字符，可以这样写：
@@ -348,11 +419,12 @@ println("Hi ${name.length + 1}")
 ```kotlin
 🏝️
 val price = "${'$'}9.99"
+println(price) // 输出：$9.99
 ```
 
 #### raw string (原生字符串)
 
-在 Kotlin 中与 Java 相同，也支持转义字符：
+上一小节中，我们学会了字符串模板的概念，那如果想要在字符串中换行该怎么做呢？其实 Kotlin 与 Java 相同，都支持转义字符：
 
 ```kotlin
 🏝️
@@ -361,33 +433,45 @@ val name = "world!\n"
 println("Hi $name")
 ```
 
-上面代码中使用了转义字符 `\n` 进行换行操作。其实，Kotlin 中还支持原生字符串，在原始字符串中可以包含换行以及任意文本，转义字符串也不会生效，也就是使用三个引号 `"""` 括起来：
+上面代码中使用了转义字符 `\n` 进行换行操作。但如果有多个换行操作的话，会这样写：
+
+```kotlin
+ 🏝️
+val name = "world"
+val myName = "kotlin"
+println("Hi $name!\n my name is $myName.\n")
+```
+
+虽然也可以达到想要的效果，但看着依然很生硬。Kotlin 也为我们考虑到了这一点，所以就有了原生字符串的概念，在原始字符串中可以包含换行以及任意文本，转义字符串也不会生效，也就是使用三个引号 `"""` 括起来：
 
 ```kotlin
 🏝️
-            👇
- val text = """
-    for (c in "foo")
-        print(c)\n
+val name = "world"
+val myName = "kotlin"
+           👇
+val text = """
+      Hi $name!
+    my name is $myName.\n
 """
-👆
 println(text)
 ```
 
 上面的代码会将 `text` 中的内容原样输出，并带有换行与空格，其中末尾的 `\n` 也不会生效而会直接输出：
 
 ```
-    for (c in "foo")
-        print(c)\n
+      Hi world!
+    my name is kotlin.\n
 ```
+
+到此我们学会了对 Kotlin 中的字符串进行更加方便的操作。是不是非常的舒服，原来写一串字符串拼接可以如此流畅。
 
 ### 数组和集合
 
 #### 数组与集合的操作符
 
-在之前的课程中，我们学习过 Kotlin 定义了一套新的数组和集合的类型，它的目的就在于提供一套方便的操作方法用这一套方法，你可以对数组和集合做各种便捷的整体化操作。
+在之前的课程中，我们学习了 Kotlin 中数组和集合的概念。同时，Kotlin 中还为我们提供了许多更加方便对数组与集合的操作的扩展函数，下面让我们来学习这些便捷的操作符吧。
 
-定义如下数组与集合，并对他们进行操作实例：
+定义如下数组与集合，并对他们进行一些便捷的操作符讲解：
 
 ```kotlin
 🏝️
@@ -408,7 +492,7 @@ val strList = listOf("a", "b", "c") // List<String> 集合
   }
   ```
 
-- `filter`：遍历每个元素并进行过滤操作，如果 lambda 表达式中条件成立则留下改元素，最终过滤生成新的集合或数组
+- `filter`：遍历每个元素并进行过滤操作，如果 lambda 表达式中条件成立则留下该元素，最终过滤生成新的集合或数组
 
   ```kotlin
   🏝️
@@ -472,7 +556,7 @@ val strList = listOf("a", "b", "c") // List<String> 集合
   }
   ```
 
-以上列出了一些常用的集合操作符，还有许多操作符等待你去发现学习，这里就不一一列举，正因为有了这些 Kotlin 为我们准备的操作符才使得我们在开发中对集合的操作更加的方便简洁。
+以上列出了一些常用的集合操作符，还有许多操作符等待你去发现学习，这里就不一一列举，正因为有了这些 Kotlin 为我们准备的操作符，才使得我们在开发中对数组与集合的操作更加的方便快捷。
 
 #### `Range` 和 `Sequence`
 
@@ -482,7 +566,7 @@ val strList = listOf("a", "b", "c") // List<String> 集合
 
 ```kotlin
 🏝️
-                      👇
+                       👇
 val range: IntRange = 0..1000 
 ```
 
@@ -505,7 +589,7 @@ for (i in range) {
 }
 ```
 
-上方代码中 `for` 循环会对 `rang` 区间进行遍历操作，最终输出结果为：
+上方代码中用「👇」标注的 `in` 操作符可以与 `for` 循环结合使用，不断的取出 `range` 区间上的下一个值放到 `i` 变量中，这就实现了对 `rang` 区间的遍历操作。关于 for 的使用，在本期文章的后面有做具体讲解。最终输出结果为：
 
 ```
 0, 1, 2, 3, 4, 5, 6, 7....1000,
@@ -531,22 +615,15 @@ for (i in range step 2) {
 
 ```kotlin
 🏝️
-            👇
+              👇
 for (i in 4 downTo 1) print(i)
 ```
 
 上方示例中的 `4 downTo 1` 表示一个从 4 到 1 的闭区间 [4,1]。
 
-同样的，在 Java 中也没有 Sequence 序列概念，在上面我们已经学习了 Kotlin 集合操作符的概念并且可以链式的进行调用，但是在某些情况下 list 的迭代器并不是最好的方式，从而就有了另一种方式：序列。在 Kotlin 中可以通过 `asSequence()` 将一个集合转化成一个序列：
+上面我们学习了 `Range` 自动化的数数工具，而 `Sequence` 就像是一种「广度优先遍历」版本的集合类。在上一期中我们已经学习了 `Sequence` 的基本概念，这次让我们更加深入的了解 `Sequence` 。
 
-```kotlin
-🏝️
-val list = listOf(1, 2, 3, 4, 5, 6)
-                      👇
-val sequence = list.asSequence()
-```
-
-那么序列到底是什么呢，序列又被称为「惰性集合操作」，序列中的元素求值都是惰性的，可以更加高效的对数据集进行链式操作，而不像普通集合那样每次数据操作都开辟新的控件存储中间结果。序列操作分为两大类：
+序列 `Sequence` 又被称为「惰性集合操作」，序列中的元素求值都是惰性的，可以更加高效的对数据集进行链式操作，而不像普通集合那样每次数据操作都开辟新的控件存储中间结果。序列操作分为两大类：
 
 - 中间操作
 
@@ -560,6 +637,8 @@ val sequence = list.asSequence()
       .filter { println("Filter");it % 3  == 0 } // filter 返回 Sequence<T> ，所以是中间操作
   ```
 
+  这样懒加载的实现有什么好处呢？我们知道在 Kotlin 中， `Iterable` 每调用一次函数就会生成一个新的 `Iterable`，下一个函数再基于新的 `Iterable` 执行，每次函数调用产生的临时 `Iterable` 会导致额外的内存消耗，而 `Sequence` 避免了这样的问题。
+
 - 末端操作
 
   序列的末端操作会执行原来中间操作的所有延迟计算，一次末端操作返回的是一个结果，返回的结果可以是集合、数字、或者从其他对象集合变换得到任意对象，代码如下：
@@ -570,7 +649,7 @@ val sequence = list.asSequence()
   val result = list.asSequence()
       .map{ println("Map"); it * 2 }
       .filter { println("Filter");it % 3  == 0 }
-  println(result.first())
+  println(result.first()) // result.first() 获取 result 中第一个元素
   ```
 
   最终运行结果如下：
@@ -585,15 +664,15 @@ val sequence = list.asSequence()
   6
   ```
 
-  你会发现，`map` 与 `filter` 甚至都没有完全执行完就输出了结果的第一个值，这也意味着当序列找到第一个值的那一刻，就会停止。
+  你会发现，`map` 与 `filter` 甚至都没有完全执行完就输出了结果的第一个值，这也意味着当序列找到第一个值的那一刻，就会停止。这样就很好的省去后面不必要的计算。
 
-`Sequence` 就像是一种「广度优先遍历」版本的集合类。这种数据类型可以在数据量比较大或者数据量为知的时候提供方便的流式处理方案。还有许多用法需要等待你自己去探索。
+以上我们对 `Sequence` 的懒加载与遍历函数执行顺序有了进一步的了解。这种数据类型可以在数据量比较大或者数据量为知的时候提供方便的流式处理方案。
 
 ### 条件控制
 
 #### `if/else` 和 `when`
 
-在 Kotlin 中，也进行了许多的优化改变，首先看下在 Java 中的 `if/else` 写法：
+相比 Java 的条件控制，Kotlin 中的条件控制进行了许多的优化改进，首先看下在 Java 中的 `if/else` 写法：
 
 ```Java
 ☕️
@@ -617,7 +696,7 @@ if (a > b) {
 }
 ```
 
-但是，Kotlin 中 `if` 可以是一个表达式，它会返回一个值，上面代码你就可以这样写：
+但是，Kotlin 中 `if` 可以作为一个表达式，可以返回一个值，上面代码还可以这么写：
 
 ```kotlin
 🏝️
@@ -631,32 +710,32 @@ val max = if (a > b) a else b
 🏝️
 val max = if (a > b) {
   print("max:a")
-  a
+  a // 👈 返回 a 的值
 } else {
   print("max:b")
-  b
+  b // 👈 返回 b 的值
 }
 ```
 
-以上就是 Kotlin 中 `if/else` 的用法，这时你会问「那有没有 `switch` 呢？」，其实在 Kotlin 中用 `when` 替换了 Java 中的 `switch` 操作符：
+以上就是 Kotlin 中 `if/else` 的用法，那 Kotlin 中有没有 `switch` 操作符呢呢？其实在 Kotlin 中用 `when` 替换了 Java 中的 `switch` 操作符：
 
 ```kotlin
 🏝️
 👇
 when (x) {
-  👇
+ 👇
   1 -> print("1")
   2 -> print("2")
-  👇
+ 👇
   else -> {
     print("else")
   }
 }
 ```
 
-`when` 表达式会将它的参数与每个条件进行比较，直到遇到合适的分支，否则会走默认的 `else` 分支。与 Kotlin 中的 `if` 相同也可以被当做表达式使用，符合条件的分支的最后一行表达式的值就作为返回值，如果 `when` 被作为表达式使用的话，那必须要有 `else` 分支，除非编译器能够检测出已经将所有的情况覆盖。
+`when` 表达式会将它的参数与每个条件进行比较，直到遇到合适的分支，否则会走默认的 `else` 分支。`when` 操作符与 Kotlin 中的 `if` 相同，也可以被当作表达式使用，符合条件的分支的最后一行表达式的值就被作为返回值，但需要注意的是，如果 `when` 被作为表达式使用的话，那必须要有 `else` 分支使得表达式无论怎样有会返回结果，除非编译器能够检测出已经将所有的情况覆盖。
 
-这时你会疑问「好像没有 Java 中的 `break` 返回语句啊？」，其实 Kotlin 中不需要那么麻烦，当一个条件满足的时候会执行当前代码块并自动返回，而不会执行之后的其他分支。如果多个分支都是相同的代码块的话，可以将多个分支条件放在一起，用 `,` 符号隔开：
+这时你会疑问「在刚刚的代码中，好像没有 Java 中的 `break` 返回语句啊？」，其实 Kotlin 中不需要那么麻烦，当一个条件满足的时候会执行当前代码块并自动返回，而不会执行之后的其他分支。如果多个分支都是相同的代码块的话，可以将多个分支条件放在一起，用 `,` 符号隔开：
 
 ```kotlin
 🏝️
@@ -674,7 +753,7 @@ when (x) {
 when (x) {
   👇
   parseInt(str) -> print("字符串 str 的值与 Int 值 x 相同")
-  else -> print("不相同相同")
+  else -> print("没有相同值")
 }
 ```
 
@@ -683,24 +762,23 @@ when (x) {
 ```kotlin
 🏝️
 when (x) {
-  👇
+ 👇
   in 1..10 -> print("x 在区间 1..10 中")
-      👇
+ 👇
   in listOf(1,2) -> print("x 在集合中")
-  👇
+ 👇
   !in 10..20 -> print("x 不在区间 10..20 中")
   else -> print("else")
 }
 ```
 
-也可以使用 `is` 进行特定类型的检测：
+或者使用 `is` 进行特定类型的检测：
 
 ```kotlin
 🏝️
-                 👇
-fun hasPrefix(x: Any) = when(x) {
+val isString = when(x) {
   👇
-  is String -> x.startsWith("prefix")
+  is String -> true
   else -> false
 }
 ```
@@ -710,27 +788,29 @@ fun hasPrefix(x: Any) = when(x) {
 ```kotlin
 🏝️
 when {
-  👇
+ 👇
   str.contains("a") -> print("字符串 str 包含 a")
-  👇
+ 👇
   str.length == 3 -> print("字符串 str 的长度为3")
   else -> print("else")
 }
 ```
 
+到此，我们学习了关于 Kotlin 中关于 `if/else` 条件控制相关的知识，下面我们来学习循环控制 `for` 相关的知识吧。
+
 #### `for`
 
-在 Kotlin 中，`for` 循环与 Java 的 `for` 相比也进行了许多优化，Kotlin 中 `for` 循环可以对任何提供迭代器（iterator）的对象进行遍历：
+在 Kotlin 中，`for` 循环操作与 Java 的 `for` 相比也进行了许多优化，Kotlin 中 `for` 循环可以对任何提供迭代器（iterator）的对象进行遍历：
 
 ```kotlin
 🏝️
-         👇
+          👇
 for (item in collection) {
   print(item)
 }
 ```
 
-或者使用常见的数字区间迭代，区间的知识我们已在上面的内容学过，代码如下：
+上方代码中用「👇」标注的 `in` 操作符与 `for` 循环结合，不断的从 `collection` 中取出子元素赋值给 `item` 变量，从而实现对该对象的遍历读取操作。或者使用常见的数字区间迭代，区间的知识我们已在上面的内容学过，代码如下：
 
 ```kotlin
 🏝️
@@ -809,7 +889,7 @@ Kotlin 的空安全我们在之前的课程中已经学过，其实还有两个�
 val length = if (str != null) str.length else -1
 ```
 
-上方示例中 `str` 是一个可空的字符串对象，我们想要获取它的长度时先判断是否为空，不为空则使用 `str.length` ，为空则使用 `-1` 。其实不必写的这么麻烦，可以通过 Elvis 操作符 `?:` 完成：
+上方示例中 `str` 是一个可空的字符串对象，我们想要获取它的长度时先判断是否为空，不为空则使用 `str.length` ，为空则使用 `-1` 。其实不必写的这么麻烦，可以通过 Elvis 操作符 `?:` 再结合空安全调用 `?.` 完成：
 
 ```kotlin
 🏝️
@@ -837,7 +917,7 @@ System.out.println(str1.equals(str2)); // 判断内容是否相等 输出 true
 System.out.println(str1 == str2); // 判断引用地址是否相等  输出 false
 ```
 
-而在 Kotlin 中 `==` 得作用类似于 Java 中的 `equals()`，用于判断内容是否相等，只不过多了判空的操作：
+而在 Kotlin 中 `==` 的作用类似于 Java 中的 `equals()`，用于判断内容是否相等，只不过多了判空的操作：
 
 ```kotlin
 🏝️
@@ -848,11 +928,13 @@ str1 == str2
 str1?.equals(str2) ?: (str2 === null)
 ```
 
-如果 `str1` 与 `str2` 都是可空的，那 `==` 比较内容是会进行判空操作。这时你会疑问「上方示例中，`===` 又是什么意思呢？又如何判断引用地址是否相等呢？」其实 `===` 就是对两个对象的地址是否相等的判断。
+如果 `str1` 与 `str2` 都是可空的，那 `==` 比较内容是会进行判空操作。这时如果 `str1` 不为空则继续比较是否与 `str2` 的值相等，而如果 `str1` 为空值则会走到 Elvis 操作符 `?:` 的右侧表达式 `str2 === null` ，`===` 操作符又是什么意思呢？其实 `===` 就是对两个对象的地址是否相等的判断，这时如果 `str2` 也为空的话，那么 `str2 === null` 表达式就为 `true` ，也就是整个表达式都为 `true` ，因为  `str1` 与 `str2` 都为空。
 
 ### 思考题
 
-1. 下面这段代码的 `value` 为 `null` 时，结果是多少？
+好了，以上就是关于 Kotlin 里那些「更方便的」，给你留两道思考题吧：
+
+1. 下面这段代码，当使用 `double(null)` 调用时，结果是多少？
 
    ```kotlin
    fun double(value: Int?): Int = value ?: 0 * 2
@@ -863,18 +945,3 @@ str1?.equals(str2) ?: (str2 === null)
    ```kotlin
    val list = listOf(1, 2, 3)
    ```
-
-### 小结
-
-今天的内容就是这些：Kotlin 里那些「更方便的」。除了开头的 primary constructor，其它东西都很简单，不过还是建议你把文章看完，然后把练习题做一下，这会对你的记忆很有帮助。
-
-
-
-
-
-
-
-
-
-
-
