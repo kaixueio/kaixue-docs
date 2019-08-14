@@ -262,16 +262,8 @@ Sample.name
             ...
         }
     }
-    
-    class D {          // 👇
-        companion object : B {
-            override fun interfaceMethod() {
-                ...
-            }
-        }
-    }
     ```
-
+    
 - 匿名类
 
     另外，Kotlin 还可以创建 Java 中的匿名类，只是写法上有点不同：
