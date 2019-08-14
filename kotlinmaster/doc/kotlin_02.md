@@ -767,6 +767,44 @@ map.toMutableMap()
 
 然后就可以对集合进行修改了，这里有一点需要注意下：`toMutable*()` 返回的是一个新建的集合，原有的集合还是不可变的。
 
+#### `Sequence`
+
+除了集合 Kotlin 还引入了一个新的容器类型 `Sequence`，它和 `Iterable` 一样用来遍历一组数据并可以对每个元素进行特定的处理，先来看看如何创建一个 `Sequence`。
+
+##### 创建
+
+- 类似 `listOf()` ，使用一组元素创建：
+
+    ``` kotlin
+    🏝️
+    sequenceOf("a", "b", "c")
+    ```
+
+- 使用 `Iterable` 创建：
+
+    ``` kotlin
+    🏝️
+    val list = listOf("a", "b", "c")
+    list.asSequence()
+    // 👆 List 实现了 Iterable 接口
+    ```
+
+- 使用 lamda 表达式创建：
+
+    ``` kotlin
+    🏝️                          // 👇 第一个元素
+    val sequence = generateSequence(0) { it + 1 }
+                                    // 👆 lamda 表达式，负责生成第二个及以后的元素，it 表示前一个元素
+    ```
+    
+
+##### 和 `Iterable` 的区别
+
+这看起来和 `Iterable` 一样呀，为啥要多此一举使用 `Sequence` 呢？因为 `Sequence` 在两点上实现和 `Iterable` 不一样：
+
+- 调用处理函数处理元素时，`Iterable` 是立即执行， `Sequence` 是懒加载。
+- 调用多个处理函数时，`Iterable` 是一个函数遍历完所有元素后再执行下一个函数，`Sequence` 是一个元素执行完所有函数后再遍历下一个元素。
+
 ### 可见性修饰符
 
 讲完了数据集合，再看看 Kotlin 中的可见性修饰符，Kotlin 中有四种可见性修饰符：`public` `private ` `protected` `internal`：
