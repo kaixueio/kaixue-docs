@@ -404,44 +404,44 @@ topLevelFunction()
 
 - 命名相同的顶级函数
 
-顶级函数不写在类中可能有一个问题：如果在不同文件中声明命名相同的函数，使用的时候会不会混淆？来看一个例子：
+    顶级函数不写在类中可能有一个问题：如果在不同文件中声明命名相同的函数，使用的时候会不会混淆？来看一个例子：
 
-* 在 `org.kotlinmaster.library` 包下有一个方法 method：
+    - 在 `org.kotlinmaster.library` 包下有一个方法 method：
 
-  ``` kotlin
-  🏝️
-  package org.kotlinmaster.library1
-                             👆
-  fun method() {
-      println("library1 method()")
-  }
-  ```
+        ``` kotlin
+        🏝️
+        package org.kotlinmaster.library1
+                                   👆
+        fun method() {
+            println("library1 method()")
+        }
+        ```
 
-* 在 `org.kotlinmaster.library2` 包下也有一个同名方法：
+    - 在 `org.kotlinmaster.library2` 包下也有一个同名方法：
 
-  ``` kotlin
-  🏝️
-  package org.kotlinmaster.library2
-                             👆
-  fun method() {
-      println("library2 method()")
-  }
-  ```
+        ``` kotlin
+        🏝️
+        package org.kotlinmaster.library2
+                                   👆
+        fun method() {
+            println("library2 method()")
+        }
+        ```
 
-在使用的时候如果同时调用这两个同名方法会怎么样：
+    在使用的时候如果同时调用这两个同名方法会怎么样：
 
-``` kotlin
-🏝️
-import org.kotlinmaster.library1.method
-                           👆
-fun test() {
-    method()
-                       👇
-    org.kotlinmaster.library2.method()
-}
-```
+    ```kotlin
+    🏝️
+    import org.kotlinmaster.library1.method
+                               👆
+    fun test() {
+        method()
+                           👇
+        org.kotlinmaster.library2.method()
+    }
+    ```
 
-可以看到当出现两个同名顶级函数时，IDE 会自动加上包前缀来区分，这也印证了顶级函数是属于包的特性。
+    可以看到当出现两个同名顶级函数时，IDE 会自动加上包前缀来区分，这也印证了顶级函数是属于包的特性。
 
 #### 对比
 
