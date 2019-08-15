@@ -217,12 +217,12 @@ Sample.name
         
     - Kotlin 中实现单例类：
     
-    ``` kotlin
-        🏝️
+        ``` kotlin
+         🏝️
         // 👇 class 替换成了 object
-    object A {
+        object A {
          // 👇 和普通类中声明类似
-        val number: Int = 1
+            val number: Int = 1
             fun method() {
                 println("A.method()")
             }
@@ -599,45 +599,45 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
       strList.add("c"); // 👈 添加元素繁琐
       ```
       
-- Kotlin 中创建一个列表：
+    - Kotlin 中创建一个列表：
     
-    ``` kotlin
+        ``` kotlin
         🏝️            
         val strList = listOf("a", "b", "c")
         ```
     
-首先能看到的是 Kotlin 中创建一个 `List` 特别的简单，一句代码搞定，有点像创建数组的代码。而且 Kotlin 中的 `List` 多了一个特性：支持 covariant（协变）。也就是说，可以把子类的 `List` 赋值给父类的 `List`：
+    首先能看到的是 Kotlin 中创建一个 `List` 特别的简单，一句代码搞定，有点像创建数组的代码。而且 Kotlin 中的 `List` 多了一个特性：支持 covariant（协变）。也就是说，可以把子类的 `List` 赋值给父类的 `List`：
     
-- Kotlin：
+    - Kotlin：
     
-  ``` kotlin
-      🏝️
-      val strs: List<String> = listOf("a", "b", "c")
-                      👆
-      val anys: List<Any> = strs // success
-                     👆
-      ```
+        ``` kotlin
+        🏝️
+        val strs: List<String> = listOf("a", "b", "c")
+                        👆
+        val anys: List<Any> = strs // success
+                       👆
+        ```
     
-- 而这在 Java 中是会报错的：
+    - 而这在 Java 中是会报错的：
     
-  ``` java
-      ☕️
-      List<String> strList = new ArrayList<>();
-             👆
-      List<Object> objList = strList; // 👈 compile error: incompatible types
-            👆
-      ```
+        ``` java
+        ☕️
+        List<String> strList = new ArrayList<>();
+               👆
+        List<Object> objList = strList; // 👈 compile error: incompatible types
+              👆  
+        ```
     
-对于协变的支持与否，`List` 和数组刚好反过来了。关于协变，这里只需结合例子简单了解下，后面的文章会对它展开讨论。
+    对于协变的支持与否，`List` 和数组刚好反过来了。关于协变，这里只需结合例子简单了解下，后面的文章会对它展开讨论。
     
-- 和数组的区别
+    - 和数组的区别
     
-    Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数组的元素个数不能变。那在什么时候用数组呢？
+        Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数组的元素个数不能变。那在什么时候用数组呢？
     
-    这个问题在 Java 中就存在了？数组和 `List` 的功能类似，`List` 的功能更多一些，直觉应该用 `List` 。但数组也不是没有优势，基本类型 (`int[]`、`float[]`) 的数组不用自动装箱，性能好一点。
+        这个问题在 Java 中就存在了？数组和 `List` 的功能类似，`List` 的功能更多一些，直觉应该用 `List` 。但数组也不是没有优势，基本类型 (`int[]`、`float[]`) 的数组不用自动装箱，性能好一点。
     
-    在 Kotlin 中也是同样的道理，在一些性能需求比较苛刻的场景，并且元素类型是基本类型时，用数组好一点。不过这里要注意一点，Kotlin 中要用专门的基本类型数组类 (`IntArray` `FloatArray` `LongArray`) 才可以免于装箱。
-    
+        在 Kotlin 中也是同样的道理，在一些性能需求比较苛刻的场景，并且元素类型是基本类型时，用数组好一点。不过这里要注意一点，Kotlin 中要用专门的基本类型数组类 (`IntArray` `FloatArray` `LongArray`) 才可以免于装箱。
+
 - Set
     - Java 中创建一个 `Set`：
 
@@ -649,16 +649,16 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
       strSet.add("c");
       ```
       
-- Kotlin 中创建相同的 `Set`：
+    - Kotlin 中创建相同的 `Set`：
     
-    ``` kotlin
+        ``` kotlin
         🏝️           
         val strSet = setOf("a", "b", "c")
         ```
     
-
+    
     和 `List` 类似，`Set` 同样具有 covariant（协变）特性。
-
+    
 - Map
     - Java 中创建一个 `Map`：
 
@@ -671,28 +671,29 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
       map.put("key4", 3);
       ```
       
-- Kotlin 中创建一个 `Map`：
-    
-  ``` kotlin
-      🏝️         
-      val map = mapOf("key1" to 1, "key2" to 2, "key3" to 3, "key4" to 3)
-      ```
-    
-和上面两种集合类型相似创建代码很简洁。`mapOf` 的每个参数表示一个键值对，`to` 表示将「键」和「值」关联，这个叫做「中缀表达式」，这里先不展开，后面的文章会做介绍。
-    
-- 取值和修改
-    
-    - Kotlin 中的 Map 除了和 Java 中的一样可以使用 `get()` 根据键获取对应的值，还可以使用方括号的方式获取：
+    - Kotlin 中创建一个 `Map`：
     
         ``` kotlin
+        🏝️         
+        val map = mapOf("key1" to 1, "key2" to 2, "key3" to 3, "key4" to 3)
+            
+        ```
+    
+    和上面两种集合类型相似创建代码很简洁。`mapOf` 的每个参数表示一个键值对，`to` 表示将「键」和「值」关联，这个叫做「中缀表达式」，这里先不展开，后面的文章会做介绍。
+    
+    - 取值和修改
+    
+        - Kotlin 中的 Map 除了和 Java 中的一样可以使用 `get()` 根据键获取对应的值，还可以使用方括号的方式获取：
+    
+            ``` kotlin
             🏝️
                              👇
             val value1 = map.get("key1")
                            👇
             val value2 = map["key2"]
-        ```
+            ```
     
-    - 类似的，Kotlin 中也可以用方括号的方式改变 `Map` 中键对应的值：
+        - 类似的，Kotlin 中也可以用方括号的方式改变 `Map` 中键对应的值：
     
             ``` kotlin
             🏝️       
@@ -701,9 +702,9 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
                 👇
             map.put("key1", 2)
                👇
-            map["key1"] = 2
-        ```
-    
+            map["key1"] = 2    
+            ```
+
 - 可变集合/不可变集合
 
     上面修改 `Map` 值的例子中，创建函数用的是 `mutableMapOf()` 方法而不是 `mapOf()`，只有 `mutableMapOf()` 创建的才可以修改。Kotlin 中集合分为两种类型：只读的和可变的。只读的集合在创建的时候就要确定好值，创建好后集合的 size 和元素值都不能改变。
@@ -749,12 +750,12 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
         list.asSequence()
         ```
         
-- 使用 lamda 表达式创建：
+    - 使用 lamda 表达式创建：
     
-    ``` kotlin
+        ``` kotlin
         🏝️                          // 👇 第一个元素
         val sequence = generateSequence(0) { it + 1 }
-                                        // 👆 lambda 表达式，负责生成第二个及以后的元素，it 表示前一个元素
+                                          // 👆 lambda 表达式，负责生成第二个及以后的元素，it 表示前一个元素
         ```
     
 - 和 `Iterable` 的区别
