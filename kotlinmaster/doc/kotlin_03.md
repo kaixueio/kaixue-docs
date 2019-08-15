@@ -11,11 +11,11 @@
 ```kotlin
 🏝️
 class User {
-  var name: String
+    var name: String
 
-  constructor(name: String) {
-    this.name = name
-  }
+    constructor(name: String) {
+        this.name = name
+    }
 }
 ```
 
@@ -25,8 +25,8 @@ class User {
 🏝️
                👇      👇
 class User constructor(name: String) {
- 👇
-  var name: String = name
+   👇
+    var name: String = name
 }
 ```
 
@@ -37,11 +37,11 @@ class User constructor(name: String) {
 ```kotlin
 🏝️
 class User constructor(name: String) {
-  var name: String
-  👇
-  init {
-    this.name = name
-  }
+    var name: String
+    👇
+    init {
+        this.name = name
+    }
 }
 ```
 
@@ -50,13 +50,13 @@ class User constructor(name: String) {
 ```java
 ☕️
 class User {
- 👇
-  {
-    ...
-  }
-  User() {
-    ...
-  }
+   👇
+    {
+        ...
+    }
+    User() {
+        ...
+    }
 }
 ```
 
@@ -80,7 +80,7 @@ Kotlin 中 `init` 代码块的执行时机是紧跟着主构造器之后的，�
 🏝️
             👇       👇
 class User private @Inject constructor(name: String) {
-  var name: String = name
+    var name: String = name
 }
 ```
 
@@ -92,7 +92,7 @@ class User private @Inject constructor(name: String) {
 🏝️
          👇
 class User(name: String) {
-  var name: String = name
+    var name: String = name
 }
 ```
 
@@ -119,18 +119,18 @@ class User(var name: String) {
 ```kotlin
 🏝️
 class User {
-  var name: String
-  var id: String
+    var name: String
+    var id: String
 
-  constructor(name: String, id: String) {
-    this.name = name
-    this.id = id
-  }
+    constructor(name: String, id: String) {
+        this.name = name
+        this.id = id
+    }
   
-  constructor(person: Person) {
-    this.name = person.name
-    this.id = person.id
-  }
+    constructor(person: Person) {
+        this.name = person.name
+        this.id = person.id
+    }
 }
 ```
 
@@ -139,16 +139,16 @@ class User {
 ```kotlin
 🏝️
 class User(person: Person) {
-  var name: String
-  var id: String
+    var name: String
+    var id: String
   
-  init {
-    name = person.name
-    id = person.id
-  }
+    init {
+        name = person.name
+        id = person.id
+    }
 
-  constructor(name: String, id: String): this(person = Person(name, id)) {
-  }
+    constructor(name: String, id: String): this(person = Person(name, id)) {
+    }
 }
 ```
 
@@ -157,8 +157,8 @@ class User(person: Person) {
 ```kotlin
 🏝️
 class User(var name: String, var id: String) {
-  constructor(person: Person) : this(person.name, person.id) {
-  }
+    constructor(person: Person) : this(person.name, person.id) {
+    }
 }
 ```
 
@@ -190,7 +190,7 @@ fun sayHi(name: String) = println("Hi " + name)
 ```kotlin
 🏝️
 fun area(width: Int, height: Int): Int {
-  return width * height
+    return width * height
 }
 ```
 
@@ -218,11 +218,11 @@ fun area(width: Int, height: Int) = width * height
 ```java
 ☕️
 public void sayHi(String name) {
-  System.out.println("Hi " + name);
+    System.out.println("Hi " + name);
 }
 
 public void sayHi() {
-  sayHi("world");
+    sayHi("world");
 }
 ```
 
@@ -261,7 +261,7 @@ class B : A() {
 ```kotlin
 🏝️
 fun sayHi(name: String = "world", age: Int) {
-  ...
+    ...
 }
 ```
 
@@ -275,7 +275,7 @@ fun sayHi(name: String = "world", age: Int) {
 🏝️
                            👇          👇                        👇              
 fun sayHi(name: String = "world", age: Int, isStudent: Boolean = true, isFat: Boolean = true, isTall: Boolean = true) {
-  ...
+    ...
 }
 ```
 
@@ -311,16 +311,16 @@ sayHi(age = 21)
 ```kotlin
 🏝️
 fun login(user: String, password: String, illegalStr: String) {
-            👇 
-  if (user.isEmpty()) {
-   👇 
-    throw IllegalArgumentException(illegalStr)
-  }
-                👇 
-  if (password.isEmpty()) {
-   👇 
-    throw IllegalArgumentException(illegalStr)
-  }
+               👇 
+    if (user.isEmpty()) {
+       👇 
+        throw IllegalArgumentException(illegalStr)
+    }
+                   👇 
+    if (password.isEmpty()) {
+       👇 
+        throw IllegalArgumentException(illegalStr)
+    }
 }
 ```
 
@@ -329,15 +329,15 @@ fun login(user: String, password: String, illegalStr: String) {
 ```kotlin
 🏝️
 fun login(user: String, password: String, illegalStr: String) {
-        👇 
-  fun validate(value: String, illegalStr: String) {
-    if (value.isEmpty()) {
-      throw IllegalArgumentException(illegalStr)
+          👇 
+    fun validate(value: String, illegalStr: String) {
+      if (value.isEmpty()) {
+          throw IllegalArgumentException(illegalStr)
+      }
     }
-  }
- 👇
-  validate(user, illegalStr)
-  validate(password, illegalStr)
+   👇
+    validate(user, illegalStr)
+    validate(password, illegalStr)
 }
 ```
 
@@ -347,14 +347,14 @@ fun login(user: String, password: String, illegalStr: String) {
 🏝️
 fun login(user: String, password: String, illegalStr: String) {
              👇
-  fun validate(value: String) {
-    if (value.isEmpty()) {
-                                        👇
-      throw IllegalArgumentException(illegalStr)
+    fun validate(value: String) {
+        if (value.isEmpty()) {
+                                              👇
+            throw IllegalArgumentException(illegalStr)
+        }
     }
-  }
-  validate(user)
-  validate(password)
+    validate(user)
+    validate(password)
 }
 ```
 
@@ -484,11 +484,11 @@ val strList = listOf("a", "b", "c") // List<String> 集合
   ```kotlin
   🏝️
   intArray.forEach { i ->
-    println(i) // 输出每一个元素值 1 2
+      println(i) // 输出每一个元素值 1 2
   }
   
   strList.forEach { str ->
-    println(str) // 输出每一个元素值 a b c
+      println(str) // 输出每一个元素值 a b c
   }
   ```
 
@@ -497,15 +497,15 @@ val strList = listOf("a", "b", "c") // List<String> 集合
   ```kotlin
   🏝️
   intArray.filter { i ->
-    i != 1 // 当遍历到的元素不等于 1 时成立并保留，也就是过滤掉数组中等于 1 的元素
+      i != 1 // 当遍历到的元素不等于 1 时成立并保留，也就是过滤掉数组中等于 1 的元素
   }.forEach { i ->
-    println(i) // 输出过滤后的每一个元素 2
+      println(i) // 输出过滤后的每一个元素 2
   }
   
   strList.filter { str ->
-    str.contains("a") // 过滤掉集合元素中不包含 a 的元素
+      str.contains("a") // 过滤掉集合元素中不包含 a 的元素
   }.forEach { str ->
-    println(str) // 输出过滤后的每一个元素 a
+      println(str) // 输出过滤后的每一个元素 a
   }
   ```
 
@@ -514,15 +514,15 @@ val strList = listOf("a", "b", "c") // List<String> 集合
   ```kotlin
   🏝️
   intArray.map { i ->
-    i+1 // 遍历数组，并将每个值加 1，返回新的数组
+      i+1 // 遍历数组，并将每个值加 1，返回新的数组
   }.forEach { i ->
-    println(i) // 新的数组进行 forEach 遍历输出：2 3
+      println(i) // 新的数组进行 forEach 遍历输出：2 3
   }
   
   strList.map { str ->
-    str + "d" // 遍历集合，并将每个元素与 d 拼接，返回新的集合
+      str + "d" // 遍历集合，并将每个元素与 d 拼接，返回新的集合
   }.forEach { str ->
-    println(str) // 新的集合进行 forEach 遍历输出：ad bd cd
+      println(str) // 新的集合进行 forEach 遍历输出：ad bd cd
   }
   ```
 
@@ -531,15 +531,15 @@ val strList = listOf("a", "b", "c") // List<String> 集合
   ```kotlin
   🏝️
   intArray.flatMap {
-    listOf(it+1) // 遍历数组，且该闭包需要一个集合返回值，并将每个值加 1，最终返回新的数组
+      listOf(it+1) // 遍历数组，且该闭包需要一个集合返回值，并将每个值加 1，最终返回新的数组
   }.forEach {
-    println(it) // 新的数组进行 forEach 遍历输出：2 3
+      println(it) // 新的数组进行 forEach 遍历输出：2 3
   }
   
   strList.flatMap { str ->
-    listOf(str + "d") // 遍历数组，且该闭包需要一个集合返回值，并将每个元素与 d 拼接，最终返回新的数组
+      listOf(str + "d") // 遍历集合，且该闭包需要一个集合返回值，并将每个元素与 d 拼接，最终返回新的集合
   }.forEach { str ->
-    println(str) // 新的集合进行 forEach 遍历输出：ad bd cd
+      println(str) // 新的集合进行 forEach 遍历输出：ad bd cd
   }
   ```
 
@@ -548,11 +548,11 @@ val strList = listOf("a", "b", "c") // List<String> 集合
   ```kotlin
   🏝️
   intArray.first {
-    it > 0 // 返回数组中第一个大于 0 的元素
+      it > 0 // 返回数组中第一个大于 0 的元素
   }
   
   strList.first { 
-    it.contains("a") // 返回集合中第一个包含字母 a 的元素
+      it.contains("a") // 返回集合中第一个包含字母 a 的元素
   }
   ```
 
@@ -585,7 +585,7 @@ val range: IntRange = 0 until 1000
 val range = 0..1000
       👇
 for (i in range) {
-  print("$i, ")
+    print("$i, ")
 }
 ```
 
@@ -634,7 +634,7 @@ for (i in 4 downTo 1) print(i)
   val list = listOf(1, 2, 3, 4, 5, 6)
   val result = list.asSequence()
       .map{ println("Map"); it * 2 } // map 返回 Sequence<T> ，所以是中间操作
-      .filter { println("Filter");it % 3  == 0 } // filter 返回 Sequence<T> ，所以是中间操作
+      .filter { println("Filter");it % 3  == 0 } // filter 返回 Sequence<T> 
   ```
 
   这样懒加载的实现有什么好处呢？我们知道在 Kotlin 中， `Iterable` 每调用一次函数就会生成一个新的 `Iterable`，下一个函数再基于新的 `Iterable` 执行，每次函数调用产生的临时 `Iterable` 会导致额外的内存消耗，而 `Sequence` 避免了这样的问题。
@@ -678,9 +678,9 @@ for (i in 4 downTo 1) print(i)
 ☕️
 int max;
 if (a > b) {
-  max = a;
+    max = a;
 } else {
-  max = b;
+    max = b;
 }
 ```
 
@@ -690,9 +690,9 @@ if (a > b) {
 🏝️
 var max: Int
 if (a > b) {
-  max = a
+    max = a
 } else {
-  max = b
+    max = b
 }
 ```
 
@@ -709,11 +709,11 @@ val max = if (a > b) a else b
 ```kotlin
 🏝️
 val max = if (a > b) {
-  print("max:a")
-  a // 👈 返回 a 的值
+    print("max:a")
+    a // 👈 返回 a 的值
 } else {
-  print("max:b")
-  b // 👈 返回 b 的值
+    print("max:b")
+    b // 👈 返回 b 的值
 }
 ```
 
@@ -723,13 +723,13 @@ val max = if (a > b) {
 🏝️
 👇
 when (x) {
- 👇
-  1 -> print("1")
-  2 -> print("2")
- 👇
-  else -> {
-    print("else")
-  }
+   👇
+    1 -> print("1")
+    2 -> print("2")
+   👇
+    else -> {
+        print("else")
+    }
 }
 ```
 
@@ -740,9 +740,9 @@ when (x) {
 ```kotlin
 🏝️
 when (x) {
-  👇
-  1, 2 -> print("x == 1 or x == 2")
-  else -> print("else")
+    👇
+    1, 2 -> print("x == 1 or x == 2")
+    else -> print("else")
 }
 ```
 
@@ -751,9 +751,9 @@ when (x) {
 ```kotlin
 🏝️
 when (x) {
-  👇
-  parseInt(str) -> print("字符串 str 的值与 Int 值 x 相同")
-  else -> print("没有相同值")
+    👇
+    parseInt(str) -> print("字符串 str 的值与 Int 值 x 相同")
+    else -> print("没有相同值")
 }
 ```
 
@@ -762,13 +762,13 @@ when (x) {
 ```kotlin
 🏝️
 when (x) {
- 👇
-  in 1..10 -> print("x 在区间 1..10 中")
- 👇
-  in listOf(1,2) -> print("x 在集合中")
- 👇
-  !in 10..20 -> print("x 不在区间 10..20 中")
-  else -> print("else")
+   👇
+    in 1..10 -> print("x 在区间 1..10 中")
+   👇
+    in listOf(1,2) -> print("x 在集合中")
+   👇
+    !in 10..20 -> print("x 不在区间 10..20 中")
+    else -> print("else")
 }
 ```
 
@@ -777,9 +777,9 @@ when (x) {
 ```kotlin
 🏝️
 val isString = when(x) {
-  👇
-  is String -> true
-  else -> false
+    👇
+    is String -> true
+    else -> false
 }
 ```
 
@@ -788,11 +788,11 @@ val isString = when(x) {
 ```kotlin
 🏝️
 when {
- 👇
-  str.contains("a") -> print("字符串 str 包含 a")
- 👇
-  str.length == 3 -> print("字符串 str 的长度为3")
-  else -> print("else")
+   👇
+    str.contains("a") -> print("字符串 str 包含 a")
+   👇
+    str.length == 3 -> print("字符串 str 的长度为3")
+    else -> print("else")
 }
 ```
 
@@ -806,7 +806,7 @@ when {
 🏝️
           👇
 for (item in collection) {
-  print(item)
+    print(item)
 }
 ```
 
@@ -816,10 +816,10 @@ for (item in collection) {
 🏝️
           👇
 for (i in 1..10) {
-  println(i)
+    println(i)
 }
 for (i in 10 downTo 1 step 2) {
-  println(i)
+    println(i)
 }
 ```
 
@@ -852,13 +852,13 @@ for ((index, value) in array.withIndex()) {
 ```kotlin
 🏝️
 try {
-  ...
+    ...
 }
 catch (e: Exception) {
-  ...
+    ...
 }
 finally {
-  ...
+    ...
 }
 ```
 
@@ -901,8 +901,8 @@ val length = str?.length ?: -1
 ```kotlin
 🏝️
 fun validate(user: User) {
-  val id = user.id ?: return
-  val name = user.name ?: throw IllegalArgumentException("name is null")
+    val id = user.id ?: return
+    val name = user.name ?: throw IllegalArgumentException("name is null")
 }
 ```
 
