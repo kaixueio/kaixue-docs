@@ -676,7 +676,6 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
         ``` kotlin
         🏝️         
         val map = mapOf("key1" to 1, "key2" to 2, "key3" to 3, "key4" to 3)
-            
         ```
     
     和上面两种集合类型相似创建代码很简洁。`mapOf` 的每个参数表示一个键值对，`to` 表示将「键」和「值」关联，这个叫做「中缀表达式」，这里先不展开，后面的文章会做介绍。
@@ -750,7 +749,7 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
         list.asSequence()
         ```
         
-    - 使用 lamda 表达式创建：
+    - 使用 lambda 表达式创建：
     
         ``` kotlin
         🏝️                          // 👇 第一个元素
