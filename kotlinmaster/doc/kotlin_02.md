@@ -1,6 +1,6 @@
 ## Kotlin 里那些「不是那么写的」
 
-上期我们讲了 Kotlin 上手最基础的三个点：变量、函数和类型。大家都听说过，Kotlin 完全兼容 Java，这个意思是用 Java 写出来的 class 和 Kotlin 可以完美交互，而不是说你用 Java 的写法去写 Kotlin 也完全没问题，这个是不行的。这期内容我们就讲一下，Kotlin 里那些「不 Java」的写法。
+上一篇我们讲了 Kotlin 上手最基础的三个点：变量、函数和类型。大家都听说过，Kotlin 完全兼容 Java，这个意思是用 Java 写出来的 class 和 Kotlin 可以完美交互，而不是说你用 Java 的写法去写 Kotlin 也完全没问题，这个是不行的。这期内容我们就讲一下，Kotlin 里那些「不 Java」的写法。
 
 ### Constructor
 
@@ -13,7 +13,7 @@
     public class User {
         int id;
         String name;
-          👇    👇
+          👇   👇
         public User(int id, String name) {
             this.id = id;
             this.name = name;
@@ -43,7 +43,7 @@
 - Java 中构造器和类同名，Kotlin 中使用 `constructor` 表示。
 - Kotlin 构造器没有 public 修饰，因为默认可见性就是公开的，关于可见性修饰符这里先不展开，后面会讲到。
 
-这里介绍的是 Kotlin 的次构造器，除此之外还有主构造器，后面的文章会讲到。
+这里介绍的是 Kotlin 的其中一种构造器，叫做「次构造器」，除此之外还有主构造器，关于「什么是主构造器，主和次有什么区别」，后面的文章会讲到。
 
 #### init
 
@@ -56,7 +56,7 @@
     public class User {
        👇
         {
-            // 初始化代码块，先于构造器执行
+            // 初始化代码块，先于下面的构造器执行
         }
         public User() {
         }
@@ -70,20 +70,20 @@
     class User {
         👇
         init {
-            // 初始化代码块，先于构造器执行
+            // 初始化代码块，先于下面的构造器执行
         }
         constructor() {
         }
     }
     ```
 
-Kotlin 的 init 代码块和 Java 一样，都在实例化时执行，并且执行顺序都在构造器之前。
+可以看到，Kotlin 的 init 代码块和 Java 一样，都在实例化时执行，并且执行顺序都在构造器之前。
 
-Java 的类中除了构造器之外还有成员变量，成员变量根据有没有 `final` 修饰分为两种类型： 有 `final` 修饰的表示只读变量不可修改；没有的则表示可以修改，接下来我们看看 Kotlin 的只读变量和 Java 的有什么区别。
+上一篇提到，Java 的类如果不加 final 关键字，默认是可以被继承的，而 Kotlin 的类默认就是 final 的，如果需要继承要加 open 关键字，现在，让我们来好好看看 Kotlin 里的 final 关键字在修饰变量的时候和 Java 有什么不同。
 
 ### `final`
 
-上一篇在「 `var` 和 `val`」 这一节中讲到 Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能修改。这里具体对比下 Java 和 Kotlin 中的只读变量：
+Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能修改。这里分别从全局变量、参数和局部变量来和 Java 做对比：
 
 - Java
 
@@ -104,7 +104,7 @@ Java 的类中除了构造器之外还有成员变量，成员变量根据有没
   🏝️
   👇
   val fina1 = 1
-         // 👇 没有 val
+         // 👇 参数是没有 val 的
   fun method(final2: String) {
       👇
       val final3 = "The parameter is " + final2
@@ -113,12 +113,12 @@ Java 的类中除了构造器之外还有成员变量，成员变量根据有没
 
 可以看到不同点主要有：
 
-- final 变成 val。
-- Kotlin 方法参数默认是 val 类型，所以参数前不需要写 val 关键字。
+- final 变成了 val。
+- Kotlin 方法参数默认是 val 类型，所以参数前不需要写 val 关键字，Kotlin 里这样设计的原因是保证了参数不会被修改，而 Java 的参数可修改会增加出错的概率。
 
 上一期说过，`var` 是 variable 的缩写， `val` 是 value 的缩写。
 
-其实我们写 Java 代码的时候，很少会有人用 `final`，但 `final` 用来修饰变量其实是很有用的，但大家都不用；可你如果去看看国内国外的人写的 Kotlin 代码，你会发现很多人的代码里都会有一堆的 `val`。为什么？因为 `final`写起来比 `val` 麻烦一点：我需要多写一个单词。虽然只麻烦这一点点，但就导致很多人不写。
+其实我们写 Java 代码的时候，很少会有人用 `final`，但 `final` 用来修饰变量其实是很有用的，但大家都不用；可你如果去看看国内国外的人写的 Kotlin 代码，你会发现很多人的代码里都会有一堆的 `val`。为什么？因为 `final` 写起来比 `val` 麻烦一点：我需要多写一个单词。虽然只麻烦这一点点，但就导致很多人不写。
 
 这就是一件很有意思的事：从 `final` 到 `val`，只是方便了一点点，但却让它的使用频率有了巨大的改变。这种改变是会影响到代码质量的：在该加限制的地方加上限制，就可以减少代码出错的概率。
 
@@ -207,36 +207,30 @@ Sample.name
                 return sInstance;
             }
         
-            private A() {
-            }
-        
-            public int number = 1;
-        
-            public void method() {
-                System.out.println("A.method()");
-            }
+        	// 👇还有很多模板代码
+            ...
         }
         ```
-
+        
         可以看到 Java 中为了实现单例类写了大量的模版代码，稍显繁琐。 
             
-
+        
     - Kotlin 中实现单例类：
-
-        ``` kotlin
+    
+    ``` kotlin
         🏝️
         // 👇 class 替换成了 object
-        object A {
+    object A {
          // 👇 和普通类中声明类似
-            val number: Int = 1
+        val number: Int = 1
             fun method() {
                 println("A.method()")
             }
         }
         ```
-
+    
         和类的定义类似，不过 `class` 关键字替换成 `object`，相比 Java 的实现简单多了。
-
+    
 - 继承类和实现接口
 
     类可以继承别的类，可以实现接口，那 `object` 可以吗？答案是可以的：
@@ -264,6 +258,8 @@ Sample.name
         }
     }
     ```
+    
+    为什么 object 可以实现接口呢？简单来讲 object 其实是把两步合并成了一步，既有 class 关键字的功能，又实现了单例，这样就容易理解了。
     
 - 匿名类
 
@@ -353,7 +349,7 @@ class A {
 
 - 静态初始化
 
-    前面讲到 Kotlin 有类的初始化代码，那有没有 Java 中的静态初始化代码呢？像 Java 这样写的静态初始化代码是没有了，因为 Kotlin 取消了 `static` 修饰符，但是 Kotlin 中有相当于 Java 静态初始化的结构：「`companion object` 的初始化代码」。
+    前面讲到 Kotlin 有类的初始化代码，那有没有 Java 中的静态初始化代码呢？像 Java 这样写的静态初始化代码是没有了，因为 Kotlin 取消了 `static` 修饰符，但是 Kotlin 中有相当于 Java 静态初始化的功能：「`companion object` 的初始化代码」。
 
     ``` kotlin
     🏝️
@@ -374,9 +370,9 @@ class A {
 
 ``` kotlin
 🏝️
-package com.hencoder.plus // 👈 属于 package
+package com.hencoder.plus
 
-// 不在 class/object 内
+// 👇 属于 package，不在 class/object 内
 fun topLevelFuncion() {
 }
 ```
@@ -459,9 +455,8 @@ topLevelFunction()
     ``` kotlin
     🏝️
     class Sample {
-           👇
         companion object {
-             👇                  // 👇 基础类型
+             👇                  // 👇
             const val CONST_NUMBER = 1
         }
     }
@@ -508,7 +503,7 @@ user.name = "Lisi";
       👆
 ```
 
-所以 Java 中的常量可以认为是“假常量”，因为可以通过上面这种方式改变它内部的值。而 Kotlin 的常量因为限制类型必须是基础类型，所以不存在这种问题，更符合常量的定义。
+所以 Java 中的常量可以认为是「伪常量」，因为可以通过上面这种方式改变它内部的值。而 Kotlin 的常量因为限制类型必须是基本类型，所以不存在这种问题，更符合常量的定义。
 
 前面讲的 `val` 「只读变量」和静态变量都是针对单个变量来说的，接下来我们看看编程中另外一个常见的主题：数组和集合。
 
@@ -536,9 +531,9 @@ user.name = "Lisi";
 
 可以看到 Kotlin 中的数组是一个拥有泛型的类，创建方法也是泛型方法，和集合数据类型一样。
 
-> 针对泛型的知识点，我们在后面的文章会进行讨论的。
+> 针对泛型的知识点，我们在后面的文章会讲，这里就先按照 Java 泛型来理解。
 
-将数组泛型化有什么好处呢？对数组的操作像集合一样功能更强大，由于泛型化 Kotlin 可以给数组增加很多有用的工具方法：
+将数组泛型化有什么好处呢？对数组的操作可以像集合一样功能更强大，由于泛型化 Kotlin 可以给数组增加很多有用的工具方法：
 
 - `get() / set()`
 - `contains()`
@@ -599,73 +594,70 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
       ``` java
       ☕️
       List<String> strList = new ArrayList<>();
-                              👆
       strList.add("a");
       strList.add("b");
       strList.add("c"); // 👈 添加元素繁琐
       ```
-
-    - Kotlin 中创建一个列表：
-
-        ``` kotlin
+      
+- Kotlin 中创建一个列表：
+    
+    ``` kotlin
         🏝️            
         val strList = listOf("a", "b", "c")
         ```
-
-    首先能看到的是 Kotlin 中创建一个 `List` 特别的简单，一句代码搞定，有点像创建数组的代码。而且 Kotlin 中的 `List` 多了一个特性：支持 covariant (协变)。也就是说，可以把子类的 `List` 赋值给父类的 `List`：
-
-    - Kotlin：
-
-      ``` kotlin
+    
+首先能看到的是 Kotlin 中创建一个 `List` 特别的简单，一句代码搞定，有点像创建数组的代码。而且 Kotlin 中的 `List` 多了一个特性：支持 covariant（协变）。也就是说，可以把子类的 `List` 赋值给父类的 `List`：
+    
+- Kotlin：
+    
+  ``` kotlin
       🏝️
       val strs: List<String> = listOf("a", "b", "c")
                       👆
       val anys: List<Any> = strs // success
                      👆
       ```
-
-    - 而这在 Java 中是会报错的：
-
-      ``` java
+    
+- 而这在 Java 中是会报错的：
+    
+  ``` java
       ☕️
       List<String> strList = new ArrayList<>();
              👆
       List<Object> objList = strList; // 👈 compile error: incompatible types
             👆
       ```
-
-    对于协变的支持与否，`List` 和数组刚好反过来了。关于协变，这里只需结合例子简单了解下，后面的文章会对它展开讨论。
-
-    - 和数组的区别
-
-        Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数组的元素个数不能变。那在什么时候用数组呢？
-
-        这个问题在 Java 中就存在了？数组和 `List` 的功能类似，`List` 的功能更多一些，直觉应该用 `List` 。但数组也不是没有优势，基础类型 (`int[]`、`float[]`) 的数组不用自动装箱，性能好一点。
-
-        在 Kotlin 中也是同样的道理，在一些性能需求比较苛刻的场景，并且元素类型是基础类型时，用数组好一点。不过这里要注意一点，Kotlin 中要用专门的基础类型数组类 (`IntArray` `FloatArray` `LongArray`) 才可以免于装箱。
-
+    
+对于协变的支持与否，`List` 和数组刚好反过来了。关于协变，这里只需结合例子简单了解下，后面的文章会对它展开讨论。
+    
+- 和数组的区别
+    
+    Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数组的元素个数不能变。那在什么时候用数组呢？
+    
+    这个问题在 Java 中就存在了？数组和 `List` 的功能类似，`List` 的功能更多一些，直觉应该用 `List` 。但数组也不是没有优势，基本类型 (`int[]`、`float[]`) 的数组不用自动装箱，性能好一点。
+    
+    在 Kotlin 中也是同样的道理，在一些性能需求比较苛刻的场景，并且元素类型是基本类型时，用数组好一点。不过这里要注意一点，Kotlin 中要用专门的基本类型数组类 (`IntArray` `FloatArray` `LongArray`) 才可以免于装箱。
+    
 - Set
     - Java 中创建一个 `Set`：
 
       ``` java
       ☕️
       Set<String> strSet = new HashSet<>();
-                            👆
       strSet.add("a");
       strSet.add("b");
-      strSet.add("c"); // 👈 添加元素繁琐
+      strSet.add("c");
       ```
-
-    - Kotlin 中创建相同的 `Set`：
-
-        ``` kotlin
+      
+- Kotlin 中创建相同的 `Set`：
+    
+    ``` kotlin
         🏝️           
         val strSet = setOf("a", "b", "c")
         ```
+    
 
-        
-
-    和 `List` 类似，`Set` 同样具有 covariant (协变) 特性。
+    和 `List` 类似，`Set` 同样具有 covariant（协变）特性。
 
 - Map
     - Java 中创建一个 `Map`：
@@ -673,47 +665,48 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
       ``` java
       ☕️
       Map<String, Integer> map = new HashMap<>();
-                                 👆
       map.put("key1", 1);
       map.put("key2", 2);
       map.put("key3", 3);
-      map.put("key4", 3); // 👈 添加元素繁琐
+      map.put("key4", 3);
       ```
-
-    - Kotlin 中创建一个 `Map`：
-
-      ``` kotlin
+      
+- Kotlin 中创建一个 `Map`：
+    
+  ``` kotlin
       🏝️         
       val map = mapOf("key1" to 1, "key2" to 2, "key3" to 3, "key4" to 3)
       ```
-
-    和上面两种集合类型相似创建代码很简洁。`mapOf` 的每个参数表示一个键值对，`to` 表示将「键」和「值」关联的中缀操作符，这里先不展开，后面的文章会做介绍。
-
-    - 取值和修改
-
-        - Kotlin 中的 Map 除了和 Java 中的一样可以使用 `get()` 根据键获取对应的值，还可以使用方括号的方式获取：
-
-            ``` kotlin
-            🏝️               👇
+    
+和上面两种集合类型相似创建代码很简洁。`mapOf` 的每个参数表示一个键值对，`to` 表示将「键」和「值」关联，这个叫做「中缀表达式」，这里先不展开，后面的文章会做介绍。
+    
+- 取值和修改
+    
+    - Kotlin 中的 Map 除了和 Java 中的一样可以使用 `get()` 根据键获取对应的值，还可以使用方括号的方式获取：
+    
+        ``` kotlin
+            🏝️
+                             👇
             val value1 = map.get("key1")
                            👇
             val value2 = map["key2"]
-            ```
-
-        - 类似的，Kotlin 中也可以用方括号的方式改变 `Map` 中键对应的值：
-
+        ```
+    
+    - 类似的，Kotlin 中也可以用方括号的方式改变 `Map` 中键对应的值：
+    
             ``` kotlin
-            🏝️         // 👇 和 mapOf() 有什么区别？下文会讲到
+            🏝️       
+                          👇
             val map = mutableMapOf("key1" to 1, "key2" to 2)
                 👇
             map.put("key1", 2)
                👇
             map["key1"] = 2
-            ```
-
+        ```
+    
 - 可变集合/不可变集合
 
-    上面修改 `Map` 值的例子中，创建函数用的是 `mutableMapOf()` 方法而不是 `mapOf()`，难道只有 `mutableMapOf()` 创建的才可以修改吗？是的，Kotlin 中集合分为两种类型：只读的和可变的。只读的集合在创建的时候就要确定好值，创建好后集合的 size 和元素值都不能改变。
+    上面修改 `Map` 值的例子中，创建函数用的是 `mutableMapOf()` 方法而不是 `mapOf()`，只有 `mutableMapOf()` 创建的才可以修改。Kotlin 中集合分为两种类型：只读的和可变的。只读的集合在创建的时候就要确定好值，创建好后集合的 size 和元素值都不能改变。
 
     - `listOf()` 创建不可变的 `List`，`mutableListOf()` 创建可变的 `List`。
     - `setOf()` 创建不可变的 `Set`，`mutableSetOf()` 创建可变的 `Set`。
@@ -754,22 +747,21 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
         🏝️
         val list = listOf("a", "b", "c")
         list.asSequence()
-        // 👆 List 实现了 Iterable 接口
         ```
-
-    - 使用 lamda 表达式创建：
-
-        ``` kotlin
+        
+- 使用 lamda 表达式创建：
+    
+    ``` kotlin
         🏝️                          // 👇 第一个元素
         val sequence = generateSequence(0) { it + 1 }
-                                        // 👆 lamda 表达式，负责生成第二个及以后的元素，it 表示前一个元素
+                                        // 👆 lambda 表达式，负责生成第二个及以后的元素，it 表示前一个元素
         ```
-
+    
 - 和 `Iterable` 的区别
 
     这看起来和 `Iterable` 一样呀，为啥要多此一举使用 `Sequence` 呢？因为 `Sequence` 在两点上实现和 `Iterable` 不一样：
 
-    - 调用处理函数处理元素时，`Iterable` 是立即执行， `Sequence` 是懒加载。
+    - 调用处理函数处理元素时，`Iterable` 是立即执行， `Sequence` 是懒执行。
     - 调用多个处理函数时，`Iterable` 是一个函数遍历完所有元素后再执行下一个函数，`Sequence` 是一个元素执行完所有函数后再遍历下一个元素。
 
     在下一篇文章中就这两点会结合例子展开讨论。
@@ -937,7 +929,7 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
 
 ---
 
-### 思考题
+好了，关于 Kotlin 里那些「不是那么写」的内容就讲到这里，给你留 2 道思考题吧：
 
 1. `phoneCount` 和 `phoneCount1` 有什么区别？
 
