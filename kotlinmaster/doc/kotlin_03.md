@@ -1,6 +1,6 @@
 ## Kotlin 里那些「更方便的」
 
-在上期课程当中，我们学习了 Kotlin 的那些与 Java 写法不同且需要注意的知识点。这一期我们再进阶一点，讲一讲 Kotlin 中那些「更方便的」。这些知识点在没学会之前，你也可以正常写 Kotlin，但是学完本期之后能够让你写得更爽。// todo  的-》得
+在上期课程当中，我们学习了 Kotlin 的那些与 Java 写法不同且需要注意的知识点。这一期我们再进阶一点，讲一讲 Kotlin 中那些「更方便的」。这些知识点在没学会之前，你也可以正常写 Kotlin，但是学完本期之后能够让你写得更爽。
 
 ### 构造器
 
@@ -30,17 +30,19 @@ class User constructor(name: String) {
 }
 ```
 
-你会发现在上面的例子当中，constructor 构造函数写在了类的头部，在类名之后。原本在构造函数中赋值的 `name` 也被直接放在了属性初始化的时候进行赋值，这就是「主构造器 primary constructor」。既然有主构造器这样的概念，那么其余写在类中的 constructor 就叫做「次级构造函数」。在 Kotlin 中一个类只允许有一个主构造器以及一个或者多个次构造函数。// 分层，列表  次构造 上期讲过  上方
+这里有几处不同点：
 
-在上方的代码示例中，除了 constructor 还有另外两处用「👇」标注的地方，可以看出主构造函数中的参数 `name` 被类中属性使用进行赋值操作// 优化。也就是说，主构造函数中的参数可以被用作类的属性赋值操作，你也许会好奇「那还有没有其他地方可以使用主构造器中的参数呢？」，其实
+- `constructor` 构造函数写在了类的头部，放在类名之后
+- 构造函数中的参数 `name` ，被用在类的属性 `name` 中进行赋值操作
 
-除了可以在属性中进行赋值，还可以在类的 `init` 代码块中使用：// 箭头频繁
+这就是「主构造器 primary constructor」。上一期中已经讲过关于 constructor 的概念，那些被写在类中的构造函数被称为「次构造函数」。在 Kotlin 中一个类只允许有一个主构造器以及一个或者多个次构造函数。
+
+主构造器中的参数除了可以在属性中使用，还可以在类的 `init` 代码块中使用：
 
 ```kotlin
 🏝️
 class User constructor(name: String) {
     var name: String
-    👇
     init {
                      👇
         this.name = name
@@ -48,21 +50,13 @@ class User constructor(name: String) {
 }
 ```
 
-在上方代码的 `init` 代码块中，用「👇」标注的 `name` 就表示的主构造器中的 `name` 参数// todo 多。在上一期的内容中，我们已经学过 `init` 初始化代码块的概念，如果类中有主构造器的话，那么 `init` 代码块的执行时机是紧随在主构造器之后的，可以在其中写一些初始化逻辑，这就弥补了主构造器没有代码体的遗憾。
+关于 `init` 初始化代码块的概念，已经在上一期的内容中讲解过。
 
-那如果需要对这个主构造器添加注解或者可见性该怎么办呢？其实也很简单：// 分开  不讲了
+如果类中有主构造器的话，那么 `init` 代码块的执行时机是紧随在主构造器之后的，可以在其中写一些初始化逻辑，这就弥补了主构造器没有代码体的遗憾。
 
-```kotlin
-🏝️
-             👇      👇
-class User private @Inject constructor(name: String) {
-    var name: String = name
-}
-```
+// TODO 介绍下 主构造函数是可选的，你可以写也可以不写，但是一旦你写了，因为对象的初始化过程是要用到它的参数的——对吧，就是刚才说的——这样你就需要在每一个次级构造函数——也就是一般的那种构造函数，它叫 secondary constructor 次级构造函数——你在每一个次级构造函数里都要调用到这个主构造函数。不然你的初始化过程是缺失参数的呀
 
-只需要在类名之后加上你需要的可见性修饰符或者注解就可以啦。这里关于 `@Inject` 注解的意思就不做过多介绍啦，有兴趣的可以之后查阅相关资料。
-
-如果主构造器不需要注解或者可见性修饰符的时候，还可以省略 `constructor` 关键字：
+主构造器也可以有注解或者可见性修饰符，同样是放在 `constructor` 前面，如果不需要注解或可见性还可以省略 `constructor` 关键字：
 
 ```kotlin
 🏝️
@@ -72,63 +66,59 @@ class User(name: String) {
 }
 ```
 
-学到这里，你会惊奇地发现文章一开始那段五六行的 `User` 类，已经被我们缩写到只剩三行。那么，有没有可能再继续缩减呢？下面我们来学习如何在主构造函数中声明属性，把上面这段三行的代码缩减到只剩一行！// 看到这里  会发现  还有没有更简单写法  ，学习 换掉 ，语气，学会了
+看到这里，我们会发现一开始那段五六行的 `User` 类，已经简化到还有三行。那么，还有没有更简单的写法呢？下面我们来看看，如何在主构造函数中声明属性，把上面这段三行的代码简化到只剩一行！
 
 #### 主构造器里声明属性
 
-上一小节我们学会了主构造函数的概念，其实 Kotlin 中还支持将主构造函数中的参数作为该类的属性：
+上一小节我们学会了主构造函数的概念。其实 Kotlin 中，还支持将主构造函数中的参数作为该类的属性：
 
 ```kotlin
 🏝️
            👇
 class User(var name: String) {
-           
+}
+
+// 等价于：
+
+class User(name: String) {
+  var name = name
 }
 ```
 
-可以发现上方代码示例中用「👇」标注的 `var` 关键字修饰了主构造函数中的 `name` 参数，这时 Kotlin 会自动帮你在类中创建一个与参数同名的属性（property）// 等价于 ，并把这个参数的值作为属性的初始化值，这样你就可以在类中使用 `name` 属性啦。当然，你也可以使用 `val` 只读的修饰符// 或。
+如果在主构造函数的参数左边加上 `var` 或者 `val`，就等价于在类中创建了相同名称的属性（property），并且初始值就是构造函数中该参数的值。
 
-以上讲了主构造器的使用与简化，结合上期所讲的次构造函数，我们思考下，如果一个类有多个构造函数，应该把哪个写成 primary 的呢？其实很简单，只要把最基本、最通用的那个写成 primary 的就好了，primary constructor 会参与任何一个 constructor 创建对象的初始化过程，所以如果有 `init` 代码块也会在使用次构造函数之前执行。
-
-在没有使用 primary constructor 简化之前，我们写多个构造函数会这样写：
+以上讲了所有主构造器相关的知识，我们来做个总结吧。如果有一个 `User` 类：
 
 ```kotlin
 🏝️
 class User {
-    var name: String
-    var id: String
-
-    constructor(name: String, id: String) {
-        this.name = name
-        this.id = id
-    }
-  
-    constructor(person: Person) {
-        this.name = person.name
-        this.id = person.id
-    }
 }
 ```
 
-在选择将其中一个构造函数作为 primary constructor 时，你可以这样写：
+首先我们需要一个有 `name` 与 `id` 为参数的构造函数，我们可以直接将该构造函数作为主构造器：
 
 ```kotlin
 🏝️
-class User(person: Person) {
-    var name: String
-    var id: String
-  
-    init {
-        name = person.name
-        id = person.id
-    }
+class User(name: String, id: String) {
+}
+```
 
-    constructor(name: String, id: String): this(person = Person(name, id)) {
+这时候需要将构造函数中的 `name` 与 `id` 取出，作为类的属性使用，可以通过主构造器进行声明：
+
+```kotlin
+🏝️
+class User(var name: String, var id: String) {
+    init {
+        ...
     }
 }
 ```
 
-学完以上主构造函数的知识之后，你就可以这样写：// 次构造 ： 为什么，讲清楚，哪些简化，写的顺序-》执行顺序
+其中 `init` 代码块可以有选择性的使用。
+
+如果需要再加入一个参数为 `person` 的构造函数的话，这时就会有两个构造函数，那么应该把哪个写成 primary 的呢？其实很简单，只要把最基本、最通用的那个写成 primary 的就好啦，primary constructor 会参与任何一个 constructor 创建对象的初始化过程。
+
+这里我们选择把有 `name` 与 `id` 为参数的构造函数作为主构造器，有 `person` 为参数的构造函数作为次构造函数，可以写成这样：
 
 ```kotlin
 🏝️
@@ -138,7 +128,9 @@ class User(var name: String, var id: String) {
 }
 ```
 
-原本很多行的一个类最终可以简化成两三行搞定，是不是非常的方便。那么学完了对构造函数的简化知识后，接下来，让我们继续学习对普通函数的简化吧。// 接下来 去掉，普通函数也可以这样
+这时一个有着两个构造函数，以及多个属性的 `User` 类仅仅几行就写完啦，是不是非常方便。以上就是对主构造器所有概念的回顾，并且最终的调用执行顺序也与刚才我们书写的顺序相同。
+
+讲完了构造函数的那些「更方便的」，其实普通函数也有许多更简单的写法。
 
 ### 函数简化
 
@@ -856,6 +848,7 @@ Kotlin 的空安全我们在之前的课程中已经学过，其实还有一个�
 
 ```kotlin
 🏝️
+val str: String? = "Hello"
 val length = if (str != null) str.length else -1
 ```
 
@@ -863,6 +856,7 @@ val length = if (str != null) str.length else -1
 
 ```kotlin
 🏝️
+val str: String? = "Hello"
 val length = str?.length ?: -1
 ```
 
