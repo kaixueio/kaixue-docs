@@ -23,7 +23,7 @@ class User {
 
 ```kotlin
 🏝️
-               👇      👇
+               👇       👇
 class User constructor(name: String) {
    👇
     var name: String = name
@@ -40,7 +40,7 @@ class User constructor(name: String) {
     var name: String
     👇
     init {
-                    👇
+                     👇
         this.name = name
     }
 }
@@ -52,7 +52,7 @@ class User constructor(name: String) {
 
 ```kotlin
 🏝️
-            👇       👇
+             👇      👇
 class User private @Inject constructor(name: String) {
     var name: String = name
 }
@@ -320,7 +320,7 @@ fun login(user: String, password: String, illegalStr: String) {
 ```kotlin
 🏝️
 fun login(user: String, password: String, illegalStr: String) {
-             👇
+           👇
     fun validate(value: String) {
         if (value.isEmpty()) {
                                               👇
@@ -580,7 +580,7 @@ for (i in range) {
 
 ```kotlin
 🏝️
-                👇
+                 👇
 for (i in range step 2) {
     print("$i, ")
 }
