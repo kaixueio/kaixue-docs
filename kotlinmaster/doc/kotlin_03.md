@@ -623,26 +623,28 @@ for (i in 4 downTo 1) print(i)
   🏝️
   val list = listOf(1, 2, 3, 4, 5, 6)
   val result = list.asSequence()
-      .map{ println("Map"); it * 2 }
-      .filter { println("Filter");it % 3  == 0 }
+      .map{ println("Map $it"); it * 2 }
+      .filter { println("Filter $it");it % 3  == 0 }
   println(result.first()) // result.first() 获取 result 中第一个元素
   ```
 
   最终运行结果如下：
 
   ```
-  Map
-  Filter
-  Map
-  Filter
-  Map
-  Filter
+  Map 1
+  Filter 2
+  Map 2
+  Filter 4
+  Map 3
+  Filter 6
   6
   ```
 
-  你会发现，`map` 与 `filter` 甚至都没有完全执行完就输出了结果的第一个值，这也意味着当序列找到第一个值的那一刻，就会停止。这样就很好的省去后面不必要的计算。
+  你会发现，`map` 与 `filter` 甚至都没有完全执行完就输出了结果的第一个值，这也意味着当序列找到第一个满足 `it % 3  == 0` 的元素的那一刻，就会停止。这样就很好的省去后面不必要的计算。
 
-以上我们对 `Sequence` 的懒加载与遍历函数执行顺序有了进一步的了解。这种数据类型可以在数据量比较大或者数据量为知的时候提供方便的流式处理方案。
+以上我们对 `Sequence` 的懒加载与遍历函数执行顺序有了进一步的了解。这种数据类型可以在数据量比较大或者数据量未知的时候提供方便的流式处理方案。
+
+讲了这么多 Kotlin 中方便的写法，好像还没有带大家学习过每个语言最基础的控制流的相关的知识以及它们的方便书写，下面就让我们学习下条件控制相关的知识吧。
 
 ### 条件控制
 
@@ -676,11 +678,11 @@ if (a > b) {
 
 ```kotlin
 🏝️
-         👇
+       👇
 val max = if (a > b) a else b
 ```
 
-是不是非常的直观方便，因此 Kotlin 中不需要三元运算符（条件 ? 然后 : 否则）。当然 `if/else` 中分支里可以是代码块，代码块的最后一行会作为返回值：
+上方代码中用「👇」标注的 `=` 符号连接了 `max` 变量与 `if` 判断，这就表示 `if/else` 作为一个表达式，当 `a>b` 时返回结果为 `a` 的值，反正返回 `b` 的值，是不是非常的直观方便，因此 Kotlin 中不需要三元运算符（条件 ? 然后 : 否则）。当然 `if/else` 中分支里也可以是代码块，代码块的最后一行会作为返回值：
 
 ```kotlin
 🏝️
