@@ -183,7 +183,7 @@ fun area(width: Int, height: Int): Int = width * height
 fun area(width: Int, height: Int) = width * height
 ```
 
-是不是非常的方便，一个函数可以写的如此简洁。当我们想对一个函数重载时，在 Java 中是新写一个同名但参数不同的函数，那 Kolin 中是否有更方便的方法呢？接下来我们学习 Kotlin 中的「函数的参数默认值」的知识。
+是不是非常的方便。当我们想对一个函数重载时，在 Java 中是新写一个同名但参数不同的函数，那 Kolin 中是否有更方便的方法呢？接下来我们学习 Kotlin 中的「函数的参数默认值」的知识。
 
 #### 参数默认值
 
@@ -196,7 +196,7 @@ public void sayHi(String name) {
 }
 
 public void sayHi() {
-    sayHi("world");
+    sayHi("world"); 
 }
 ```
 
@@ -208,7 +208,7 @@ public void sayHi() {
 fun sayHi(name: String = "world") = println("Hi " + name)
 ```
 
-上方代码中用「👇」标注的 `world` 就是 `name` 参数的默认值，当使用 `sayHi()` 不传参数时调用该函数，函数中就会使用默认值 `world` 。上面两段不同语言的代码，都可以在使用 `sayHi` 函数时选择性的填参数或者不填，在 Kotlin 中：
+上方代码中用「👇」标注的 `world` 就是 `name` 参数的默认值，当使用 `sayHi()` 不传参数时调用该函数，函数中就会使用默认值 `world` 。上面两段不同语言的代码，都可以在使用 `sayHi` 函数调用时选择性的填参数或者不填，在 Kotlin 中调用该函数如下：
 
 ```kotlin
 🏝️
@@ -459,10 +459,11 @@ val strList = listOf("a", "b", "c") // List<String> 集合
 
   ```kotlin
   🏝️
+             👇
   intArray.forEach { i ->
       println(i) // 输出每一个元素值 1 2
   }
-  
+             👇
   strList.forEach { str ->
       println(str) // 输出每一个元素值 a b c
   }
@@ -472,12 +473,13 @@ val strList = listOf("a", "b", "c") // List<String> 集合
 
   ```kotlin
   🏝️
+            👇
   intArray.filter { i ->
       i != 1 // 当遍历到的元素不等于 1 时成立并保留，也就是过滤掉数组中等于 1 的元素
   }.forEach { i ->
       println(i) // 输出过滤后的每一个元素 2
   }
-  
+           👇
   strList.filter { str ->
       str.contains("a") // 过滤掉集合元素中不包含 a 的元素
   }.forEach { str ->
@@ -489,12 +491,13 @@ val strList = listOf("a", "b", "c") // List<String> 集合
 
   ```kotlin
   🏝️
+           👇
   intArray.map { i ->
       i+1 // 遍历数组，并将每个值加 1，返回新的数组
   }.forEach { i ->
       println(i) // 新的数组进行 forEach 遍历输出：2 3
   }
-  
+          👇
   strList.map { str ->
       str + "d" // 遍历集合，并将每个元素与 d 拼接，返回新的集合
   }.forEach { str ->
@@ -506,12 +509,13 @@ val strList = listOf("a", "b", "c") // List<String> 集合
 
   ```kotlin
   🏝️
+             👇
   intArray.flatMap { i ->
       listOf(i+1) // 遍历数组，且该闭包需要一个集合返回值，并将每个值加 1，最终返回新的数组
   }.forEach {
       println(i) // 新的数组进行 forEach 遍历输出：2 3
   }
-  
+            👇
   strList.flatMap { str ->
       listOf(str + "d") // 遍历集合，且该闭包需要一个集合返回值，并将每个元素与 d 拼接，最终返回新的集合
   }.forEach { str ->
@@ -523,10 +527,11 @@ val strList = listOf("a", "b", "c") // List<String> 集合
 
   ```kotlin
   🏝️
+            👇
   intArray.first { i ->
       i > 0 // 返回数组中第一个大于 0 的元素
   }
-  
+           👇
   strList.first { str ->
       str.contains("a") // 返回集合中第一个包含字母 a 的元素
   }
@@ -644,7 +649,7 @@ for (i in 4 downTo 1) print(i)
 
 以上我们对 `Sequence` 的懒加载与遍历函数执行顺序有了进一步的了解。这种数据类型可以在数据量比较大或者数据量未知的时候提供方便的流式处理方案。
 
-讲了这么多 Kotlin 中方便的写法，好像还没有带大家学习过每个语言最基础的控制流的相关的知识以及它们的方便书写，下面就让我们学习下条件控制相关的知识吧。
+讲了这么多 Kotlin 中方便的写法，接下来，让我们来学习每个语言最基础的控制流相关的知识以及它们的方便书写吧。
 
 ### 条件控制
 
