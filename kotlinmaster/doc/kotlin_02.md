@@ -114,7 +114,7 @@ Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能
 可以看到不同点主要有：
 
 - final 变成了 val。
-- Kotlin 方法参数默认是 val 类型，所以参数前不需要写 val 关键字，Kotlin 里这样设计的原因是保证了参数不会被修改，而 Java 的参数可修改会增加出错的概率。
+- Kotlin 函数参数默认是 val 类型，所以参数前不需要写 val 关键字，Kotlin 里这样设计的原因是保证了参数不会被修改，而 Java 的参数可修改会增加出错的概率。
 
 上一期说过，`var` 是 variable 的缩写， `val` 是 value 的缩写。
 
@@ -124,7 +124,7 @@ Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能
 
 #### `val`自定义 getter
 
-不过 `val` 和 `final` 还是有一点区别的，虽然 `val` 修饰的变量不能二次赋值，但可以通过自定义变量的 getter 方法来让变量每次被访问时返回动态计算的值：
+不过 `val` 和 `final` 还是有一点区别的，虽然 `val` 修饰的变量不能二次赋值，但可以通过自定义变量的 getter 函数来让变量每次被访问时返回动态计算的值：
 
 ``` kotlin
 🏝️
@@ -294,7 +294,7 @@ Sample.name
 
 #### `companion object`
 
-前面说到访问 `object` 中的变量或者方法时直接通过类名引用，就像 Java 的静态变量和方法一样，不同的是不需要在每个变量和方法前面用 `static` 修饰，因为 `object` 创建的对象内所有变量和方法默认都是静态的，没得选。如果只想让类中的一部分方法和变量是静态的该怎么做呢：
+前面说到访问 `object` 中的变量或者函数时直接通过类名引用，就像 Java 的静态变量和方法一样，不同的是不需要在每个变量和函数前面用 `static` 修饰，因为 `object` 创建的对象内所有变量和函数默认都是静态的，没得选。如果只想让类中的一部分函数和变量是静态的该怎么做呢：
 
 ``` kotlin
 🏝️
@@ -306,7 +306,7 @@ class A {
 }
 ```
 
-如上，可以在类中创建一个对象，把需要静态的变量或方法放在内部对象 B 中，外部可以通过如下的方式调用该静态变量：
+如上，可以在类中创建一个对象，把需要静态的变量或函数放在内部对象 B 中，外部可以通过如下的方式调用该静态变量：
 
 ``` kotlin
 🏝️
@@ -345,7 +345,7 @@ class A {
 }
 ```
 
-这就是这节最开始讲到的，和 Java 静态变量或方法的等价写法：`companion object`。
+这就是这节最开始讲到的，Java 静态变量和方法的等价写法：`companion object` 变量和函数。
 
 - 静态初始化
 
@@ -366,7 +366,7 @@ class A {
 
 #### top-level property / function 声明
 
-除了静态方法这种简便的调用方式，Kotlin 还有更方便的东西：「`top-level declaration` 顶层声明」。其实就是把属性和函数的声明不写在 `class` 里面，这个在 Kotlin 里是允许的：
+除了静态函数这种简便的调用方式，Kotlin 还有更方便的东西：「`top-level declaration` 顶层声明」。其实就是把属性和函数的声明不写在 `class` 里面，这个在 Kotlin 里是允许的：
 
 ``` kotlin
 🏝️
@@ -377,22 +377,22 @@ fun topLevelFuncion() {
 }
 ```
 
-这样写的属性和函数，不属于任何 `class`，而是直接属于 `package`，它和静态变量、静态方法一样是全局的，但用起来更方便：你在其它地方用的时候，就连类名都不用写：
+这样写的属性和函数，不属于任何 `class`，而是直接属于 `package`，它和静态变量、静态函数一样是全局的，但用起来更方便：你在其它地方用的时候，就连类名都不用写：
 
 ``` kotlin
 🏝️
-import com.hencoder.plus.topLevelFunction // 👈 直接 import 方法
+import com.hencoder.plus.topLevelFunction // 👈 直接 import 函数
 
 topLevelFunction()
 ```
 
-写在顶级的方法或者变量有个好处，在 Android Studio 中写代码时，IDE 很容易根据你写的方法前几个字母自动联想出相应的方法，提高了写代码的效率，而且可以减少项目中的重复代码。
+写在顶级的函数或者变量有个好处，在 Android Studio 中写代码时，IDE 很容易根据你写的函数前几个字母自动联想出相应的函数，提高了写代码的效率，而且可以减少项目中的重复代码。
 
 - 命名相同的顶级函数
 
     顶级函数不写在类中可能有一个问题：如果在不同文件中声明命名相同的函数，使用的时候会不会混淆？来看一个例子：
 
-    - 在 `org.kotlinmaster.library` 包下有一个方法 method：
+    - 在 `org.kotlinmaster.library` 包下有一个函数 method：
 
         ``` kotlin
         🏝️
@@ -403,7 +403,7 @@ topLevelFunction()
         }
         ```
 
-    - 在 `org.kotlinmaster.library2` 包下也有一个同名方法：
+    - 在 `org.kotlinmaster.library2` 包下也有一个同名函数：
 
         ``` kotlin
         🏝️
@@ -414,7 +414,7 @@ topLevelFunction()
         }
         ```
 
-    在使用的时候如果同时调用这两个同名方法会怎么样：
+    在使用的时候如果同时调用这两个同名函数会怎么样：
 
     ```kotlin
     🏝️
@@ -438,7 +438,7 @@ topLevelFunction()
 
 ### 常量
 
-除了上面讲到的静态变量和方法会用到 `static`，Java 中声明常量时也会用到，那 Kotlin 中声明常量会有什么变化呢？
+Java 中除了上面讲到的的静态变量和方法会用到 `static`，声明常量时也会用到，那 Kotlin 中声明常量会有什么变化呢？
 
 - Java 中声明常量：
 
@@ -529,11 +529,11 @@ user.name = "Lisi";
                 👆              👆
     ```
 
-可以看到 Kotlin 中的数组是一个拥有泛型的类，创建方法也是泛型方法，和集合数据类型一样。
+可以看到 Kotlin 中的数组是一个拥有泛型的类，创建函数也是泛型函数，和集合数据类型一样。
 
 > 针对泛型的知识点，我们在后面的文章会讲，这里就先按照 Java 泛型来理解。
 
-将数组泛型化有什么好处呢？对数组的操作可以像集合一样功能更强大，由于泛型化 Kotlin 可以给数组增加很多有用的工具方法：
+将数组泛型化有什么好处呢？对数组的操作可以像集合一样功能更强大，由于泛型化 Kotlin 可以给数组增加很多有用的工具函数：
 
 - `get() / set()`
 - `contains()`
@@ -706,13 +706,13 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
 
 - 可变集合/不可变集合
 
-    上面修改 `Map` 值的例子中，创建函数用的是 `mutableMapOf()` 方法而不是 `mapOf()`，只有 `mutableMapOf()` 创建的才可以修改。Kotlin 中集合分为两种类型：只读的和可变的。只读的集合在创建的时候就要确定好值，创建好后集合的 size 和元素值都不能改变。
+    上面修改 `Map` 值的例子中，创建函数用的是 `mutableMapOf()` 而不是 `mapOf()`，只有 `mutableMapOf()` 创建的才可以修改。Kotlin 中集合分为两种类型：只读的和可变的。只读的集合在创建的时候就要确定好值，创建好后集合的 size 和元素值都不能改变。
 
     - `listOf()` 创建不可变的 `List`，`mutableListOf()` 创建可变的 `List`。
     - `setOf()` 创建不可变的 `Set`，`mutableSetOf()` 创建可变的 `Set`。
     - `mapOf()` 创建不可变的 `Map`，`mutableMapOf()` 创建可变的 `Map`。
 
-    可以看到，有 mutable 前缀的方法创建的可变的集合。不可变的集合可以通过 `toMutable*()` 系方法转换成可变的集合：
+    可以看到，有 mutable 前缀的函数创建的是可变的集合。不可变的集合可以通过 `toMutable*()` 系函数转换成可变的集合：
 
     ```kotlin
     🏝️
@@ -836,18 +836,18 @@ public void hideMethod() {
 
 #### `internal`
 
-`internal` 表示修饰的类、方法仅对 module 内可见，这里的 module 具体指的是什么呢？它表示一组共同编译的 kotlin 文件，常见的形式有：
+`internal` 表示修饰的类、函数仅对 module 内可见，这里的 module 具体指的是什么呢？它表示一组共同编译的 kotlin 文件，常见的形式有：
 
 - Android Studio 里的 module
 - Maven project
 
-`internal` 在写一个 library module 时非常有用，当需要创建一个方法仅开放给 module 内部使用，但不想开放给使用者，因为后面可能会修改，这时就应该用  `internal` 可见性修饰符。
+`internal` 在写一个 library module 时非常有用，当需要创建一个函数仅开放给 module 内部使用，但不想开放给使用者，因为后面可能会修改，这时就应该用  `internal` 可见性修饰符。
 
 #### Java 的包内可见为什么没了？
 
 Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的可见性修饰符是 `internal`「module  内可见」。为什么会弃用掉包内可见？我觉得有这几个原因：
 
-- Kotlin 鼓励创建 top-level 方法和属性，一个源码文件可以包含多个类，使得 Kotlin 的源码结构更加扁平化，包结构不再像 Java 中那么重要。
+- Kotlin 鼓励创建 top-level 函数和属性，一个源码文件可以包含多个类，使得 Kotlin 的源码结构更加扁平化，包结构不再像 Java 中那么重要。
 - 为了代码的解耦和可维护性，module 越来越多、越来越小，使得 `internal` 「module 内可见」已经可以满足对于代码封装的需求。
 
 #### `protected`
@@ -905,7 +905,7 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
 - 可以修饰类和接口
     - Java 中一个文件只允许一个外部类，所以 `class`  和 `interface` 不允许设置为 `private`，因为声明 `private`  后无法被使用，这样就没有意义了。
 
-    - Kotlin 允许同一个文件声明多个 `class` 和 top-level 的方法和属性，所以 Kotlin 中允许类和接口声明为 `private`，因为同个文件中的别的成员可以访问：
+    - Kotlin 允许同一个文件声明多个 `class` 和 top-level 的函数和属性，所以 Kotlin 中允许类和接口声明为 `private`，因为同个文件中的别的成员可以访问：
 
       ``` kotlin
       🏝️                   👇
