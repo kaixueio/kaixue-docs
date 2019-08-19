@@ -929,17 +929,7 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
 
 ---
 
-好了，关于 Kotlin 里那些「不是那么写」的内容就讲到这里，给你留 2 道思考题吧：
+### 练习题
 
-1. `phoneCount` 和 `phoneCount1` 有什么区别？
-
-   ``` kotlin
-   🏝️
-   class User {
-       val phones = mutableListOf<String>()
-       val phoneCount = phones.size
-       val phoneCount1 get() = phones.size
-   }
-   ```
-
-2. 同一个文件中，一个类的 `private` 属性可以被另一个类访问吗？
+1. 创建一个 Kotlin 类，这个类需要禁止外部通过构造器创建实例，并提供两种实例化方式。
+2. 分别用数组、List、Set 和 Sequence 实现 「保存 1-100_000 的数字，并求出这些数字的平均值」这个需求，并对比这几种数据结构的执行速度。
