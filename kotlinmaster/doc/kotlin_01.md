@@ -615,7 +615,37 @@ class User {
 - getter / setter 函数位于 var 所声明的变量下面
 - setter 函数参数是 value
 
-除此之外还多了一个叫 field 的东西，它和 Java 里面的 field 完全不是一个概念，这个东西叫做「**Backing Fields**」，中文翻译是**幕后字段**或**后备字段**（马云背后的女人😝），我们可以类比 Java 代码中的 `this.name` 来理解它，相当于每一个 var 内部的一个变量。
+除此之外还多了一个叫 field 的东西。这个东西叫做「**Backing Field**」，中文翻译是**幕后字段**或**后备字段**（马云背后的女人😝）。具体来说，你的这个代码：
+
+```kotlin
+🏝️
+class Kotlin {
+  var name = "kaixue.io"
+}
+```
+
+在编译后的字节码大致等价于这样的 Java 代码：
+
+```java
+☕️
+public final class Kotlin {
+   @NotNull
+   private String name = "kaixue.io";
+
+   @NotNull
+   public final String getName() {
+      return this.name;
+   }
+
+   public final void setName(@NotNull String name) {
+      this.name = name;
+   }
+}
+```
+
+上面的那个 `String name` 就是 Kotlin 帮我们自动创建的一个 Java field。这个 field 对编码的人不可见，但会自动应用于 getter 和 setter，因此它被命名为「Backing Field」（backing 的意思是在背后进行支持，例如你闯了大祸，我动用能量来保住你的人头，我就是在 back you）。
+
+所以，虽然 Kotlin 的这个 `field` 本质上确实是一个 Java 中的 field，但对于 Kotlin 的语法来讲，它和 Java 里面的 field 完全不是一个概念。在 Kotlin 里，它相当于每一个 var 内部的一个变量。
 
 我们前面讲过 val 是只读变量，只读的意思就是说 val 声明的变量不能进行重新赋值，也就是说不能调用 setter 函数，因此，val 声明的变量是不能重写 setter 函数的，但它可以重写 getter 函数：
 
