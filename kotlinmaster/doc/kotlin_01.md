@@ -5,7 +5,7 @@
 > 视频：扔物线（朱凯）
 >
 > 文章：hamber（罗琼）
- 
+
 大家好，我是扔物线，我唠叨两句就滚。绝不耽误你们看下面的视频。
 
 欢迎大家来到码上开学 Kotlin 系列上手教程。大家久等了，其实我也早就被你们催得不想活了，奈何我事情太多啊。比如我要旅游吧？我要陪老婆吧？我要陪孩子吧？我要打孩子吧？我要打老婆吧？而且大家知道，我现在开了在线的 Android 进阶课程，我得花大量时间精力在课程上面吧？不然客户爸爸一个差评那我就要被团队砍死啊。
@@ -1022,3 +1022,24 @@ fun main() {
 
 1. 使用 Android Studio 创建一个基于 Kotlin 的新项目（Empty Activity），添加一个新的属性（类型是非空的 `View`），在 onCreate 函数中初始化它。
 2. 声明一个参数为 `View?` 类型的方法，传入刚才的 `View` 类型属性，并在该方法中打印出该 `View?` 的 id。
+
+### 作者介绍
+
+#### 视频作者
+
+##### 扔物线（朱凯）
+
+- 码上开学创始人、项目管理人、内容模块规划者和视频内容作者。
+- <a href="https://developers.google.com/experts/people/kai-zhu" target="_blank">Android GDE</a>（ Google 认证 Android 开发专家），前 Flipboard Android 工程师。 
+- GitHub 全球 Java 排名第 92 位，在 <a href="https://github.com/rengwuxian" target="_blank">GitHub</a> 上有 6.6k followers 和 9.9k stars。
+- 个人的 Android 开源库 <a href="https://github.com/rengwuxian/MaterialEditText/" target="_blank">MaterialEditText</a> 被全球多个项目引用，其中包括在全球拥有 5 亿用户的新闻阅读软件 Flipboard 。
+- 曾多次在 Google Developer Group Beijing 线下分享会中担任 Android 部分的讲师。
+- 个人技术文章《<a href="https://gank.io/post/560e15be2dca930e00da1083" target="_blank">给 Android 开发者的 RxJava 详解</a>》发布后，在国内多个公司和团队内部被转发分享和作为团队技术会议的主要资料来源，以及逆向传播到了美国一些如 Google 、 Uber 等公司的部分华人团队。
+- 创办的 Android 高级进阶教学网站 [HenCoder](https://hencoder.com) 在全球华人 Android 开发社区享有相当的影响力。
+- 之后创办 Android 高级开发教学课程 [HenCoder Plus](https://plus.hencoder.com) ，学员遍布全球，有来自阿里、头条、华为、腾讯等知名一线互联网公司，也有来自中国台湾、日本、美国等地区的资深软件工程师。
+
+#### 文章作者
+
+##### hamber（罗琼）
+
+即刻 Android 负责人。2015 年加入即刻，主导了即刻 Android App 2.0 到 6.0 版本的架构设计和产品迭代。多年 Android 开发经验，曾就职于美团点评、华为，对客户端用户体验和性能优化有丰富的实践经验。2019 Droidcon Shanghai Speaker。

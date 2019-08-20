@@ -1,5 +1,21 @@
 ## Kotlin 里那些「不是那么写的」
 
+> 本期作者：
+>
+> 视频：扔物线（朱凯）
+>
+> 文章：[Walker（张磊）](https://juejin.im/user/58e46281da2f60005fe23d48)
+
+大家好，我是扔物线朱凯。不是第一期了，咱就不多废话了。直接视频伺候：
+
+<div class="aspect-ratio">
+    <iframe src="https://player.bilibili.com/player.html?aid=64584792&page=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</div>
+
+*如果你看不到上面的哔哩哔哩视频，可以点击 [这里](https://youtu.be/2B54c4JtnQ8) 去 YouTube 看。*
+
+> 以下内容来自文章作者 [Walker](https://juejin.im/user/58e46281da2f60005fe23d48)。
+
 上一篇我们讲了 Kotlin 上手最基础的三个点：变量、函数和类型。大家都听说过，Kotlin 完全兼容 Java，这个意思是用 Java 写出来的代码和 Kotlin 可以完美交互，而不是说你用 Java 的写法去写 Kotlin 就完全没问题，这个是不行的。这期内容我们就讲一下，Kotlin 里那些「不 Java」的写法。
 
 ### Constructor
@@ -952,3 +968,24 @@ private val propertyInFile = "A string." // 👈 范围更大，整个文件可�
 
 1. 创建一个 Kotlin 类，这个类需要禁止外部通过构造器创建实例，并提供至少一种实例化方式。
 2. 分别用 Array、IntArray、List 实现 「保存 1-100_000 的数字，并求出这些数字的平均值」，打印出这三种数据结构的执行时间。
+
+### 作者介绍
+
+#### 视频作者
+
+##### 扔物线（朱凯）
+
+- 码上开学创始人、项目管理人、内容模块规划者和视频内容作者。
+- <a href="https://developers.google.com/experts/people/kai-zhu" target="_blank">Android GDE</a>（ Google 认证 Android 开发专家），前 Flipboard Android 工程师。 
+- GitHub 全球 Java 排名第 92 位，在 <a href="https://github.com/rengwuxian" target="_blank">GitHub</a> 上有 6.6k followers 和 9.9k stars。
+- 个人的 Android 开源库 <a href="https://github.com/rengwuxian/MaterialEditText/" target="_blank">MaterialEditText</a> 被全球多个项目引用，其中包括在全球拥有 5 亿用户的新闻阅读软件 Flipboard 。
+- 曾多次在 Google Developer Group Beijing 线下分享会中担任 Android 部分的讲师。
+- 个人技术文章《<a href="https://gank.io/post/560e15be2dca930e00da1083" target="_blank">给 Android 开发者的 RxJava 详解</a>》发布后，在国内多个公司和团队内部被转发分享和作为团队技术会议的主要资料来源，以及逆向传播到了美国一些如 Google 、 Uber 等公司的部分华人团队。
+- 创办的 Android 高级进阶教学网站 [HenCoder](https://hencoder.com) 在全球华人 Android 开发社区享有相当的影响力。
+- 之后创办 Android 高级开发教学课程 [HenCoder Plus](https://plus.hencoder.com) ，学员遍布全球，有来自阿里、头条、华为、腾讯等知名一线互联网公司，也有来自中国台湾、日本、美国等地区的资深软件工程师。
+
+#### 文章作者
+
+##### Walker（张磊）
+
+[Walker（张磊）](https://juejin.im/user/58e46281da2f60005fe23d48) ，即刻 Android 高级工程师。2015 年加入即刻，参与了即刻 2.0 到 6.0 版本的架构设计和产品迭代。多年 Android 开发经验，曾就职于 OPPO，专注于客户端用户体验、音视频开发和性能优化。
