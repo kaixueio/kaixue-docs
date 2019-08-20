@@ -26,7 +26,6 @@
     ``` kotlin
     🏝️
     class User {
-    // 👆 没有 public
         val id: Int
         val name: String
              👇
@@ -41,7 +40,7 @@
 可以发现有两点不同：
 
 - Java 中构造器和类同名，Kotlin 中使用 `constructor` 表示。
-- Kotlin 构造器没有 public 修饰，因为默认可见性就是公开的，关于可见性修饰符这里先不展开，后面会讲到。
+- Kotlin 中构造器没有 public 修饰，因为默认可见性就是公开的（关于可见性修饰符这里先不展开，后面会讲到）。
 
 这里介绍的是 Kotlin 的其中一种构造器，叫做「次构造器」，除此之外还有主构造器，关于「什么是主构造器，主和次有什么区别」，后面的文章会讲到。
 
@@ -79,11 +78,11 @@
 
 可以看到，Kotlin 的 init 代码块和 Java 一样，都在实例化时执行，并且执行顺序都在构造器之前。
 
-上一篇提到，Java 的类如果不加 final 关键字，默认是可以被继承的，而 Kotlin 的类默认就是 final 的，如果需要继承要加 open 关键字，现在，让我们来好好看看 Kotlin 里的 final 关键字在修饰变量的时候和 Java 有什么不同。
+上一篇提到，Java 的类如果不加 final 关键字，默认是可以被继承的，而 Kotlin 的类默认就是 final 的，如果需要继承要加 open 关键字，现在，让我们来好好看看 Kotlin 里的 final 等价关键字 `val` 在修饰变量的时候和 Java 有什么不同。
 
 ### `final`
 
-Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能修改。这里分别从全局变量、参数和局部变量来和 Java 做对比：
+Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能修改。这里分别从成员变量、参数和局部变量来和 Java 做对比：
 
 - Java
 
@@ -124,13 +123,13 @@ Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能
 
 #### `val`自定义 getter
 
-不过 `val` 和 `final` 还是有一点区别的，虽然 `val` 修饰的变量不能二次赋值，但可以通过自定义变量的 getter 函数来让变量每次被访问时返回动态计算的值：
+不过 `val` 和 `final` 还是有一点区别的，虽然 `val` 修饰的变量不能二次赋值，但可以通过自定义变量的 getter 函数，让变量每次被访问时返回动态计算的值：
 
 ``` kotlin
 🏝️
 👇
 val size: Int
-    get() { // 👈
+    get() { // 👈 每次获取 size 值时都会执行 items.size
         return items.size
     }
 ```
@@ -191,9 +190,9 @@ Sample.name
 
 - 单例类
 
-    我们看一个单例的例子，分别用 Java 和 Kotlin 实现的代码：
+    我们看一个单例的例子，分别用 Java 和 Kotlin 实现：
 
-    - Java 中的单例类：
+    - Java 中实现单例类：
 
         ``` java
         ☕️
@@ -229,7 +228,13 @@ Sample.name
         }
         ```
     
-        和类的定义类似，不过 `class` 关键字替换成 `object`，相比 Java 的实现简单多了。
+        和 Java 相比的不同点有：
+        
+        - 和类的定义类似，不过 `class` 换成了 `object` 。
+        - 不需要额外维护一个实例变量 `sInstance`。
+        - 不需要「保证实例只创建一次」的 `getInstance()` 方法。
+        
+        相比 Java 的实现简单多了。
     
 - 继承类和实现接口
 
@@ -386,7 +391,7 @@ import com.hencoder.plus.topLevelFunction // 👈 直接 import 函数
 topLevelFunction()
 ```
 
-写在顶级的函数或者变量有个好处，在 Android Studio 中写代码时，IDE 很容易根据你写的函数前几个字母自动联想出相应的函数，提高了写代码的效率，而且可以减少项目中的重复代码。
+写在顶级的函数或者变量有个好处：在 Android Studio 中写代码时，IDE 很容易根据你写的函数前几个字母自动联想出相应的函数。这样提高了写代码的效率，而且可以减少项目中的重复代码。
 
 - 命名相同的顶级函数
 
@@ -403,7 +408,7 @@ topLevelFunction()
         }
         ```
 
-    - 在 `org.kotlinmaster.library2` 包下也有一个同名函数：
+    - 在 `org.kotlinmaster.library2` 包下有一个同名函数：
 
         ``` kotlin
         🏝️
@@ -427,14 +432,14 @@ topLevelFunction()
     }
     ```
 
-    可以看到当出现两个同名顶级函数时，IDE 会自动加上包前缀来区分，这也印证了顶级函数是属于包的特性。
+    可以看到当出现两个同名顶级函数时，IDE 会自动加上包前缀来区分，这也印证了「顶级函数属于包」的特性。
 
 #### 对比
 
-那在实际使用中，在 `object`、`companion object` 和 top-level 中该选择哪一个呢？简单来说按照下面这两个条件判断：
+那在实际使用中，在 `object`、`companion object` 和 top-level 中该选择哪一个呢？简单来说按照下面这两个判断：
 
-- 如果想写工具类的功能，直接创建 top-level 的函数，放在文件中。
-- 如果需要继承别的类或者实现接口，就用 `object` 和 `companion object`。
+- 如果想写工具类的功能，直接创建文件，写 top-level「顶层」函数。
+- 如果需要继承别的类或者实现接口，就用 `object` 或 `companion object`。
 
 ### 常量
 
