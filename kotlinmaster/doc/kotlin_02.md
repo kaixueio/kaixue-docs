@@ -443,7 +443,7 @@ topLevelFunction()
 
 ### 常量
 
-Java 中除了上面讲到的的静态变量和方法会用到 `static`，声明常量时也会用到，那 Kotlin 中声明常量会有什么变化呢？
+Java 中，除了上面讲到的的静态变量和方法会用到 `static`，声明常量时也会用到，那 Kotlin 中声明常量会有什么变化呢？
 
 - Java 中声明常量：
 
@@ -492,7 +492,7 @@ public class User {
 }
 ```
 
-在使用的地方声明一个 `static final` 的 User，它是不能二次赋值的：
+在使用的地方声明一个 `static final` 的 User 实例 `user`，它是不能二次赋值的：
 
 ``` java
 ☕️
@@ -500,7 +500,7 @@ static final User user = new User(123, "Zhangsan");
   👆    👆
 ```
 
-但是可以通过访问这个类的成员变量改变它的值：
+但是可以通过访问这个 `user` 实例的成员变量改变它的值：
 
 ``` java
 ☕️
