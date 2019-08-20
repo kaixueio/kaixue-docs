@@ -1,10 +1,10 @@
 ## Kotlin 里那些「不是那么写的」
 
-上一篇我们讲了 Kotlin 上手最基础的三个点：变量、函数和类型。大家都听说过，Kotlin 完全兼容 Java，这个意思是用 Java 写出来的 class 和 Kotlin 可以完美交互，而不是说你用 Java 的写法去写 Kotlin 也完全没问题，这个是不行的。这期内容我们就讲一下，Kotlin 里那些「不 Java」的写法。
+上一篇我们讲了 Kotlin 上手最基础的三个点：变量、函数和类型。大家都听说过，Kotlin 完全兼容 Java，这个意思是用 Java 写出来的代码和 Kotlin 可以完美交互，而不是说你用 Java 的写法去写 Kotlin 就完全没问题，这个是不行的。这期内容我们就讲一下，Kotlin 里那些「不 Java」的写法。
 
 ### Constructor
 
-上一篇中简单介绍了 Kotlin 的构造器，这一节具体看看 Kotlin 的构造器和 Java 有什么不一样：
+上一篇中简单介绍了 Kotlin 的构造器，这一节具体看看 Kotlin 的构造器和 Java 有什么不一样的地方：
 
 - Java
 
@@ -42,11 +42,9 @@
 - Java 中构造器和类同名，Kotlin 中使用 `constructor` 表示。
 - Kotlin 中构造器没有 public 修饰，因为默认可见性就是公开的（关于可见性修饰符这里先不展开，后面会讲到）。
 
-这里介绍的是 Kotlin 的其中一种构造器，叫做「次构造器」，除此之外还有主构造器，关于「什么是主构造器，主和次有什么区别」，后面的文章会讲到。
-
 #### init
 
-还有，Java 里常常配合构造方法一起使用的 init 代码块，在 Kotlin 里的写法也有了一点点改变：你需要给它加一个 init 前缀。
+除了构造器，Java 里常常配合一起使用的 init 代码块，在 Kotlin 里的写法也有了一点点改变：你需要给它加一个 `init` 前缀。
 
 - Java
 
@@ -76,9 +74,9 @@
     }
     ```
 
-可以看到，Kotlin 的 init 代码块和 Java 一样，都在实例化时执行，并且执行顺序都在构造器之前。
+正如上面标注的那样，Kotlin 的 init 代码块和 Java 一样，都在实例化时执行，并且执行顺序都在构造器之前。
 
-上一篇提到，Java 的类如果不加 final 关键字，默认是可以被继承的，而 Kotlin 的类默认就是 final 的，如果需要继承要加 open 关键字，现在，让我们来好好看看 Kotlin 里的 final 等价关键字 `val` 在修饰变量的时候和 Java 有什么不同。
+上一篇提到，Java 的类如果不加 final 关键字，默认是可以被继承的，而 Kotlin 的类默认就是 final 的。在 Java 里 final 还可以用来修饰变量，接下来让我们看看 Kotlin 是如何实现类似功能的。
 
 ### `final`
 
@@ -113,7 +111,7 @@ Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能
 可以看到不同点主要有：
 
 - final 变成了 val。
-- Kotlin 函数参数默认是 val 类型，所以参数前不需要写 val 关键字，Kotlin 里这样设计的原因是保证了参数不会被修改，而 Java 的参数可修改会增加出错的概率。
+- Kotlin 函数参数默认是 val 类型，所以参数前不需要写 val 关键字，Kotlin 里这样设计的原因是保证了参数不会被修改，而 Java 的参数可修改（默认没 final 修饰）会增加出错的概率。
 
 上一期说过，`var` 是 variable 的缩写， `val` 是 value 的缩写。
 
@@ -123,7 +121,7 @@ Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能
 
 #### `val`自定义 getter
 
-不过 `val` 和 `final` 还是有一点区别的，虽然 `val` 修饰的变量不能二次赋值，但可以通过自定义变量的 getter 函数，让变量每次被访问时返回动态计算的值：
+不过 `val` 和 `final` 还是有一点区别的，虽然 `val` 修饰的变量不能二次赋值，但可以通过自定义变量的 getter 函数，让变量每次被访问时，返回动态获取的值：
 
 ``` kotlin
 🏝️
@@ -134,7 +132,7 @@ val size: Int
     }
 ```
 
-不过这个属于特殊用法，一般情况下 `val` 还是对应于 Java 中的 `final` 使用的。
+不过这个属于 `val` 的另外一种用法，大部分情况下 `val` 还是对应于 Java 中的 `final` 使用的。
 
 ### `static` property / function
 
@@ -142,7 +140,7 @@ val size: Int
 
 ``` java
 ☕️
-public static final String CONST_STRING = "A String"
+public static final String CONST_STRING = "A String";
 ```
 
 在 Java 里面写常量，我们用的是 `static` + `final`。而在 Kotlin 里面，除了 `final` 的写法不一样，`static` 的写法也不一样，而且是更不一样。确切地说：在 `Kotlin` 里，静态变量和静态方法这两个概念被去除了。
@@ -160,20 +158,20 @@ class Sample {
 }
 ```
 
-哈？为啥 Kotlin 越改越复杂了？不着急，我们先看看 `object` 是个什么东西。
+为啥 Kotlin 越改越复杂了？不着急，我们先看看 `object` 是个什么东西。
 
 #### `object`
 
 Kotlin 里的 `object` ——首字母小写的，不是大写，Java 里的 `Object` 在 Kotlin 里不用了。
 
-> Java 中的 `Object`  在 Kotlin 中换成了 `Any`，和 `Object` 作用一样：作为所有类的基类。
+> Java 中的 `Object`  在 Kotlin 中变成了 `Any`，和 `Object` 作用一样：作为所有类的基类。
 
 而 `object` 不是类，像 `class` 一样在 Kotlin 中属于关键字：
 
 ``` kotlin
 🏝️
 object Sample {
-    ...
+    val name = "A name"
 }
 ```
 
@@ -192,7 +190,7 @@ Sample.name
 
     我们看一个单例的例子，分别用 Java 和 Kotlin 实现：
 
-    - Java 中实现单例类：
+    - Java 中实现单例类（非线程安全）：
 
         ``` java
         ☕️
@@ -206,13 +204,12 @@ Sample.name
                 return sInstance;
             }
         
-        	// 👇还有很多模板代码
+            // 👇还有很多模板代码
             ...
         }
         ```
         
         可以看到 Java 中为了实现单例类写了大量的模版代码，稍显繁琐。 
-            
         
     - Kotlin 中实现单例类：
     
@@ -220,25 +217,26 @@ Sample.name
          🏝️
         // 👇 class 替换成了 object
         object A {
-         // 👇 和普通类中声明类似
             val number: Int = 1
             fun method() {
                 println("A.method()")
             }
-        }
+        }    
         ```
-    
+        
         和 Java 相比的不同点有：
         
-        - 和类的定义类似，不过 `class` 换成了 `object` 。
+        - 和类的定义类似，但是把 `class` 换成了 `object` 。
         - 不需要额外维护一个实例变量 `sInstance`。
         - 不需要「保证实例只创建一次」的 `getInstance()` 方法。
         
         相比 Java 的实现简单多了。
+        
+        > 这种通过 `object` 实现的单例是一个饿汉式的单例，并且实现了线程安全。
     
 - 继承类和实现接口
 
-    类可以继承别的类，可以实现接口，那 `object` 可以吗？答案是可以的：
+    Kotlin 中不仅类可以继承别的类，可以实现接口，`object` 也可以：
 
     ``` kotlin
     🏝️
@@ -275,31 +273,35 @@ Sample.name
         ``` java
         ☕️                                              👇 
         ViewPager.SimpleOnPageChangeListener listener = new ViewPager.SimpleOnPageChangeListener() {
-        	@Override // 👈
-        	public void onPageSelected(int position) {
-        		// override
-        	}
+            @Override // 👈
+            public void onPageSelected(int position) {
+                // override
+            }
         };
         ```
 
     - Kotlin：
 
         ``` kotlin
-        🏝️              // 👇 没有 object 名字
+        🏝️          
         val listener = object: ViewPager.SimpleOnPageChangeListener() {
-        		   // 👆 「= 和 object: 」共同组成对象表达式
             override fun onPageSelected(position: Int) {
                 // override
             }
-        }
+        }        
         ```
-
-        和 Java 创建匿名类的方式很相似，Kotlin 中这种写法称之为「对象表达式」。
+        
+        和 Java 创建匿名类的方式很相似，只不过把 `new` 换成了 `object:`：
+        
+        - Java 中 `new` 用来创建一个匿名类的对象
+        - Kotlin 中 `object:` 也可以用来创建匿名类的对象
+        
+        这里的 `new ` 和 `object:` 修饰的都是接口或者抽象类。    
 
 
 #### `companion object`
 
-前面说到访问 `object` 中的变量或者函数时直接通过类名引用，就像 Java 的静态变量和方法一样，不同的是不需要在每个变量和函数前面用 `static` 修饰，因为 `object` 创建的对象内所有变量和函数默认都是静态的，没得选。如果只想让类中的一部分函数和变量是静态的该怎么做呢：
+用 `object` 修饰的对象中的变量和函数都是静态的，但有时候，我们只想让类中的一部分函数和变量是静态的该怎么做呢：
 
 ``` kotlin
 🏝️
@@ -316,7 +318,7 @@ class A {
 ``` kotlin
 🏝️
 A.B.c
- 👆
+  👆
 ```
 
 类中嵌套的对象可以用 `companion` 修饰：
@@ -331,14 +333,18 @@ class A {
 }
 ```
 
-`companion` 可以理解为伴随、伴生，表示修饰的对象和外部类绑定，这样的好处是调用的时候可以省掉对象名：
+`companion` 可以理解为伴随、伴生，表示修饰的对象和外部类绑定。
+
+但这里有一个小限制：一个类中最多只可以有一个伴生对象，但可以有多个嵌套对象。就像皇帝后宫佳丽三千，但皇后只有一个。
+
+这样的好处是调用的时候可以省掉对象名：
 
 ``` kotlin
 🏝️
 A.c // 👈 B 没了
 ```
 
-当有 `companion` 修饰时，对象的名字也可以省略掉：
+所以，当有 `companion` 修饰时，对象的名字也可以省略掉：
 
 ``` kotlin
 🏝️
@@ -354,7 +360,7 @@ class A {
 
 - 静态初始化
 
-    前面讲到 Kotlin 有类的初始化代码，那有没有 Java 中的静态初始化代码呢？像 Java 这样写的静态初始化代码是没有了，因为 Kotlin 取消了 `static` 修饰符，但是 Kotlin 中有相当于 Java 静态初始化的功能：「`companion object` 的初始化代码」。
+    Java 中的静态变量和方法，在 Kotlin 中都放在了 `companion object` 中。因此 Java 中的静态初始化在 Kotlin 中自然也是放在 `companion object` 中的，像类的初始化代码一样，由 `init` 和一对大括号表示：
 
     ``` kotlin
     🏝️
