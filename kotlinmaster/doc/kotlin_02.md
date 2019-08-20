@@ -726,9 +726,10 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
     - 集合的 size 不可变
     - 集合中的元素值不可变
     
-以下是三种集合类型创建不可变和可变实例的例子：
+
+    以下是三种集合类型创建不可变和可变实例的例子：
     
-- `listOf()` 创建不可变的 `List`，`mutableListOf()` 创建可变的 `List`。
+    - `listOf()` 创建不可变的 `List`，`mutableListOf()` 创建可变的 `List`。
     - `setOf()` 创建不可变的 `Set`，`mutableSetOf()` 创建可变的 `Set`。
     - `mapOf()` 创建不可变的 `Map`，`mutableMapOf()` 创建可变的 `Map`。
     
@@ -741,7 +742,7 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
     strList.toMutableList()
     val strSet = setOf("a", "b", "c")
                 👇
-strSet.toMutableSet()
+    strSet.toMutableSet()
     val map = mapOf("key1" to 1, "key2" to 2, "key3" to 3, "key4" to 3)
              👇
     map.toMutableMap()
