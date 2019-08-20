@@ -442,7 +442,7 @@ topLevelFunction()
 
 #### 对比
 
-那在实际使用中，在 `object`、`companion object` 和 top-level 中该选择哪一个呢？简单来说按照下面这两个判断：
+那在实际使用中，在 `object`、`companion object` 和 top-level 中该选择哪一个呢？简单来说按照下面这两个原则判断：
 
 - 如果想写工具类的功能，直接创建文件，写 top-level「顶层」函数。
 - 如果需要继承别的类或者实现接口，就用 `object` 或 `companion object`。
@@ -471,11 +471,13 @@ Java 中，除了上面讲到的的静态变量和方法会用到 `static`，声
             const val CONST_NUMBER = 1
         }
     }
+    
+    const val CONST_SECOND_NUMBER = 2
     ```
 
 发现不同点有：
 
-- Kotlin 的常量必须声明在类的伴随对象内，因为常量是静态的。
+- Kotlin 的常量必须声明在对象（包括伴生对象）或者「top-level 顶层」中，因为常量是静态的。
 - Kotlin 新增了修饰常量的 `const` 关键字。
 
 除此之外还有一个区别：
@@ -484,7 +486,7 @@ Java 中，除了上面讲到的的静态变量和方法会用到 `static`，声
 
 原因是 Kotlin 中的常量指的是 「compile-time constant 编译时常量」，它的意思是「编译器在编译的时候就知道这个东西在每个调用处的实际值」，因此可以在编译时直接把这个值硬编码到代码里使用的地方。
 
-而非基础和 String 类型的变量，可以通过调用对象的方法改变对象内部的值，这样这个变量就不是常量了，来看一个 Java 的例子，比如一个 User 类：
+而非基础和 String 类型的变量，可以通过调用对象的方法或变量改变对象内部的值，这样这个变量就不是常量了，来看一个 Java 的例子，比如一个 User 类：
 
 ``` java
 ☕️
@@ -565,7 +567,7 @@ user.name = "Lisi";
 
 - 不支持协变
 
-    Kotlin 的数组编译成字节码使用的仍然是 Java 的数组，但在语言层面是泛型实现，这样会失去协变 (covariance) 特性，就是子类数组对象不能赋值给父类的数组变量：
+    Kotlin 的数组编译成字节码时使用的仍然是 Java 的数组，但在语言层面是泛型实现，这样会失去协变 (covariance) 特性，就是子类数组对象不能赋值给父类的数组变量：
 
     - Kotlin
 
@@ -714,17 +716,24 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
                👇
             map["key1"] = 2    
             ```
-
+    
+        这里用到了「操作符重载」的知识，实现了和数组一样的「Positional Access Operations」，关于这个概念这里先不展开，后面会讲到。
+    
 - 可变集合/不可变集合
 
-    上面修改 `Map` 值的例子中，创建函数用的是 `mutableMapOf()` 而不是 `mapOf()`，因为只有 `mutableMapOf()` 创建的 `Map` 才可以修改。Kotlin 中集合分为两种类型：只读的和可变的。只读的集合在创建的时候就要确定好值，创建好后集合的 size 和元素值都不能改变。
+    上面修改 `Map` 值的例子中，创建函数用的是 `mutableMapOf()` 而不是 `mapOf()`，因为只有 `mutableMapOf()` 创建的 `Map` 才可以修改。Kotlin 中集合分为两种类型：只读的和可变的。这里的只读有两层意思：
 
-    - `listOf()` 创建不可变的 `List`，`mutableListOf()` 创建可变的 `List`。
+    - 集合的 size 不可变
+    - 集合中的元素值不可变
+    
+以下是三种集合类型创建不可变和可变实例的例子：
+    
+- `listOf()` 创建不可变的 `List`，`mutableListOf()` 创建可变的 `List`。
     - `setOf()` 创建不可变的 `Set`，`mutableSetOf()` 创建可变的 `Set`。
     - `mapOf()` 创建不可变的 `Map`，`mutableMapOf()` 创建可变的 `Map`。
-
+    
     可以看到，有 `mutable` 前缀的函数创建的是可变的集合，没有 `mutbale` 前缀的创建的是不可变的集合，不过不可变的可以通过 `toMutable*()` 系函数转换成可变的集合：
-
+    
     ```kotlin
     🏝️
     val strList = listOf("a", "b", "c")
@@ -732,12 +741,12 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
     strList.toMutableList()
     val strSet = setOf("a", "b", "c")
                 👇
-    strSet.toMutableSet()
+strSet.toMutableSet()
     val map = mapOf("key1" to 1, "key2" to 2, "key3" to 3, "key4" to 3)
              👇
     map.toMutableMap()
     ```
-
+    
     然后就可以对集合进行修改了，这里有一点需要注意下：
     
     - `toMutable*()` 返回的是一个新建的集合，原有的集合还是不可变的，所以只能对函数返回的集合修改。
@@ -771,15 +780,8 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
         val sequence = generateSequence(0) { it + 1 }
                                           // 👆 lambda 表达式，负责生成第二个及以后的元素，it 表示前一个元素
         ```
-    
-- 和 `Iterable` 的区别
 
-    这看起来和 `Iterable` 一样呀，为啥要多此一举使用 `Sequence` 呢？因为 `Sequence` 在两点上实现和 `Iterable` 不一样：
-
-    - 调用处理函数处理元素时，`Iterable` 是立即执行， `Sequence` 是懒执行。
-    - 调用多个处理函数时，`Iterable` 是一个函数遍历完所有元素后再执行下一个函数，`Sequence` 是一个元素执行完所有函数后再遍历下一个元素。
-
-    在下一篇文章中就这两点会结合例子展开讨论。
+这看起来和 `Iterable` 一样呀，为啥要多此一举使用 `Sequence` 呢？因为 `Sequence` 在两点上实现和 `Iterable` 不一样，在下一篇文章中会结合例子展开讨论。
 
 ### 可见性修饰符
 
