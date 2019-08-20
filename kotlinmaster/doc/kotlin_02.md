@@ -516,7 +516,7 @@ user.name = "Lisi";
 
 #### 数组
 
-先声明一个 String 数组：
+声明一个 String 数组：
 
 - Java 中的写法：
 
@@ -538,7 +538,7 @@ user.name = "Lisi";
 
 > 针对泛型的知识点，我们在后面的文章会讲，这里就先按照 Java 泛型来理解。
 
-将数组泛型化有什么好处呢？对数组的操作可以像集合一样功能更强大，由于泛型化 Kotlin 可以给数组增加很多有用的工具函数：
+将数组泛型化有什么好处呢？对数组的操作可以像集合一样功能更强大，由于泛型化，Kotlin 可以给数组增加很多有用的工具函数：
 
 - `get() / set()`
 - `contains()`
@@ -548,7 +548,7 @@ user.name = "Lisi";
 这样数组的实用性就大大增加了。
 
 - 取值和修改
-    Kotlin 中获取或者设置数组元素和 Java 一样可以使用方括号加下标的方式索引：
+    Kotlin 中获取或者设置数组元素和 Java 一样，可以使用方括号加下标的方式索引：
 
     ``` kotlin
     🏝️
@@ -581,7 +581,7 @@ user.name = "Lisi";
           👆
         ```
 
-    关于协变的问题，这里就先不展开，后面讲泛型的时候会提到。
+    关于协变的问题，这里就先不展开了，后面讲泛型的时候会提到。
 
 #### 集合
 
@@ -611,7 +611,7 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
         val strList = listOf("a", "b", "c")
         ```
     
-    首先能看到的是 Kotlin 中创建一个 `List` 特别的简单，一句代码搞定，有点像创建数组的代码。而且 Kotlin 中的 `List` 多了一个特性：支持 covariant（协变）。也就是说，可以把子类的 `List` 赋值给父类的 `List`：
+    首先能看到的是 Kotlin 中创建一个 `List` 特别的简单，有点像创建数组的代码。而且 Kotlin 中的 `List` 多了一个特性：支持 covariant（协变）。也就是说，可以把子类的 `List` 赋值给父类的 `List` 变量：
     
     - Kotlin：
     
@@ -639,9 +639,9 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
     
         Kotlin 中数组和 MutableList 的 API 是非常像的，主要的区别是数组的元素个数不能变。那在什么时候用数组呢？
     
-        这个问题在 Java 中就存在了？数组和 `List` 的功能类似，`List` 的功能更多一些，直觉应该用 `List` 。但数组也不是没有优势，基本类型 (`int[]`、`float[]`) 的数组不用自动装箱，性能好一点。
+        - 这个问题在 Java 中就存在了，数组和 `List` 的功能类似，`List` 的功能更多一些，直觉上应该用 `List` 。但数组也不是没有优势，基本类型 (`int[]`、`float[]`) 的数组不用自动装箱，性能好一点。
     
-        在 Kotlin 中也是同样的道理，在一些性能需求比较苛刻的场景，并且元素类型是基本类型时，用数组好一点。不过这里要注意一点，Kotlin 中要用专门的基本类型数组类 (`IntArray` `FloatArray` `LongArray`) 才可以免于装箱。
+        - 在 Kotlin 中也是同样的道理，在一些性能需求比较苛刻的场景，并且元素类型是基本类型时，用数组好一点。不过这里要注意一点，Kotlin 中要用专门的基本类型数组类 (`IntArray` `FloatArray` `LongArray`) 才可以免于装箱。也就是说元素不是基本类型时，相比 `Array`，用 `List` 更方便些。
 
 - Set
     - Java 中创建一个 `Set`：
@@ -687,7 +687,7 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
     
     - 取值和修改
     
-        - Kotlin 中的 Map 除了和 Java 中的一样可以使用 `get()` 根据键获取对应的值，还可以使用方括号的方式获取：
+        - Kotlin 中的 Map 除了和 Java 一样可以使用 `get()` 根据键获取对应的值，还可以使用方括号的方式获取：
     
             ``` kotlin
             🏝️
@@ -711,13 +711,13 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
 
 - 可变集合/不可变集合
 
-    上面修改 `Map` 值的例子中，创建函数用的是 `mutableMapOf()` 而不是 `mapOf()`，只有 `mutableMapOf()` 创建的才可以修改。Kotlin 中集合分为两种类型：只读的和可变的。只读的集合在创建的时候就要确定好值，创建好后集合的 size 和元素值都不能改变。
+    上面修改 `Map` 值的例子中，创建函数用的是 `mutableMapOf()` 而不是 `mapOf()`，因为只有 `mutableMapOf()` 创建的 `Map` 才可以修改。Kotlin 中集合分为两种类型：只读的和可变的。只读的集合在创建的时候就要确定好值，创建好后集合的 size 和元素值都不能改变。
 
     - `listOf()` 创建不可变的 `List`，`mutableListOf()` 创建可变的 `List`。
     - `setOf()` 创建不可变的 `Set`，`mutableSetOf()` 创建可变的 `Set`。
     - `mapOf()` 创建不可变的 `Map`，`mutableMapOf()` 创建可变的 `Map`。
 
-    可以看到，有 mutable 前缀的函数创建的是可变的集合。不可变的集合可以通过 `toMutable*()` 系函数转换成可变的集合：
+    可以看到，有 `mutable` 前缀的函数创建的是可变的集合，没有 `mutbale` 前缀的创建的是不可变的集合，不过不可变的可以通过 `toMutable*()` 系函数转换成可变的集合：
 
     ```kotlin
     🏝️
@@ -732,7 +732,9 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
     map.toMutableMap()
     ```
 
-    然后就可以对集合进行修改了，这里有一点需要注意下：`toMutable*()` 返回的是一个新建的集合，原有的集合还是不可变的。
+    然后就可以对集合进行修改了，这里有一点需要注意下：
+    
+    - `toMutable*()` 返回的是一个新建的集合，原有的集合还是不可变的，所以只能对函数返回的集合修改。
 
 #### `Sequence`
 
@@ -753,6 +755,8 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
         val list = listOf("a", "b", "c")
         list.asSequence()
         ```
+        
+        这里的 `List` 实现了 `Iterable` 接口。
         
     - 使用 lambda 表达式创建：
     
