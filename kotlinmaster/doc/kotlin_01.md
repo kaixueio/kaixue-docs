@@ -1,5 +1,25 @@
 # Kotlin 的变量、函数和类型
 
+> 本期作者：
+>
+> 视频：扔物线（朱凯）
+>
+> 文章：hamber（罗琼）
+ 
+大家好，我是扔物线，我唠叨两句就滚。绝不耽误你们看下面的视频。
+
+欢迎大家来到码上开学 Kotlin 系列上手教程。大家久等了，其实我也早就被你们催得不想活了，奈何我事情太多啊。比如我要旅游吧？我要陪老婆吧？我要陪孩子吧？我要打孩子吧？我要打老婆吧？而且大家知道，我现在开了在线的 Android 进阶课程，我得花大量时间精力在课程上面吧？不然客户爸爸一个差评那我就要被团队砍死啊。
+
+不过不管怎么样，码上开学终于开始生产了，而且我们是备了一些存货的哟。废话不多说，视频伺候！
+
+<div class="aspect-ratio">
+    <iframe src="https://player.bilibili.com/player.html?aid=64353734&cid=111733749&page=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</div>
+
+*如果你看不到上面的哔哩哔哩视频，可以点击 [这里](https://youtu.be/z1OeXDRGMOg) 去 YouTube 看。*
+
+> 以下内容来自文章作者 hamber。
+
 在 Google I/O 2019 上，Google 宣布 Kotlin 成为 Android 的第一开发语言。这对于开发者来讲意味着，将来所有的官方示例会首选 Kotlin，并且 Google 对 Kotlin 在开发、构建等各个方面的支持也会更优先。
 
 在这个大环境下，Kotlin 已经作为很多公司的移动开发岗面试的考察点之一，甚至作为 HR 简历筛选的必要条件。因此，学会并掌握 Kotlin 成了 Android 开发者的当务之急。
