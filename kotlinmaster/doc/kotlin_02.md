@@ -777,14 +777,14 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
 
 ### 可见性修饰符
 
-讲完了数据集合，再看看 Kotlin 中的可见性修饰符，Kotlin 中有四种可见性修饰符：`public` `private `  `protected` `internal`：
+讲完了数据集合，再看看 Kotlin 中的可见性修饰符，Kotlin 中有四种可见性修饰符：
 
 - `public `：公开，可见性最大，哪里都可以引用。
 - `private`：私有，可见性最小，仅对所在类和所在文件可见。
 - `protected`：保护，相当于 `private` + 子类可见。
 - `internal`：内部，仅对 module 内可见。
 
-相比 Java 少了一个 `default` 「包内可见修饰符」，多了一个 `internal`「module 内可见」。这一节结合例子讲讲 Kotlin 这四种可见性修饰符，以及在 Kotlin 和 Java 中的不同。先来看看 `public`：
+相比 Java 少了一个 `default` 「包内可见」修饰符，多了一个 `internal`「module 内可见」修饰符。这一节结合例子讲讲 Kotlin 这四种可见性修饰符，以及在 Kotlin 和 Java 中的不同。先来看看 `public`：
 
 #### `public`
 
@@ -796,7 +796,6 @@ package org.kotlinmaster.library;
 // 没有可见性修饰符
 class User {
 }
-
 ```
 
 ``` java
@@ -829,7 +828,7 @@ Kotlin 中如果不写可见性修饰符，就表示公开，和 Java 中 `publi
 
 #### `@hide`
 
-在 Android 的官方 sdk 中，有一些方法只想对 sdk 内可见，不想开放给用户使用，因为这些方法不太稳定，在后续版本中很有可能会修改或删掉。为了实现这个特性，会在方法的注释中添加一个 Javadoc 方法 `@hide`，用来限制客户端访问：
+在 Android 的官方 sdk 中，有一些方法只想对 sdk 内可见，不想开放给用户使用（因为这些方法不太稳定，在后续版本中很有可能会修改或删掉）。为了实现这个特性，会在方法的注释中添加一个 Javadoc 方法 `@hide`，用来限制客户端访问：
 
 ``` java
 ☕️
@@ -850,11 +849,13 @@ public void hideMethod() {
 - Android Studio 里的 module
 - Maven project
 
-`internal` 在写一个 library module 时非常有用，当需要创建一个函数仅开放给 module 内部使用，但不想开放给使用者，因为后面可能会修改，这时就应该用  `internal` 可见性修饰符。
+> 我们常见的是 Android Studio 中的 module 这种情况，Maven project 仅作了解就好，不用细究。
+
+`internal` 在写一个 library module 时非常有用，当需要创建一个函数仅开放给 module 内部使用，不想对 library 的使用者可见，因为后面这个函数可能会修改，这时就应该用  `internal` 可见性修饰符。
 
 #### Java 的包内可见为什么没了？
 
-Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的可见性修饰符是 `internal`「module  内可见」。为什么会弃用掉包内可见？我觉得有这几个原因：
+Java 的 `default`「包内可见」在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的可见性修饰符是 `internal`「module  内可见」。为什么会弃用掉包内可见呢？我觉得有这几个原因：
 
 - Kotlin 鼓励创建 top-level 函数和属性，一个源码文件可以包含多个类，使得 Kotlin 的源码结构更加扁平化，包结构不再像 Java 中那么重要。
 - 为了代码的解耦和可维护性，module 越来越多、越来越小，使得 `internal` 「module 内可见」已经可以满足对于代码封装的需求。
@@ -864,7 +865,7 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
 - Java 中 `protected` 表示包内可见 + 子类可见。
 - Kotlin 中 `protected` 表示 `private` + 子类可见。
 
-可见 Kotlin 相比 Java `protected` 的可见范围收窄了，原因是 Kotlin 中不再有包内可见的概念了，相比 Java 的可见性着眼于 `package`，Kotlin 更关心的是 module。
+可见 Kotlin 相比 Java `protected` 的可见范围收窄了，原因是 Kotlin 中不再有「包内可见」的概念了，相比 Java 的可见性着眼于 `package`，Kotlin 更关心的是 module。
 
 #### `private`
 
@@ -873,7 +874,7 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
 
 `private` 在 Java 和 Kotlin 中的区别：
 
-- 在 Java 中可以访问内部类的 `private` 变量：
+- 在 Java 中，外部类可以访问内部类的 `private` 变量：
 
   ``` java
   ☕️
@@ -892,7 +893,7 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
   }
   ```
 
-- 在 Kotlin 中是不允许的：
+- 在 Kotlin 中，外部类不可以访问内部类的 `private` 变量：
 
   ``` kotlin
   🏝️
@@ -912,9 +913,9 @@ Java 的包内可见在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的
   ```
 
 - 可以修饰类和接口
-    - Java 中一个文件只允许一个外部类，所以 `class`  和 `interface` 不允许设置为 `private`，因为声明 `private`  后无法被使用，这样就没有意义了。
+    - Java 中一个文件只允许一个外部类，所以 `class`  和 `interface` 不允许设置为 `private`，因为声明 `private`  后无法被外部使用，这样就没有意义了。
 
-    - Kotlin 允许同一个文件声明多个 `class` 和 top-level 的函数和属性，所以 Kotlin 中允许类和接口声明为 `private`，因为同个文件中的别的成员可以访问：
+    - Kotlin 允许同一个文件声明多个 `class` 和 top-level 的函数和属性，所以 Kotlin 中允许类和接口声明为 `private`，因为同个文件中的其它成员可以访问：
 
       ``` kotlin
       🏝️                   👇
