@@ -1029,23 +1029,57 @@ System.out.println(str1.equals(str2)); // 判断内容是否相等 输出 true
 System.out.println(str1 == str2); // 判断引用地址是否相等  输出 false
 ```
 
-而 Kotlin 中有三种比较方式：
-
-- `==` ：如果是基本数据类型的变量，则会比较其中的值是否相等，包括 `String` 类型。如果是引用类型的变量则会比较对象的地址。
-- `===` ：比较的是引用的内存地址。
-- `equals` ：不可以比较基本类型变量。如果作用的类没有对 `equals` 方法重写，则会比较所指向的内存地址。诸如 `String`、`Date` 等类对 `equals` 方法进行了重写，比较的则是对象的内容。
-
-我们再来看一段示例代码：
+那 Kotlin 中的相等性比较是怎样的呢？首先我们来看看所有类的基类 `Any` 中 `equals` 函数的定义：
 
 ```kotlin
 🏝️
+public open operator fun equals(other: Any?): Boolean
+```
+
+其中 `open operator` 表示重载操作符，这里先不展开，后面会讲到。
+
+这里的 `equals` 表示重载了 `==` 操作符，也就是说 Kotlin 中 `==` 等同于 `equals` 函数，且每个类需要自己实现 `equals` 函数，否则默认比较的是内存地址。诸如 `String`、`Date` 等类都对 `equals` 方法进行了重写，比较的是对象的值。
+
+因此，Kotlin 中对基本数据类型或者 `String` 类型都使用 `==` 进行值的比较，例如：
+
+```kotlin
+🏝️
+val str1 = "123"
+val str2 = "123"
+println(str1 == str2) // 输出结果为 true
+```
+
+那该如何对基本类型或者重写了 `equals` 函数的类进行内存地址的比较呢？Kotlin 还给我们提供了一个比较内存地址的操作符 `===` ，例如：
+
+```kotlin
+🏝️
+val str1= "字符串"
+val str2 = str1
+val str3 = str1
+print(str2 === str3)
+```
+
+这里比较的就是字符串的内存地址， 输出结果为：`true`。
+
+我们再来看另一段示例代码：
+
+```kotlin
+🏝️
+val str1: String? = "123"
+val str2: String? = "abc"
 str1 == str2
+
 //等价于：
-                  👇       👇
+
 str1?.equals(str2) ?: (str2 === null)
 ```
 
-如果 `str1` 与 `str2` 都是可空的 `String` 类型，如果 `str1` 不为空则调用 `equals` 比较值是否相同，如果为空则执行右侧表达式 `str2 === null`。
+其中 `str1` 与 `str2` 都是可空的 `String` 类型，`str1 == str2` 的执行过程首先是判断 `str1` 是否为空，不为空则调用 `equals` 比较值是否与 `str2` 相等，如果 `str1` 为空则执行右侧表达式 `str2 === null`，这时 `str2` 为空则表达式为 `true`，否则表达式结果为 `false`。
+
+以上就是 Kotlin 中相等性比较，我们做个总结：
+
+- `==` ：如果作用于基本数据类型，则比较其中的值是否相等。如果比较的是类的对象，则比较内存地址是否相等，除非该类重写了 `equals` 函数，例如 `String`、`Date` 等。
+- `===` ：比较的是引用的内存地址是否相等。
 
 ### 练习题
 
