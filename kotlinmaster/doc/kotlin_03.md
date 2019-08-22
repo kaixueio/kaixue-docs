@@ -770,11 +770,13 @@ Filter 6
 
 ### 条件控制
 
-讲了 Kotlin 中这么多方便的用法，接下来我们再看看最基础的条件控制有没有什么简单写法吧。
+讲了 Kotlin 中这么多方便的用法，接下来我们再看看最基础的条件控制有没有什么简单写法吧。// TODO  润色
 
-#### `if/else` 和 `when`
+相比 Java 的条件控制，Kotlin 中对条件控制进行了许多的优化及改进，
 
-相比 Java 的条件控制，Kotlin 中对条件控制进行了许多的优化及改进，首先看下在 Java 中的 `if/else` 写法：
+#### `if/else`
+
+首先我们看下在 Java 中的 `if/else` 写法：
 
 ```Java
 ☕️
@@ -798,7 +800,7 @@ if (a > b) {
 }
 ```
 
-不过，Kotlin 中 `if` 还可以作为一个表达式，返回一个值：
+不过，Kotlin 中 `if` 语句还可以作为一个表达式赋值给变量：
 
 ```kotlin
 🏝️
@@ -806,20 +808,28 @@ if (a > b) {
 val max = if (a > b) a else b
 ```
 
-这里使用 `=` 符号连接了 `max` 变量与 `if` 判断，这就表示 `if/else` 作为一个表达式，当 `a>b` 时返回结果为 `a` 的值，否则返回 `b` 的值。因此 Kotlin 中不需要三元运算符（条件 ? 然后 : 否则）。
+这里使用 `=` 符号连接了 `max` 变量与 `if` 语句，当 `a > b` 时 max = a，否则 max = b。Kotlin 中弃用了三元运算符（条件 ? 然后 : 否则），使用 `if/else` 来// todo 。
 
-另外 `if/else` 中的分支也可以是代码块，代码块的最后一行会作为返回结果：
+上面 if 中是一个变量// todo，另外 `if/else` 中的分支也可以是代码块，代码块的最后一行会作为结果返回：
 
 ```kotlin
 🏝️
 val max = if (a > b) {
-    print("max:a")
-    a // 👈 返回 a 的值
+    println("max:a") // todo  ln 统一
+    a // 👈 返回 a
 } else {
-    print("max:b")
-    b // 👈 返回 b 的值
+    println("max:b")
+    b // 👈 返回 b
 }
 ```
+
+#### `when`
+
+我们
+
+// Java 的 switch 
+
+在 kotlin 中没有 switch，但有 when  ，代表不好
 
 以上就是 Kotlin 中 `if/else` 的用法，那有没有 `switch` 语句呢？其实在 Kotlin 中用 `when` 代表了 Java 中的 `switch` 语句：
 
@@ -828,20 +838,33 @@ val max = if (a > b) {
 👇
 when (x) {
    👇
-    1 -> print("1")
-    2 -> print("2")
+    1 -> println("1")
+    2 -> println("2")
    👇
     else -> {
-        print("else")
+        println("else")
     }
 }
 ```
 
+列表：
+
+- 关键字
+- break ，执行完之后就会结束 `when` 的执行
+- default ，else 可省略
+- 
+
 这里的 `when` 将它的参数与每个条件进行比较，直到遇到合适的分支，否则会走默认的 `else` 分支，并且分支的代码块在执行完之后就会结束 `when` 的执行。
 
-`when` 也可以作为表达式进行使用，符合条件的分支中的最后一行的结果作为返回值。但需要注意的是，这时就必须要有 `else` 分支，使得表达式无论怎样都会有返回结果，除非编译器能够检测出已经将所有的情况覆盖。
+与 if 一样，`when` 也可以作为表达式进行使用，分支中的最后一行的结果作为返回值。需要注意的是，这时就必须要有 `else` 分支，使得无论怎样都会有结果返回，除非已经列出了所有情况。
 
-如果多个分支都是相同的代码块的话，可以将多个分支条件放在一起，用 `,` 符号隔开：
+// Java 中多个情况执行同一份代码：
+
+kotlin 中没有 break 怎样实现这个效果呢
+
+如果多个分支都是相同的代码块的话，
+
+可以将多个分支条件放在一起，用 `,` 符号隔开，表示这里的情况都会执行后面的代码：
 
 ```kotlin
 🏝️
@@ -852,18 +875,9 @@ when (x) {
 }
 ```
 
-在 `when` 中我们也可以使用任意表达式作为分支的判断条件：
+在 `when` 中我们也可以使用表达式作为分支的判断条件：
 
-```kotlin
-🏝️
-when (x) {
-    👇
-    parseInt(str) -> print("字符串 str 的值与 Int 值 x 相同")
-    else -> print("没有相同值")
-}
-```
-
-也可以使用 `in` 检测是否在一个区间或者集合中：
+- 也可以使用 `in` 检测是否在一个区间或者集合中：
 
 ```kotlin
 🏝️
@@ -878,7 +892,7 @@ when (x) {
 }
 ```
 
-或者使用 `is` 进行特定类型的检测：
+- 或者使用 `is` 进行特定类型的检测：
 
 ```kotlin
 🏝️
@@ -888,6 +902,20 @@ val isString = when(x) {
     else -> false
 }
 ```
+
+when 可以不带参数
+
+写 ifelse 链，对比
+
+还可以替代 ，这样可读性高
+
+
+
+总结，哪个先为 true 就先执行。
+
+还可以省略参数，
+
+
 
 还可以用来替代 `if/else if` 链，也就是不提供参数，每一个分支条件都可以是一个布尔表达式，当找到第一个分支为真时就会执行该分支：
 
@@ -901,11 +929,29 @@ when {
 }
 ```
 
-至此，相信你对 `if/else` 与 `when` 相关的知识了解得差不多了，下面再来看看 `for` 循环控制的使用方法。
+至此，相信你对 `if/else` 与 `when` 相关的知识了解得差不多了，下面再来看看 `for` 循环控制的使用方法。// 小结可以不用承上启下  ，
 
 #### `for`
 
-在 Kotlin 中，`for` 循环操作与 Java 的 `for` 相比也进行了许多优化，Kotlin 中 `for` 循环可以对任何提供迭代器（iterator）的对象进行遍历：
+
+
+kotlin 也可以 用 for(;;) ，
+
+
+
+除此之外 Java 中的 :，
+
+
+
+kotlin 中是这样的 in
+
+
+
+上面这个 in 后面 是 实现 iterator 的，也可以对 区间 遍历
+
+
+
+在 Kotlin 中，`for` 循环操作与 Java 的 `for` 相比也进行了许多优化，Kotlin 中 `for` 循环可以对任何提供迭代器（iterator）的对象进行遍历：for 
 
 ```kotlin
 🏝️
@@ -925,34 +971,9 @@ for (item in collection) {
 for (i in 1..10) {
     println(i)
 }
-for (i in 10 downTo 1 step 2) {
-    println(i)
-}
 ```
 
-如果想要通过索引的方式遍历一个数组或者集合，可以这样写：
-
-```kotlin
-🏝️
-                👇
-for (i in array.indices) {
-    println(array[i])
-}
-```
-
-`indices` 函数会返回该数组或者集合的有效索引的区间，并逐一赋值到 `i` 中进行遍历。
-
-还可以使用 `withIndex` 函数，同时获取索引值与元素值：
-
-```kotlin
-🏝️
-          👇                    👇
-for ((index, value) in array.withIndex()) {
-    println("index: $index , value: $value")
-}
-```
-
-这里的 `withIndex` 函数会返回一个包含索引值与元素值的迭代器对象，其中 `(index, value)` 是 Kotlin 中的解构声明，该部分我们会在之后的文章进行讲解，这里我们只需要明白 `index` 与 ` value` 分别用来承载单个元素的索引值与元素值即可。
+A in  B
 
 #### `try-catch`
 
@@ -981,12 +1002,12 @@ finally {
   val a: Int? = try { parseInt(input) } catch (e: NumberFormatException) { null }
   ```
 
-- Kotlin 中的异常都是不受检查的异常，什么意思呢？
+- Kotlin 中的异常都是不受检查的异常，什么意思呢？ 在Java中可以扔一个异常，否则报错，例子，同样一个函数，kotlin 是不会报错的，但运行时会报错，kotlin 中对异常是不会检查的，关于
 
-  - 受检查的异常：必须在函数上定义并且需要处理的异常，比如 Java 中的 `IOException`
+  - 受检查的异常：必须在函数上定义并且需要处理的异常，比如 Java 中的 `IOException` //例子
   - 不受检查的异常：不是必须进行处理的，比如 `NullPointerException`
 
-#### `?:` 和 `?.`
+#### `?.` 和 `?:`
 
 我们在之前的文章中已经讲过 Kotlin 的空安全，其实还有另外一个常用的复合符号可以让你在判空时更加方便，那就是 Elvis 操作符 `?:` 。
 
@@ -998,7 +1019,7 @@ val str: String? = "Hello"
 val length = if (str != null) str.length else -1
 ```
 
-这里的 `str` 是一个可空的字符串对象，我们想要获取它的长度时先判断是否为空，不为空则获取 `str.length` ，为空则返回 `-1` 。
+这里的 `str` 是一个可空的字符串对象，我们想要获取它的长度时先判断是否为空，不为空则获取 `str.length` ，为空则返回 `-1` 。// 先讲 ?.  ，想有返回值的时候 ?.  ，Int ? ，兜底的返回值，概念孤立，不是死记硬背，串起来，一条线
 
 其实还有一种更简单的方法来写判空操作，即通过 Elvis 操作符 `?:` 再结合空安全调用 `?.` 实现：
 
@@ -1036,6 +1057,12 @@ System.out.println(str1.equals(str2)); // 判断内容是否相等 输出 true
 System.out.println(str1 == str2); // 判断引用地址是否相等  输出 false
 ```
 
+kotlin 中 == 对应 equals ，
+
+最后，其实 == 是操作符重载
+
+
+
 那 Kotlin 中的相等性比较是怎样的呢？首先我们来看看所有类的基类 `Any` 中 `equals` 函数的定义：
 
 ```kotlin
@@ -1043,7 +1070,7 @@ System.out.println(str1 == str2); // 判断引用地址是否相等  输出 fals
 public open operator fun equals(other: Any?): Boolean
 ```
 
-其中 `open operator` 表示重载操作符，这里先不展开，后面会讲到。
+其中 `open operator` 表示操作符重载，这里先不展开，后面会讲到。
 
 这里的 `equals` 表示重载了 `==` 操作符，也就是说 Kotlin 中 `==` 等同于 `equals` 函数，且每个类需要自己实现 `equals` 函数，否则默认比较的是内存地址。诸如 `String`、`Date` 等类都对 `equals` 方法进行了重写，比较的是对象的值。
 
@@ -1094,11 +1121,12 @@ str1?.equals(str2) ?: (str2 === null)
 
 1. 请按照以下要求实现一个 `Student` 类：
 
+   - 是属性
    - 要求有一个包含 `name` 与 `age` 这两个参数的主构造器，并将该主构造器中的参数取出作为类的属性
-   - 在 `init` 代码块中打印 `I am a student.`
+   - 在 `init` 代码块中打印 `I am a student.` 
    - 要求有一个包含  `name` 与 `age` 以及 `school` 这三个参数的次构造器，并在其中输出学校信息
    - 再写一个 `show` 函数，将 `name` 与 `age` 属性通过字符串模板输出
 
    最后使用次构造器创建 `Student` 对象，并调用 `show` 函数。
 
-2. 请编写程序，找出数组 {21,30,11,44,78}  中能够被 3 整除的值，并输出，要求使用今天所讲的数组操作符。
+2. 编写程序，使用今天所讲的数组操作符，找出数组 [21,30,11,44,78] 中能够被 3 整除的值，并输出。
