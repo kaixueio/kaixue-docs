@@ -107,7 +107,7 @@ class User(name: String) {
 
 但有些场景，`constructor` 是不可以省略的，例如在主构造器上使用可见性修饰符或者注解：
 
-- 可见性修饰符我们之前已经讲过，它修饰普通函数和修饰构造器的用法一样：
+- 可见性修饰符我们之前已经讲过，它修饰普通函数与修饰构造器的用法一样：
 
   ```kotlin
   🏝️
@@ -209,7 +209,7 @@ fun area(width: Int, height: Int): Int {
 }
 ```
 
-在 Kotlin 中，这种只有一行代码的函数，还可以这么写：
+其实，这种只有一行代码的函数，还可以这么写：
 
 ```kotlin
 🏝️
@@ -238,7 +238,7 @@ fun sayHi(name: String) {
 }
 ```
 
-我们知道 Kotlin 中当函数没有返回值时，它的返回类型为 `Unit`。那么这里的函数 `sayHi` 的返回类型就是 `Unit`，只不过被我们省略了。所以，我们同样可以省略大括号并使用 `=` 符号进行连接：
+我们知道 Kotlin 中当函数没有返回值时，它的返回类型为 `Unit`。那么这里的函数 `sayHi` 的返回类型就是 `Unit`，只不过被我们省略了。所以，这里我们同样可以省略大括号并使用 `=` 符号进行连接：
 
 ```kotlin
 🏝️
@@ -252,7 +252,7 @@ fun sayHi(name: String) = println("Hi " + name)
 
 #### 参数默认值
 
-我们都知道，Java 允许在一个类中定义多个名称相同的方法，但是参数的类型或个数必须不同，这就是方法的重载：
+Java 中，允许在一个类中定义多个名称相同的方法，但是参数的类型或个数必须不同，这就是方法的重载：
 
 ```java
 ☕️
@@ -275,7 +275,7 @@ fun sayHi(name: String = "world") = println("Hi " + name)
 
 这里的 `world` 是参数 `name` 的默认值，当调用该函数时不传参数，就会使用该默认值。
 
-这就等价于上面  Java 写的重载函数，当调用 `sayHi` 函数时，可以选择性的填参数或者不填：
+这就等价于上面  Java 写的重载方法，当调用 `sayHi` 函数时，可以选择性的填参数或者不填：
 
 ```kotlin
 🏝️
@@ -316,7 +316,7 @@ fun sayHi(name: String = "world", age: Int) {
 sayHi(age = 21)
 ```
 
-在调用函数时，我们显式地指定了参数 `age` 的名称，这就是「命名参数」。Kotlin 中的每一个函数都具备命名参数的特性。
+在调用函数时，显式地指定了参数 `age` 的名称，这就是「命名参数」。Kotlin 中的每一个函数都具备命名参数的特性。
 
 如果一个函数有非常多的参数时：
 
@@ -334,7 +334,7 @@ fun sayHi(name: String = "world", age: Int, isStudent: Boolean = true, isFat: Bo
 sayHi("world", 21, false, true, false)
 ```
 
-当看到后面一长串的布尔值时，很难分清楚每个参数的用处，可读性很差。还好有了命名参数，我们就可以这样写：
+当看到后面一长串的布尔值时，很难分清楚每个参数的用处，可读性很差。还好有了命名参数，我们就可以写成这样：
 
 ```kotlin
 🏝️
@@ -343,7 +343,7 @@ sayHi(name = "wo", age = 21, isStudent = false, isFat = true, isTall = false)
 
 另外，与命名参数相对的一个概念被称为「位置参数」，也就是按位置顺序进行参数填写。
 
-当一个函数被调用时，如果混用位置函数与命名参数，那么所有的位置参数都应该放在第一个命名参数之前。我们来看下面这个例子：
+当一个函数被调用时，如果混用位置参数与命名参数，那么所有的位置参数都应该放在第一个命名参数之前。我们来看下面这个例子：
 
 ```kotlin
 🏝️
@@ -393,7 +393,7 @@ fun login(user: String, password: String, illegalStr: String) {
 }
 ```
 
-这里我们将共同的验证逻辑放进了嵌套函数 `validate` 中，并且 `login` 函数之外的其他地方是访问不到这个嵌套函数的。
+这里我们将共同的验证逻辑放进了嵌套函数 `validate` 中，并且 `login` 函数之外的其他地方无法访问这个嵌套函数。
 
 这里的 `illegalStr` 是通过参数的方式传进嵌套函数中的，其实完全没有这个必要，因为嵌套函数中可以访问在它外部的所有变量或常量，例如类中的属性、当前函数中的参数与变量等。我们稍加改进：
 
@@ -413,7 +413,7 @@ fun login(user: String, password: String, illegalStr: String) {
 
 这里省去了嵌套函数中的 `illegalStr` 参数，在该函数内直接使用外层函数 `login` 的参数 `illegalStr`。
 
-上面 `login` 函数中的验证逻辑，其实还有一种更简单的方式：
+上面 `login` 函数中的验证逻辑，其实还有另一种更简单的方式：
 
 ```kotlin
 🏝️
@@ -439,7 +439,7 @@ val name = "world"
 println("Hi " + name)
 ```
 
-但是参数比较多的话，可读性会变差，写起来也比较麻烦。好在 Kotlin 还为我们提供了一种更加方便的方法：
+但是当变量比较多的时候，可读性会变差，写起来也比较麻烦。好在 Kotlin 还为我们提供了一种更加方便的方法：
 
 ```kotlin
 🏝️
@@ -450,7 +450,7 @@ println("Hi $name") // 👈 输出： Hi world
 
 我们在字符串中以 `$` 符号开头引用了一个变量，最终运行结果会将该变量的值填入到字符串中，这就是「字符串模板」。
 
-如果填的变量换成表达式时：
+如果将这里填的变量换成表达式时：
 
 ```kotlin
 🏝️
@@ -469,7 +469,7 @@ val name = "world"
 println("Hi ${name.length}") 
 ```
 
-其实就跟四则运算的括号一样，提高语法上的优先级，而单个变量的场景可以省略 `{}`。这里最终运行结果会将 `{}` 中表达式的运算结果填入到字符串当中。
+其实就跟四则运算的括号一样，提高语法上的优先级，而单个变量的场景可以省略 `{}`。最终运行结果会将 `{}` 中表达式的运算结果填入到字符串当中。
 
 字符串模板还支持转义字符，比如使用转义字符 `\n` 进行换行操作或者 `\$` 输出 `$` 字符的字面值：
 
@@ -484,14 +484,14 @@ val price = "\$9.99"
 println(price) // 输出：$9.99
 ```
 
-字符串模板的用法对于我们 Android 工程师来说，一点都不陌生。首先，Gradle 所用的 Groovy 语言本来就已经有了这种支持：
+字符串模板的用法对于我们 Android 工程师来说，一点都不陌生。首先，Gradle 所用的 Groovy 语言就已经有了这种支持：
 
 ```groovy
 def name = "world"
 println "Hi ${name}"
 ```
 
-而且在 Android 资源文件里，定义字符串也有类似用法：
+而且在 Android 的资源文件里，定义字符串也有类似用法：
 
 ```xml
 <string name="hi">Hi %s</string> 
@@ -520,13 +520,13 @@ val text = """
 println(text)
 ```
 
-这就是「原生字符串」：
+这里有几个注意点：
 
-- 转义字符在这里不起作用
-- 最后输出时，与写的内容完全一致，包括实际的换行
+- 转义字符在这里是不起作用的
+- 最后输出的内容与写的内容完全一致，包括实际的换行
 - `$` 符号引入变量也会生效
 
-输出结果如下：
+这就是「原生字符串」。输出结果如下：
 
 ```
       Hi world!
@@ -538,7 +538,7 @@ println(text)
 ```kotlin
 🏝️
 val text = """
-//   👇 相当于每一行都是从这里开始输出，但前面必须是空格
+     👇 
       |Hi world!
     |my name is kotlin.
 """.trimMargin()
@@ -548,8 +548,8 @@ println(text)
 这里的 `trimMargin()` 函数有以下几个注意点：
 
 - `|` 符号为默认的边界前缀，前面只能有空格，否则不会生效
-- 输出时除了 `|` 符号前面的空格会被删除， `|` 符号本身也会删除
-- 还能使用其他字符，比如 `trimMargin("/")`，上方的代码使用的是参数默认值方式
+- 输出时除了 `|` 符号前面的空格会被删除， `|` 符号本身也不会显示
+- 边界前缀还能使用其他字符，比如 `trimMargin("/")`，上方的代码使用的是参数默认值的调用方式
 
 输出结果如下：
 
@@ -599,7 +599,7 @@ val strList = listOf("a", "b", "c") // List<String> 集合
   }
   ```
 
-- `map`：遍历每个元素并与给定表达式进行运算，转换形成新的集合
+- `map`：遍历每个元素并与给定表达式进行运算，最终形成新的集合
 
   ```kotlin
   🏝️
@@ -628,7 +628,7 @@ val strList = listOf("a", "b", "c") // List<String> 集合
 
 这里是以数组 `intArray` 为例，集合 `strList` 也同样有这些操作函数。Kotlin 中还有许多类似的操作函数需要你去发现与学习，这里就不一一列举了。
 
-在开发中，我们会经常用到上面的数组与集合，下面我们看看另外一种常见数据处理类型： `Range`。
+在开发中，数组与集合的操作符会被经常用到，下面我们再看看另外一种常用数据处理类型： `Range`。
 
 #### `Range`
 
@@ -712,11 +712,11 @@ val result = sequence
 // 1 -> 2 -> 判断 2 是否能被 3 整除
 // 2 -> 4 -> 判断 4 是否能被 3 整除
 // ...
-// 也就是说 sequence 首先取出一个元素进行 map 操作后，紧跟着进行 filter 操作
+// 也就是说 sequence 首先取出一个元素进行 map 操作，紧跟着进行 filter 操作
 
-// 我们再来看看下面这段 list 运算顺序
-// {1, 2, 3, 4} -> {2, 4, 6, 8} -> 逐一是否能被 3 整除
-// 可以发现集合操作是先将所有元素进行 map 操作，再将新的集合中元素逐一进行 filter 操作
+// 我们再来看看下面这段代码中 list 的运算顺序
+// {1, 2, 3, 4} -> {2, 4, 6, 8} -> 逐一判断是否能被 3 整除
+// 可以发现 list 集合操作是先将所有元素进行 map 操作，再将新的集合中元素逐一进行 filter 操作
 
 val list = listOf(1, 2, 3, 4)
 val result = list
@@ -729,9 +729,7 @@ val result = list
     } 
 ```
 
-所以 `sequence` 序列的遍历顺序就像是「广度优先遍历」。
-
-并且运算上面的 `sequence` 代码会发现什么也没有输出，这意味着序列的 `map` 与 `filter` 操作不是立即执行的。这样懒加载的实现有什么好处呢？
+所以 `sequence` 序列的遍历顺序就像是「广度优先遍历」。并且运算上面的 `sequence` 代码会发现什么也没有输出，这意味着序列的 `map` 与 `filter` 操作不是立即执行的。这样懒加载的实现有什么好处呢？
 
 在 Kotlin 中， `Iterable` 每调用一次函数就会生成一个新的 `Iterable`，下一个函数再基于新的 `Iterable` 执行，每次函数调用产生的临时 `Iterable` 会导致额外的内存消耗，而 `Sequence` 就避免了这样的问题。
 
@@ -770,13 +768,11 @@ Filter 6
 
 ### 条件控制
 
-讲了 Kotlin 中这么多方便的用法，接下来我们再看看最基础的条件控制有没有什么简单写法吧。// TODO  润色
-
-相比 Java 的条件控制，Kotlin 中对条件控制进行了许多的优化及改进，
+相比 Java 的条件控制，Kotlin 中对条件控制进行了许多的优化及改进，下面让我们来看看吧。
 
 #### `if/else`
 
-首先我们看下在 Java 中的 `if/else` 写法：
+首先来看下 Java 中的 `if/else` 写法：
 
 ```Java
 ☕️
@@ -808,9 +804,11 @@ if (a > b) {
 val max = if (a > b) a else b
 ```
 
-这里使用 `=` 符号连接了 `max` 变量与 `if` 语句，当 `a > b` 时 max = a，否则 max = b。Kotlin 中弃用了三元运算符（条件 ? 然后 : 否则），使用 `if/else` 来// todo 。
+这里使用 `=` 符号连接了 `max` 变量与 `if` 语句，当 `a > b` 时 `max` 等 `a`，否则 `max` 等于 `b`。
 
-上面 if 中是一个变量// todo，另外 `if/else` 中的分支也可以是代码块，代码块的最后一行会作为结果返回：
+Kotlin 中弃用了三元运算符（条件 ? 然后 : 否则），不过我们可以使用 `if/else` 来替换它。
+
+上面的 `if/else` 的分支中是一个变量，另外还可以是一个代码块，代码块的最后一行会作为结果返回：
 
 ```kotlin
 🏝️
@@ -825,46 +823,65 @@ val max = if (a > b) {
 
 #### `when`
 
-我们
+在 Java 中，用 `switch` 语句来判断一个变量与一系列值中某个值是否相等：
 
-// Java 的 switch 
+```java
+☕️
+switch (x) {
+    case 1: {
+        System.out.println("1");
+        break;
+    }
+    case 2: {
+        System.out.println("2");
+        break;
+    }
+    default: {
+        System.out.println("default");
+    }
+}
+```
 
-在 kotlin 中没有 switch，但有 when  ，代表不好
-
-以上就是 Kotlin 中 `if/else` 的用法，那有没有 `switch` 语句呢？其实在 Kotlin 中用 `when` 代表了 Java 中的 `switch` 语句：
+在 Kotlin 中虽然没有 `switch` 语句，但可以使用 `when` 语句进行判断：
 
 ```kotlin
 🏝️
 👇
 when (x) {
    👇
-    1 -> println("1")
-    2 -> println("2")
+    1 -> { println("1") }
+    2 -> { println("2") }
    👇
-    else -> {
-        println("else")
+    else -> { println("else") }
+}
+```
+
+这里与 Java 相比的不同点有：
+
+- Java 中使用的是 `switch` 关键字，Kotlin 中使用的是 `when` 关键字
+- Java 中使用 `case 1:` 判断是否相等，Kotlin 中是使用 `1 ->` 进行判断
+- Java 中有 `break` 关键字，表示执行结束，而 Kotlin 没有该关键字，但某个分支执行完就会结束 `when` 的执行
+- Java 中的默认分支使用的是 `default` 关键字，Kotlin 中使用的是 `else`
+
+与 `if/else` 一样，`when` 也可以作为表达式进行使用，分支中最后一行的结果作为返回值。需要注意的是，这时就必须要有 `else` 分支，使得无论怎样都会有结果返回，除非已经列出了所有情况。
+
+在 Java 中，当多种情况执行同一份代码时：
+
+```kotlin
+☕️
+switch (x) {
+    case 1:
+    case 2: {
+        System.out.println("x == 1 or x == 2");
+        break;
+    }
+    default: {
+        System.out.println("default");
     }
 }
 ```
 
-列表：
-
-- 关键字
-- break ，执行完之后就会结束 `when` 的执行
-- default ，else 可省略
-- 
-
-这里的 `when` 将它的参数与每个条件进行比较，直到遇到合适的分支，否则会走默认的 `else` 分支，并且分支的代码块在执行完之后就会结束 `when` 的执行。
-
-与 if 一样，`when` 也可以作为表达式进行使用，分支中的最后一行的结果作为返回值。需要注意的是，这时就必须要有 `else` 分支，使得无论怎样都会有结果返回，除非已经列出了所有情况。
-
-// Java 中多个情况执行同一份代码：
-
-kotlin 中没有 break 怎样实现这个效果呢
-
-如果多个分支都是相同的代码块的话，
-
-可以将多个分支条件放在一起，用 `,` 符号隔开，表示这里的情况都会执行后面的代码：
+而 Kotlin 中多种情况执行同一份代码时，可以将多个分支条件放在一起，用 `,` 符号隔开，表示这些情况都会执行后面的代码：
 
 ```kotlin
 🏝️
@@ -875,109 +892,101 @@ when (x) {
 }
 ```
 
-在 `when` 中我们也可以使用表达式作为分支的判断条件：
+在 `when` 语句中，我们还可以使用表达式作为分支的判断条件：
 
-- 也可以使用 `in` 检测是否在一个区间或者集合中：
+- 使用 `in` 检测是否在一个区间或者集合中：
 
-```kotlin
-🏝️
-when (x) {
-   👇
-    in 1..10 -> print("x 在区间 1..10 中")
-   👇
-    in listOf(1,2) -> print("x 在集合中")
-   👇
-    !in 10..20 -> print("x 不在区间 10..20 中")
-    else -> print("不在任何区间上")
-}
-```
+  ```kotlin
+  🏝️
+  when (x) {
+     👇
+      in 1..10 -> print("x 在区间 1..10 中")
+     👇
+      in listOf(1,2) -> print("x 在集合中")
+     👇
+      !in 10..20 -> print("x 不在区间 10..20 中")
+      else -> print("不在任何区间上")
+  }
+  ```
 
 - 或者使用 `is` 进行特定类型的检测：
 
-```kotlin
-🏝️
-val isString = when(x) {
-    👇
-    is String -> true
-    else -> false
-}
-```
+  ```kotlin
+  🏝️
+  val isString = when(x) {
+      👇
+      is String -> true
+      else -> false
+  }
+  ```
 
-when 可以不带参数
+- 还可以省略 `when` 后面的参数，每一个分支条件都可以是一个布尔表达式：
 
-写 ifelse 链，对比
+  ```kotlin
+  🏝️
+  when {
+     👇
+      str1.contains("a") -> print("字符串 str1 包含 a")
+     👇
+      str2.length == 3 -> print("字符串 str2 的长度为 3")
+  }
+  ```
 
-还可以替代 ，这样可读性高
-
-
-
-总结，哪个先为 true 就先执行。
-
-还可以省略参数，
-
-
-
-还可以用来替代 `if/else if` 链，也就是不提供参数，每一个分支条件都可以是一个布尔表达式，当找到第一个分支为真时就会执行该分支：
-
-```kotlin
-🏝️
-when {
-   👇
-    str.contains("a") -> print("字符串 str 包含 a")
-   👇
-    str.length == 3 -> print("字符串 str 的长度为 3")
-}
-```
-
-至此，相信你对 `if/else` 与 `when` 相关的知识了解得差不多了，下面再来看看 `for` 循环控制的使用方法。// 小结可以不用承上启下  ，
+当分支的判断条件为表达式时，哪一个条件先为 `true` 就执行哪个分支的代码块。
 
 #### `for`
 
-
-
-kotlin 也可以 用 for(;;) ，
-
-
-
-除此之外 Java 中的 :，
-
-
-
-kotlin 中是这样的 in
-
-
-
-上面这个 in 后面 是 实现 iterator 的，也可以对 区间 遍历
-
-
-
-在 Kotlin 中，`for` 循环操作与 Java 的 `for` 相比也进行了许多优化，Kotlin 中 `for` 循环可以对任何提供迭代器（iterator）的对象进行遍历：for 
+我们知道 Java 对一个集合或数组可以这样遍历：
 
 ```kotlin
-🏝️
-          👇
-for (item in collection) {
-    print(item)
+☕️
+int[] array = {1, 2, 3, 4};
+for (int item : array) {
+    ...
 }
 ```
 
-这里的的 `in` 操作符与 `for` 循环结合，不断的从 `collection` 中取出子元素赋值给 `item` 变量，从而实现对该对象的遍历读取操作。
-
-还可以对常见的数字区间进行迭代，代码如下：
+而 Kotlin 中是这么写的：
 
 ```kotlin
 🏝️
+val array = intArrayOf(1, 2, 3, 4)
           👇
-for (i in 1..10) {
+for (item in array) {
+    ...
+}
+```
+
+这里与 Java 有几处不同：
+
+- 在 Kotlin 中，表示单个元素的 `item` ，不用显式的声明类型
+- Kotlin 使用的是 `in` 关键字，表示 `item` 是 `array` 里面的一个元素
+
+另外，Kotlin 的 `in` 后面的变量可以是任何实现了 `iterator` 迭代器接口的对象。
+
+在 Java 中，我们一般还可以这么写 `for` 循环：
+
+```kotlin
+☕️
+for (int i = 0; i <= 10; i++) {
+    // 遍历从 0 到 10
+}
+```
+
+但 Kotlin 中没有这样的写法，那应该怎样实现一个 0 到 10 的遍历呢？
+
+其实使用上面讲过的区间就可以实现啦，代码如下：
+
+```kotlin
+🏝️
+for (i in 0..10) {
     println(i)
 }
 ```
 
-A in  B
-
 #### `try-catch`
 
-关于 `try-catch` 我们都不陌生，在平时开发中难免都会遇到异常需要处理，那么在 Kotlin 中是怎样处理的呢，先来看下 Kotlin 捕获异常的代码：
+关于 `try-catch` 我们都不陌生，在平时开发中难免都会遇到异常需要处理，那么在 Kotlin 中是怎样处理的呢，先来看下 Kotlin 中捕获异常的代码：
 
 ```kotlin
 🏝️
@@ -992,63 +1001,91 @@ finally {
 }
 ```
 
-可以发现 Kotlin 异常处理与 Java 的异常处理基本相同，但在使用上有几个不同点：
+可以发现 Kotlin 异常处理与 Java 的异常处理基本相同，但也有几个不同点：
 
-- Kotlin 中 `try` 也可以是一个表达式，允许代码块的最后一行作为返回值：
+- 我们知道在 Java 中，调用一个抛出异常的方法时，我们需要对异常进行处理，否则就会报错：
+
+  ```java
+  ☕️
+  public class User{
+      void sayHi() throws IOException {
+      }
+      
+      void test() {
+          sayHi();
+          // 👆 IDE 报错，Unhandled exception: java.io.IOException
+      }
+  }
+  ```
+
+  但在 Kotlin 中，调用上方 `User` 类的 `sayHi` 方法时：
 
   ```kotlin
   🏝️
-             👇          👇                                                👇
+  val user = User()
+  user.sayHi() // 👈 正常调用，IDE 不会报错，但运行时会报错
+  ```
+
+  为什么这里不会报错呢？因为 Kotlin 中的异常是不会被检查的，只有在运行时才会出错。
+
+- Kotlin 中 `try-catch` 语句也可以是一个表达式，允许代码块的最后一行作为返回值：
+
+  ```kotlin
+  🏝️
+             👇       
   val a: Int? = try { parseInt(input) } catch (e: NumberFormatException) { null }
   ```
 
-- Kotlin 中的异常都是不受检查的异常，什么意思呢？ 在Java中可以扔一个异常，否则报错，例子，同样一个函数，kotlin 是不会报错的，但运行时会报错，kotlin 中对异常是不会检查的，关于
-
-  - 受检查的异常：必须在函数上定义并且需要处理的异常，比如 Java 中的 `IOException` //例子
-  - 不受检查的异常：不是必须进行处理的，比如 `NullPointerException`
 
 #### `?.` 和 `?:`
 
 我们在之前的文章中已经讲过 Kotlin 的空安全，其实还有另外一个常用的复合符号可以让你在判空时更加方便，那就是 Elvis 操作符 `?:` 。
 
-我们先来看下这段代码：
+我们知道空安全调用 `?.`，在对象非空时会执行后面的调用，对象为空时就会返回 `null`。如果这时将该表达式赋值给赋值给一个不可空的变量：
 
 ```kotlin
 🏝️
 val str: String? = "Hello"
-val length = if (str != null) str.length else -1
+var length: Int = str?.length
+//                👆 ，IDE 报错，Type mismatch. Required:Int. Found:Int?
 ```
 
-这里的 `str` 是一个可空的字符串对象，我们想要获取它的长度时先判断是否为空，不为空则获取 `str.length` ，为空则返回 `-1` 。// 先讲 ?.  ，想有返回值的时候 ?.  ，Int ? ，兜底的返回值，概念孤立，不是死记硬背，串起来，一条线
+这里想要获取到可空变量 `str` 的长度，并赋值给不可空变量 `length`，IDE 就会提示类型不匹配。该怎么办呢？
 
-其实还有一种更简单的方法来写判空操作，即通过 Elvis 操作符 `?:` 再结合空安全调用 `?.` 实现：
+这时就可以使用 Kotlin 中的 Elvis 操作符 `?:` 来解决：
 
 ```kotlin
 🏝️
 val str: String? = "Hello"
-                        👇
-val length = str?.length ?: -1
+                             👇
+val length: Int = str?.length ?: -1
 ```
 
-这里的 `str?.length` 使用了空安全调用 `?.` ，表示 `str` 为空时结果为 `null`，非空时获取 `length`。其中 `?:` 表示若左侧表达式为空，则返回其右侧表达式的值 `-1`，否则返回左侧表达式的值。
+这里的 `?:` 就表示如果左侧表达式 `str?.length ` 结果为空，则返回右侧的值 `-1`。
 
- Elvis 操作符右侧还可以是一个表达式，例如：
+Elvis 操作符还有另外一种常见用法，如下：
 
 ```kotlin
 🏝️
 fun validate(user: User) {
-    val id = user.id ?: return
-    val name = user.name ?: throw IllegalArgumentException("name is null")
+    val id = user.id ?: return // 👈 验证 user.id 是否为空，为空时 return 
+}
+
+// 等同于
+
+fun validate(user: User) {
+    if (user.id == null) {
+        return
+    }
+    val id = user.id
 }
 ```
-
-这里的 `return` 与 `throw` 都是在左侧表达式为空时执行。
 
 看到这里，想必你对 Kotlin 的空安全有了更深入的了解了。下面我们再看看 Kotlin 的相等比较符。
 
 #### `==` 和 `===`
 
-我们知道在 Java 中相等性比较可以使用 `==` ，如果是比较的 `int` 类型则判断数值是否相等，如果用在 `String` 字符串上则表示引用地址是否相等， `String` 字符串的内容比较则使用的是 `equals()` ：
+我们知道在 Java 中，`==` 如果是比较的基本数据则判断值是否相等，如果用在 `String` 字符串上则表示引用地址是否相等， `String` 字符串的内容比较则使用的是 `equals()` ：
 
 ```java
 ☕️
@@ -1057,76 +1094,37 @@ System.out.println(str1.equals(str2)); // 判断内容是否相等 输出 true
 System.out.println(str1 == str2); // 判断引用地址是否相等  输出 false
 ```
 
-kotlin 中 == 对应 equals ，
+Kotlin 中也有两种相等比较方式：
 
-最后，其实 == 是操作符重载
+- `==` ：可以对基本数据类型以及 `String` 等进行内容比较，相当于 Java 中的 `equals`
+- `===` ：对引用的内存地址进行比较，相当于 Java 中的 `==`
 
+其中 `equals` 换成了 `==`，这样可以使我们的代码更加简洁。
 
-
-那 Kotlin 中的相等性比较是怎样的呢？首先我们来看看所有类的基类 `Any` 中 `equals` 函数的定义：
-
-```kotlin
-🏝️
-public open operator fun equals(other: Any?): Boolean
-```
-
-其中 `open operator` 表示操作符重载，这里先不展开，后面会讲到。
-
-这里的 `equals` 表示重载了 `==` 操作符，也就是说 Kotlin 中 `==` 等同于 `equals` 函数，且每个类需要自己实现 `equals` 函数，否则默认比较的是内存地址。诸如 `String`、`Date` 等类都对 `equals` 方法进行了重写，比较的是对象的值。
-
-因此，Kotlin 中对基本数据类型或者 `String` 类型都使用 `==` 进行值的比较，例如：
+下面再来看看代码示例：
 
 ```kotlin
 🏝️
 val str1 = "123"
 val str2 = "123"
-println(str1 == str2) // 输出结果为 true
-```
+println(str1 == str2) // 输出：true
 
-那该如何对基本类型或者重写了 `equals` 函数的类进行内存地址的比较呢？Kotlin 还给我们提供了一个比较内存地址的操作符 `===` ，例如：
-
-```kotlin
-🏝️
 val str1= "字符串"
 val str2 = str1
 val str3 = str1
-print(str2 === str3)
+print(str2 === str3) //输出：true
 ```
 
-这里比较的就是字符串的内存地址， 输出结果为：`true`。
-
-我们再来看另一段示例代码：
-
-```kotlin
-🏝️
-val str1: String? = "123"
-val str2: String? = "abc"
-str1 == str2
-
-//等价于：
-
-str1?.equals(str2) ?: (str2 === null)
-```
-
-其中 `str1` 与 `str2` 都是可空的 `String` 类型，`str1 == str2` 的执行过程首先是判断 `str1` 是否为空，不为空则调用 `equals` 比较值是否与 `str2` 相等，如果 `str1` 为空则执行右侧表达式 `str2 === null`，这时 `str2` 为空则表达式为 `true`，否则表达式结果为 `false`。
-
-以上就是 Kotlin 中相等性比较，我们做个总结：
-
-- `==` ：如果作用于基本数据类型，则比较其中的值是否相等。如果比较的是类的对象，则比较内存地址是否相等，除非该类重写了 `equals` 函数，例如 `String`、`Date` 等。
-- `===` ：比较的是引用的内存地址是否相等。
+其实 Kotlin 中的 `equals` 函数是 `==` 的操作符重载，关于操作符重载，这里先不做展开，之后的文章会讲到。
 
 ### 练习题
 
-好了，以上就是关于 Kotlin 里那些「更方便的」，给你留两道练习题吧：
-
 1. 请按照以下要求实现一个 `Student` 类：
 
-   - 是属性
-   - 要求有一个包含 `name` 与 `age` 这两个参数的主构造器，并将该主构造器中的参数取出作为类的属性
-   - 在 `init` 代码块中打印 `I am a student.` 
-   - 要求有一个包含  `name` 与 `age` 以及 `school` 这三个参数的次构造器，并在其中输出学校信息
-   - 再写一个 `show` 函数，将 `name` 与 `age` 属性通过字符串模板输出
+   - 写出三个构造函数，其中一个必须是主构造器
+   - 主构造器中的参数作为属性
+   - 写一个普通函数 `show`，要求通过字符串模板输出类中的属性
 
    最后使用次构造器创建 `Student` 对象，并调用 `show` 函数。
 
-2. 编写程序，使用今天所讲的数组操作符，找出数组 [21,30,11,44,78] 中能够被 3 整除的值，并输出。
+2. 编写程序，使用今天所讲的操作符，找出数组 [21,40,11,33,78] 中能够被 3 整除的所有元素，并输出。
