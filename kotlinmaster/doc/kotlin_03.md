@@ -427,7 +427,7 @@ fun login(user: String, password: String, illegalStr: String) {
 
 ### 字符串
 
-讲完了普通函数的简化写法，接下来看看 Kotlin 中字符串的方便写法。// kotlin 中对字符串也有很多方便写法
+讲完了普通函数的简化写法，Kotlin 中字符串也有很多方便写法。
 
 #### 字符串模板
 
@@ -445,18 +445,20 @@ println("Hi " + name)
 🏝️
 val name = "world"
            👇
-println("Hi $name") // 输出： Hi world
+println("Hi $name") // 👈 输出： Hi world
 ```
 
 我们在字符串中以 `$` 符号开头引用了一个变量，最终运行结果会将该变量的值填入到字符串中，这就是「字符串模板」。
 
-如果填的变量是表达式的时候，
+如果填的变量换成表达式时：
 
+```kotlin
+🏝️
+val name = "world"
+println("Hi $name.length") // 👈 输出： Hi world.length
 ```
 
-```
-
-
+我们想要输出的是变量 `name` 的长度，但结果显然不符合预期。
 
 这时可以使用 `$` 符号加上 `{}` 将任意表达式括起来：
 
@@ -467,27 +469,40 @@ val name = "world"
 println("Hi ${name.length}") 
 ```
 
-其实就跟四则运算的括号一样，提高语法上的优先级，单个变量的场景可以省略// todo 补充 闭环，最终运行结果会将花括号中表达式的运算结果填入到字符串当中。
+其实就跟四则运算的括号一样，提高语法上的优先级，而单个变量的场景可以省略 `{}`。这里最终运行结果会将 `{}` 中表达式的运算结果填入到字符串当中。
 
-// todo 不要  如果想使用表示字面值的 `$` 字符，可以这样写：
+字符串模板还支持转义字符，比如使用转义字符 `\n` 进行换行操作或者 `\$` 输出 `$` 字符的字面值：
 
 ```kotlin
 🏝️
-               👇
-val price = "${'$'}9.99"
+                  👇 
+val name = "world!\n"
+println("Hi $name")
+
+             👇
+val price = "\$9.99"
 println(price) // 输出：$9.99
 ```
 
-字符串模板还支持转义字符，比如使用转义字符 `\n` 进行换行操作或者 `\$` ：
+字符串模板的用法对于我们 Android 工程师来说，一点都不陌生。首先，Gradle 所用的 Groovy 语言本来就已经有了这种支持：
 
-```kotlin
-🏝️
-                 👇
-val name = "world!\n"
-println("Hi $name")
+```groovy
+def name = "world"
+println "Hi ${name}"
 ```
 
-// todo android 写法
+而且在 Android 资源文件里，定义字符串也有类似用法：
+
+```xml
+<string name="hi">Hi %s</string> 
+```
+
+在 Java 代码中的使用方法：
+
+```java
+☕️
+getString(R.id.hi, "world");
+```
 
 #### raw string (原生字符串)
 
@@ -505,11 +520,13 @@ val text = """
 println(text)
 ```
 
-- 转义字符不起作用
-- 原生字符串里面的所有的空格与实际的换行，完全一致
-- $ 加变量也生效
+这就是「原生字符串」：
 
-这就是「原生字符串」。输出结果如下：
+- 转义字符在这里不起作用
+- 最后输出时，与写的内容完全一致，包括实际的换行
+- `$` 符号引入变量也会生效
+
+输出结果如下：
 
 ```
       Hi world!
@@ -521,16 +538,18 @@ println(text)
 ```kotlin
 🏝️
 val text = """
-//      相当于每一行都是从这里开始输出，但是前面必须是空格
+//   👇 相当于每一行都是从这里开始输出，但前面必须是空格
       |Hi world!
     |my name is kotlin.
 """.trimMargin()
 println(text)
 ```
 
-其中的 `|` 符号为默认的边界前缀，表示这一行 `|` 符号之前的所有空格需要去除。也可以选择其他字符做边界前缀，比如 `trimMargin("/")`。
+这里的 `trimMargin()` 函数有以下几个注意点：
 
-//列表  本身删除  1前面只能有空格，否则，2|也会去掉，3 也可使用其他字符 参数默认值
+- `|` 符号为默认的边界前缀，前面只能有空格，否则不会生效
+- 输出时除了 `|` 符号前面的空格会被删除， `|` 符号本身也会删除
+- 还能使用其他字符，比如 `trimMargin("/")`，上方的代码使用的是参数默认值方式
 
 输出结果如下：
 
@@ -551,11 +570,11 @@ my name is kotlin.
 
 ```kotlin
 🏝️
-val intArray = intArrayOf(1, 2) // Int 类型数组
+val intArray = intArrayOf(1, 2, 3) // Int 类型数组
 val strList = listOf("a", "b", "c") // List<String> 集合
 ```
 
-接下来，对它们的操作函数进行讲解，其中 strList ：
+接下来，对它们的操作函数进行讲解：
 
 - `forEach`：遍历每一个元素
 
@@ -563,30 +582,20 @@ val strList = listOf("a", "b", "c") // List<String> 集合
   🏝️
   //              👇 lambda 表达式，i 表示传进来的 Int 类型参数
   intArray.forEach { i ->
-      println(i) // 输出： 1 2  // todo print
-  }
-  
-  strList.forEach { str ->
-      println(str) 
+      print(i + " ") // 输出：1 2 3 
   }
   ```
 
-- `filter`：遍历每个元素并进行过滤操作，如果 lambda 表达式中的条件成立则留下该元素，否则剔除，最终生成新的集合
+- `filter`：对每个元素进行过滤操作，如果 lambda 表达式中的条件成立则留下该元素，否则剔除，最终生成新的集合
 
   ```kotlin
   🏝️
-  intArray.filter { i ->
-      i != 1 // 过滤掉数组中等于 1 的元素 //  结果
-  }
-  // 不要  不要 strList 
-  .forEach { i ->
-      println(i) // 输出过滤后的每一个元素 2
-  }
+  // [1, 2, 3]
+        ⬇️
+  //  {2, 3}
   
-  strList.filter { str ->
-      str.contains("a") // 过滤掉集合元素中不包含 a 的元素
-  }.forEach { str ->
-      println(str) // 输出过滤后的每一个元素 a
+  intArray.filter { i ->
+      i != 1 // 👈 过滤掉数组中等于 1 的元素
   }
   ```
 
@@ -594,58 +603,32 @@ val strList = listOf("a", "b", "c") // List<String> 集合
 
   ```kotlin
   🏝️
-  intArray.map { i ->
-      i + 1 // 遍历数组，并将每个值加 1，最终返回新的集合
-  }
   //  [1, 2, 3]
          ⬇️
-  //  [2, 3, 4] 
-  strList.map { str ->
-      str + "d" // 遍历集合，并将每个元素与 d 拼接，最终返回新的集合
-  }.forEach { str ->
-      println(str) // 新的集合进行 forEach 遍历输出：ad bd cd
+  //  {2, 3, 4}
+  
+  intArray.map { i ->
+      i + 1 // 👈 每个元素加 1
   }
   ```
 
-- `flatMap`：旧集合变成新集合  ，列表
-
-  遍历每个元素并生成集合，最终将所有集合合并放到一个集合中，也就是平铺每个元素，可用在多维数组或者集合上
+- `flatMap`：遍历每个元素，并为每个元素创建新的集合，最后合并到一个集合中
 
   ```kotlin
   🏝️
+  //          [1, 2, 3]
+                 ⬇️
+  // {"2", "a" , "3", "a", "4", "a"}
   
   intArray.flatMap { i ->
-           // todo 两个元素
-      arrayOf(i+1) // 遍历数组，并将每个值加 1 生成一个集合，最终所有集合合并返回新的集合
-  }.forEach {
-      println(i) // 新的集合进行 forEach 遍历输出：2 3
-  }
-  //  {}  -> [""]
-  strList.flatMap { str ->
-      listOf(str + "d") // 遍历集合，并将每个元素与 d 拼接生成一个集合，最终所有集合合并返回新的集合
-  }.forEach { str ->
-      println(str) // 新的集合进行 forEach 遍历输出：ad bd cd
+      listOf("${i + 1}", "a") // 👈 生成新集合
   }
   ```
 
-- `first`：返回数组或集合中的第一个与给定条件匹配的元素，不传参数则返回第一个元素 // 删掉
 
-  ```kotlin
-  🏝️
-  intArray.first { i ->
-      i > 0 // 返回数组中第一个大于 0 的元素
-  }
-  
-  strList.first { str ->
-      str.contains("a") // 返回集合中第一个包含字母 a 的元素
-  }
-  ```
+这里是以数组 `intArray` 为例，集合 `strList` 也同样有这些操作函数。Kotlin 中还有许多类似的操作函数需要你去发现与学习，这里就不一一列举了。
 
-以上列出了一些 Kotlin 提供给我们的常用操作函数，还有许多操作函数需要你去发现与学习，这里就不一一列举了。正因为有了这些操作函数，才使得我们在开发中对数组与集合的操作更加的方便快捷。
-
-// 词语过渡，上面常用，下面用的少
-
-讲完了数组与集合的那些方便操作，下面我们看看另外两种数据处理类型： `Range` 和 `Sequence`。
+在开发中，我们会经常用到上面的数组与集合，下面我们看看另外一种常见数据处理类型： `Range`。
 
 #### `Range`
 
@@ -657,11 +640,9 @@ val strList = listOf("a", "b", "c") // List<String> 集合
 val range: IntRange = 0..1000 
 ```
 
-这里的 `0..1000` 就表示从 0 到 1000 的范围，包括 1000 ，数学上称为闭区间，
+这里的 `0..1000` 就表示从 0 到 1000 的范围，包括 1000，数学上称之为闭区间 [0,1000]。除了这里的 `IntRange` ，还有 `CharRange` 以及 `LongRange`。
 
-一个 `Int` 类型的闭区间 [0,1000]，除了 `IntRange` 还有 `CharRange` 以及 `LongRange`。
-
-既然有闭区间那有没有开区间呢？其实 Kotlin 中没有纯开区间的定义，不过有半开区间的定义：
+既然有闭区间，那有没有开区间呢？其实 Kotlin 中没有纯开区间的定义，不过有半开区间的定义：
 
 ```kotlin
 🏝️
@@ -669,57 +650,43 @@ val range: IntRange = 0..1000
 val range: IntRange = 0 until 1000 
 ```
 
-这里的 `0 until 1000` 表示的是 [0,1000) 的半开区间，也就是闭区间 [0,999]。
+这里的 `0 until 1000` 表示从 0 到 1000，但不包括 1000，这就是半开区间 [0,1000) 。
 
-可以对区间进行遍历操作：
+另外，还可以对区间进行遍历操作：
 
 ```kotlin
 🏝️
 val range = 0..1000
-//     👇 默认为步长 1 
+//     👇 默认步长为 1，输出 0, 1, 2, 3, 4, 5, 6, 7....1000,
 for (i in range) {
     print("$i, ")
 }
 ```
 
-取出从 0 到 1000 的整数
+这里的 `in` 关键字可以与 `for` 循环结合使用，表示取出从 0 到 1000 的整数。关于 `for` 循环控制的使用，这里先不展开，在本期文章的后面会做具体讲解。
 
-这里的 `in` 关键字可以与 `for` 循环结合使用，不断的取出 `range` 区间上的下一个值，并赋值给 `i` 变量，这就实现了对 `rang` 区间的遍历操作。关于 `for` 循环控制的使用，这里先不展开，在本期文章的后面会做具体讲解。
-
-最终输出结果为：
-
-```
-0, 1, 2, 3, 4, 5, 6, 7....1000,
-```
-
-// 默认为1  ，另外，还可以设置步长：
+除了使用默认的步长 1，还可以通过 `step` 设置步长：
 
 ```kotlin
 🏝️
 val range = 0..1000
-                 👇 0，2，4，。。。
+//                👇 步长为 2，输出 0, 2, 4, 6, 8, 10,....1000,
 for (i in range step 2) {
     print("$i, ")
 }
 ```
 
-上方代码中通过 `step` 设置了增量为 2 的步长，//最终输出结果为：
-
-```
-0, 2, 4, 6, 8, 10,....1000,
-```
-
-以上是递增区间，Kotlin 还提供了递减区间 `downTo` :// 这里的 step downto 用到了中缀表达式，之后会讲
+以上是递增区间，Kotlin 还提供了递减区间 `downTo` :
 
 ```kotlin
 🏝️
-              👇 4321
+//            👇 输出 4, 3, 2, 1, 
 for (i in 4 downTo 1) {
     print("$i, ")
 }
 ```
 
-这里的 `4 downTo 1` 表示递减的闭区间 [4,1]。
+其中 `4 downTo 1` 就表示递减的闭区间 [4,1]。这里的 `downTo` 以及上面的 `step` 都叫做中缀表达式，这里先不展开，之后的文章会做介绍。
 
 上面我们了解到了 `Range` 就像是一个自动化的数数工具，而下面要讲的 `Sequence` 就像是一种「广度优先遍历」版本的集合类。
 
@@ -727,62 +694,83 @@ for (i in 4 downTo 1) {
 
 在上一期中我们已经熟悉了 `Sequence` 的基本概念，这次让我们更加深入的了解 `Sequence` 序列的使用方式。
 
-序列 `Sequence` 又被称为「惰性集合操作」，关于什么是惰性，我们先来看下面的例子：
+序列 `Sequence` 又被称为「惰性集合操作」，关于什么是惰性，我们先来看看下面的例子：
 
-- 序列中的元素求值都是惰性的，前面
-- 
-- 这样可以更加高效的对数据集进行链式操作，而不像普通集合那样每次数据操作都开辟新的空间存储中间结果。
-- 序列操作分为两大类：
+```kotlin
+🏝️
+val sequence = sequenceOf(1, 2, 3, 4)
+val result = sequence
+    .map{ i ->
+        println("Map $i")
+        i * 2 
+    }.filter { i ->
+        println("Filter $i")
+        i % 3  == 0 
+    } 
 
-- 中间操作
+// 上面这段代码运行时不会立即执行，不过它的运算顺序如下：
+// 1 -> 2 -> 判断 2 是否能被 3 整除
+// 2 -> 4 -> 判断 4 是否能被 3 整除
+// ...
+// 也就是说 sequence 首先取出一个元素进行 map 操作后，紧跟着进行 filter 操作
 
-  序列的中间操作是惰性的，运行如下代码会发现什么也没有输出，这意味着序列的 `map` 与 `filter` 操作不是立即执行的：
+// 我们再来看看下面这段 list 运算顺序
+// {1, 2, 3, 4} -> {2, 4, 6, 8} -> 逐一是否能被 3 整除
+// 可以发现集合操作是先将所有元素进行 map 操作，再将新的集合中元素逐一进行 filter 操作
 
-  ```kotlin
-  🏝️
-  val sequence = sequenceOf(1, 2, 3, 4, 5, 6)
-  val result = sequence
-      .map{ println("Map $it"); it * 2 } // map 返回 Sequence<T> ，这是一个中间操作
-      .filter { println("Filter $it");it % 3  == 0 } 
-  
-  // 讲怎么执行 深度优先 ，后面讲 ，还没执行，对比 list ，图   
-  ```
+val list = listOf(1, 2, 3, 4)
+val result = list
+    .map{ i ->
+        println("Map $i")
+        i * 2 
+    }.filter { i ->
+        println("Filter $i")
+        i % 3  == 0 
+    } 
+```
 
-  这样懒加载的实现有什么好处呢？在 Kotlin 中， `Iterable` 每调用一次函数就会生成一个新的 `Iterable`，下一个函数再基于新的 `Iterable` 执行，每次函数调用产生的临时 `Iterable` 会导致额外的内存消耗，而 `Sequence` 就避免了这样的问题。
+所以 `sequence` 序列的遍历顺序就像是「广度优先遍历」。
 
-- 末端操作
+并且运算上面的 `sequence` 代码会发现什么也没有输出，这意味着序列的 `map` 与 `filter` 操作不是立即执行的。这样懒加载的实现有什么好处呢？
 
-  序列的末端操作会执行原来中间操作的所有延迟计算，一次末端操作返回的结果可以是集合、数字、或者从其他对象集合变换得到的任意对象，代码如下：
+在 Kotlin 中， `Iterable` 每调用一次函数就会生成一个新的 `Iterable`，下一个函数再基于新的 `Iterable` 执行，每次函数调用产生的临时 `Iterable` 会导致额外的内存消耗，而 `Sequence` 就避免了这样的问题。
 
-  ```kotlin
-  🏝️
-  val list = listOf(1, 2, 3, 4, 5, 6)
-  val result = list.asSequence()
-      .map{ println("Map $it"); it * 2 }
-      .filter { println("Filter $it");it % 3  == 0 }
-                  👇
-  println(result.first())
-  ```
+我们再通过 `first` 函数取出第一个元素试试：
 
-  其中 `first` 函数的调用就是一次末端操作，最终运行结果如下：
+```kotlin
+🏝️
+val sequence = sequenceOf(1, 2, 3, 4)
+val result = sequence
+    .map{ i ->
+        println("Map $i")
+        i * 2 
+    }.filter { i ->
+        println("Filter $i")
+        i % 3  == 0 
+    } 
+//               👇 取出运算结果中的第一个元素
+println(result.first())
+```
 
-  ```
-  Map 1
-  Filter 2
-  Map 2
-  Filter 4
-  Map 3
-  Filter 6
-  6
-  ```
+最终运行结果如下：
 
-  可以发现，`map` 与 `filter` 甚至都没有完全执行结束就停止了，这也就意味着当序列找到第一个满足 `it % 3  == 0` 的元素时就会停止并输出，这样就很好的省去后面不必要的计算。
+```
+Map 1
+Filter 2
+Map 2
+Filter 4
+Map 3
+Filter 6
+6
+```
+
+可以看出，`map` 与 `filter` 甚至都没有完全执行结束就停止了，当序列找到第一个满足 `it % 3  == 0` 的元素时就会停止并输出，这样就很好的省去后面不必要的计算。
 
 以上我们对 `Sequence` 的懒加载与遍历函数执行顺序有了进一步的了解。这种数据类型可以在数据量比较大或者数据量未知的时候，可以为我们提供方便的流式处理方案。
 
-讲了 Kotlin 中这么多方便的用法，接下来我们再看看最基础的条件控制有没有什么简单写法吧。
-
 ### 条件控制
+
+讲了 Kotlin 中这么多方便的用法，接下来我们再看看最基础的条件控制有没有什么简单写法吧。
 
 #### `if/else` 和 `when`
 
@@ -997,11 +985,10 @@ finally {
 
   - 受检查的异常：必须在函数上定义并且需要处理的异常，比如 Java 中的 `IOException`
   - 不受检查的异常：不是必须进行处理的，比如 `NullPointerException`
-  - Kotlin 中异常的这种设计，是想要尝试修补 Java 上没有达到的理论效果
 
 #### `?:` 和 `?.`
 
-我们在之前的文章中已经讲过 Kotlin 的空安全，其实还有一个常用的复合符号可以让你在判空时更加方便，那就是 Elvis 操作符 `?:` 。
+我们在之前的文章中已经讲过 Kotlin 的空安全，其实还有另外一个常用的复合符号可以让你在判空时更加方便，那就是 Elvis 操作符 `?:` 。
 
 我们先来看下这段代码：
 
