@@ -94,7 +94,7 @@ class User constructor(var name: String) {
 - 接口的实现：`class User : Impl {}`
 - 匿名类的创建：`object: ViewPager.SimpleOnPageChangeListener() {}`
 
-可以发现 `:` 符号在 Kotlin 中表示了一种依赖关系，在这里表示依赖于主构造器。
+可以看出 `:` 符号在 Kotlin 中表示了一种依赖关系，在这里表示依赖于主构造器。
 
 一般情况下，主构造器中的 `constructor` 关键字可以省略：
 
@@ -238,7 +238,7 @@ fun sayHi(name: String) {
 }
 ```
 
-我们知道 Kotlin 中当函数没有返回值时，它的返回类型为 `Unit`。那么这里的函数 `sayHi` 的返回类型就是 `Unit`，只不过被我们省略了。所以，这里我们同样可以省略大括号并使用 `=` 符号进行连接：
+我们知道 Kotlin 中当函数没有返回值时，它的返回类型为 `Unit`。那么这里的函数 `sayHi` 的返回类型就是 `Unit`，只不过被我们省略了。所以，这里同样可以省略大括号并使用 `=` 符号进行连接：
 
 ```kotlin
 🏝️
@@ -275,7 +275,7 @@ fun sayHi(name: String = "world") = println("Hi " + name)
 
 这里的 `world` 是参数 `name` 的默认值，当调用该函数时不传参数，就会使用该默认值。
 
-这就等价于上面  Java 写的重载方法，当调用 `sayHi` 函数时，可以选择性的填参数或者不填：
+这就等价于上面 Java 写的重载方法，当调用 `sayHi` 函数时，可以选择性的填参数或者不填：
 
 ```kotlin
 🏝️
@@ -287,7 +287,7 @@ sayHi() // 打印 Hi world
 
 其实在 Java 中，每个重载方法的内部实现可以各不相同，这就无法保证重载方法内部设计上的一致性，而 Kotlin 的参数默认值，就解决了这个问题。
 
-再来看下面这段代码，这里有默认值的参数在无默认值参数的前面：
+再来看下面这段代码，这里函数中有默认值的参数在无默认值参数的前面：
 
 ```kotlin
 🏝️
@@ -318,7 +318,7 @@ sayHi(age = 21)
 
 在调用函数时，显式地指定了参数 `age` 的名称，这就是「命名参数」。Kotlin 中的每一个函数都具备命名参数的特性。
 
-如果一个函数有非常多的参数时：
+再来看另一段代码：
 
 ```kotlin
 🏝️ 
@@ -327,14 +327,14 @@ fun sayHi(name: String = "world", age: Int, isStudent: Boolean = true, isFat: Bo
 }
 ```
 
-一般会这么调用这个函数：
+当函数中有非常多的参数时，调用该函数就会写成这样：
 
 ```kotlin
 🏝️
 sayHi("world", 21, false, true, false)
 ```
 
-当看到后面一长串的布尔值时，很难分清楚每个参数的用处，可读性很差。还好有了命名参数，我们就可以写成这样：
+当看到后面一长串的布尔值时，我们很难分清楚每个参数的用处，可读性很差。还好有了命名参数，我们就可以写成这样：
 
 ```kotlin
 🏝️
@@ -376,7 +376,7 @@ fun login(user: String, password: String, illegalStr: String) {
 }
 ```
 
-函数中检查参数这个部分有些冗余，我们又不想将这段逻辑作为一个单独的函数对外暴露，但这些重复逻辑看着又实在难受。这时可以使用嵌套函数，在 `login` 函数内部声明一个函数：
+该函数中，检查参数这个部分有些冗余，我们又不想将这段逻辑作为一个单独的函数对外暴露，但这些重复逻辑看着又实在难受。这时可以使用嵌套函数，在 `login` 函数内部声明一个函数：
 
 ```kotlin
 🏝️
@@ -411,7 +411,7 @@ fun login(user: String, password: String, illegalStr: String) {
 }
 ```
 
-这里省去了嵌套函数中的 `illegalStr` 参数，在该函数内直接使用外层函数 `login` 的参数 `illegalStr`。
+这里省去了嵌套函数中的 `illegalStr` 参数，在该嵌套函数内直接使用外层函数 `login` 的参数 `illegalStr`。
 
 上面 `login` 函数中的验证逻辑，其实还有另一种更简单的方式：
 
@@ -431,7 +431,7 @@ fun login(user: String, password: String, illegalStr: String) {
 
 #### 字符串模板
 
-在  Java 中，字符串与变量之间是使用 `+` 符号进行拼接的，Kotlin 中也是如此：
+在 Java 中，字符串与变量之间是使用 `+` 符号进行拼接的，Kotlin 中也是如此：
 
 ```kotlin
 🏝️
@@ -445,7 +445,7 @@ println("Hi " + name)
 🏝️
 val name = "world"
            👇
-println("Hi $name") // 👈 输出： Hi world
+println("Hi $name") // 👈 输出：Hi world
 ```
 
 我们在字符串中以 `$` 符号开头引用了一个变量，最终运行结果会将该变量的值填入到字符串中，这就是「字符串模板」。
@@ -455,7 +455,7 @@ println("Hi $name") // 👈 输出： Hi world
 ```kotlin
 🏝️
 val name = "world"
-println("Hi $name.length") // 👈 输出： Hi world.length
+println("Hi $name.length") // 👈 输出：Hi world.length
 ```
 
 我们想要输出的是变量 `name` 的长度，但结果显然不符合预期。
@@ -469,7 +469,7 @@ val name = "world"
 println("Hi ${name.length}") 
 ```
 
-其实就跟四则运算的括号一样，提高语法上的优先级，而单个变量的场景可以省略 `{}`。最终运行结果会将 `{}` 中表达式的运算结果填入到字符串当中。
+其实就跟四则运算的括号一样，提高语法上的优先级，而单个变量的场景可以省略 `{}`。最终运行结果会将 `{}` 中表达式的结果填入到字符串当中。
 
 字符串模板还支持转义字符，比如使用转义字符 `\n` 进行换行操作或者 `\$` 输出 `$` 字符的字面值：
 
@@ -484,7 +484,7 @@ val price = "\$9.99"
 println(price) // 输出：$9.99
 ```
 
-字符串模板的用法对于我们 Android 工程师来说，一点都不陌生。首先，Gradle 所用的 Groovy 语言就已经有了这种支持：
+字符串模板的用法对于我们 Android 工程师来说，其实一点都不陌生。首先，Gradle 所用的 Groovy 语言就已经有了这种支持：
 
 ```groovy
 def name = "world"
@@ -515,7 +515,7 @@ val myName = "kotlin"
            👇
 val text = """
       Hi $name!
-    my name is $myName.\n
+    My name is $myName.\n
 """
 println(text)
 ```
@@ -530,7 +530,7 @@ println(text)
 
 ```
       Hi world!
-    my name is kotlin.\n
+    My name is kotlin.\n
 ```
 
 原生字符串还可以通过 `trimMargin()` 函数去除每行前面的空格：
@@ -540,7 +540,7 @@ println(text)
 val text = """
      👇 
       |Hi world!
-    |my name is kotlin.
+    |My name is kotlin.
 """.trimMargin()
 println(text)
 ```
@@ -549,7 +549,7 @@ println(text)
 
 - `|` 符号为默认的边界前缀，前面只能有空格，否则不会生效
 - 输出时除了 `|` 符号前面的空格会被删除， `|` 符号本身也不会显示
-- 边界前缀还能使用其他字符，比如 `trimMargin("/")`，上方的代码使用的是参数默认值的调用方式
+- 边界前缀还可以使用其他字符，比如 `trimMargin("/")`，只不过上方的代码使用的是参数默认值的调用方式
 
 输出结果如下：
 
@@ -626,7 +626,7 @@ val strList = listOf("a", "b", "c") // List<String> 集合
   ```
 
 
-这里是以数组 `intArray` 为例，集合 `strList` 也同样有这些操作函数。Kotlin 中还有许多类似的操作函数需要你去发现与学习，这里就不一一列举了。
+这里是以数组 `intArray` 为例，集合 `strList` 也同样有这些操作函数。Kotlin 中还有许多类似的操作函数需要你去发现与学习，这里就不一一列举啦。
 
 在开发中，数组与集合的操作符会被经常用到，下面我们再看看另外一种常用数据处理类型： `Range`。
 
@@ -657,7 +657,7 @@ val range: IntRange = 0 until 1000
 ```kotlin
 🏝️
 val range = 0..1000
-//     👇 默认步长为 1，输出 0, 1, 2, 3, 4, 5, 6, 7....1000,
+//     👇 默认步长为 1，输出：0, 1, 2, 3, 4, 5, 6, 7....1000,
 for (i in range) {
     print("$i, ")
 }
@@ -670,7 +670,7 @@ for (i in range) {
 ```kotlin
 🏝️
 val range = 0..1000
-//                👇 步长为 2，输出 0, 2, 4, 6, 8, 10,....1000,
+//                👇 步长为 2，输出：0, 2, 4, 6, 8, 10,....1000,
 for (i in range step 2) {
     print("$i, ")
 }
@@ -680,7 +680,7 @@ for (i in range step 2) {
 
 ```kotlin
 🏝️
-//            👇 输出 4, 3, 2, 1, 
+//            👇 输出：4, 3, 2, 1, 
 for (i in 4 downTo 1) {
     print("$i, ")
 }
@@ -708,15 +708,15 @@ val result = sequence
         i % 3  == 0 
     } 
 
-// 上面这段代码运行时不会立即执行，不过它的运算顺序如下：
+// 上面这段代码运行时不会立即执行，不过我们先来看看它的运算，如下：
 // 1 -> 2 -> 判断 2 是否能被 3 整除
 // 2 -> 4 -> 判断 4 是否能被 3 整除
 // ...
-// 也就是说 sequence 首先取出一个元素进行 map 操作，紧跟着进行 filter 操作
+// 也就是说 sequence 首先取出一个元素进行 map 操作，紧跟着进行 filter 操作，再取下一个元素重复这个操作。
 
-// 我们再来看看下面这段代码中 list 的运算顺序
+// 我们再来看看下面这段代码中 list 的运算顺序：
 // {1, 2, 3, 4} -> {2, 4, 6, 8} -> 逐一判断是否能被 3 整除
-// 可以发现 list 集合操作是先将所有元素进行 map 操作，再将新的集合中元素逐一进行 filter 操作
+// 可以发现 list 集合操作是先将所有元素进行 map 操作，再将新的集合中元素逐一进行 filter 操作。
 
 val list = listOf(1, 2, 3, 4)
 val result = list
@@ -804,11 +804,11 @@ if (a > b) {
 val max = if (a > b) a else b
 ```
 
-这里使用 `=` 符号连接了 `max` 变量与 `if` 语句，当 `a > b` 时 `max` 等 `a`，否则 `max` 等于 `b`。
+这里使用 `=` 符号连接了 `max` 变量与 `if` 语句，当 `a > b` 时 `max` 等于 `a`，否则 `max` 等于 `b`。
 
-Kotlin 中弃用了三元运算符（条件 ? 然后 : 否则），不过我们可以使用 `if/else` 来替换它。
+另外，Kotlin 中弃用了三元运算符（条件 ? 然后 : 否则），不过我们可以使用 `if/else` 来代替它。
 
-上面的 `if/else` 的分支中是一个变量，另外还可以是一个代码块，代码块的最后一行会作为结果返回：
+上面的 `if/else` 的分支中是一个变量，其实还可以是一个代码块，代码块的最后一行会作为结果返回：
 
 ```kotlin
 🏝️
@@ -858,14 +858,14 @@ when (x) {
 
 这里与 Java 相比的不同点有：
 
-- Java 中使用的是 `switch` 关键字，Kotlin 中使用的是 `when` 关键字
+- Java 中使用的是 `switch` 关键字，Kotlin 中使用的则是 `when` 关键字
 - Java 中使用 `case 1:` 判断是否相等，Kotlin 中是使用 `1 ->` 进行判断
 - Java 中有 `break` 关键字，表示执行结束，而 Kotlin 没有该关键字，但某个分支执行完就会结束 `when` 的执行
 - Java 中的默认分支使用的是 `default` 关键字，Kotlin 中使用的是 `else`
 
 与 `if/else` 一样，`when` 也可以作为表达式进行使用，分支中最后一行的结果作为返回值。需要注意的是，这时就必须要有 `else` 分支，使得无论怎样都会有结果返回，除非已经列出了所有情况。
 
-在 Java 中，当多种情况执行同一份代码时：
+在 Java 中，当多种情况执行同一份代码时，可以这么写：
 
 ```kotlin
 ☕️
@@ -946,7 +946,7 @@ for (int item : array) {
 }
 ```
 
-而 Kotlin 中是这么写的：
+而 Kotlin 中 对数组的遍历是这么写的：
 
 ```kotlin
 🏝️
@@ -1023,10 +1023,10 @@ finally {
   ```kotlin
   🏝️
   val user = User()
-  user.sayHi() // 👈 正常调用，IDE 不会报错，但运行时会报错
+  user.sayHi() // 👈 正常调用，IDE 不会报错，但运行时会出错
   ```
 
-  为什么这里不会报错呢？因为 Kotlin 中的异常是不会被检查的，只有在运行时才会出错。
+  为什么这里不会报错呢？因为 Kotlin 中的异常是不会被检查的，只有在运行时如果 `sayHi` 抛出异常，才会出错。
 
 - Kotlin 中 `try-catch` 语句也可以是一个表达式，允许代码块的最后一行作为返回值：
 
@@ -1041,7 +1041,7 @@ finally {
 
 我们在之前的文章中已经讲过 Kotlin 的空安全，其实还有另外一个常用的复合符号可以让你在判空时更加方便，那就是 Elvis 操作符 `?:` 。
 
-我们知道空安全调用 `?.`，在对象非空时会执行后面的调用，对象为空时就会返回 `null`。如果这时将该表达式赋值给赋值给一个不可空的变量：
+我们知道空安全调用 `?.`，在对象非空时会执行后面的调用，对象为空时就会返回 `null`。如果这时将该表达式赋值给一个不可空的变量：
 
 ```kotlin
 🏝️
@@ -1050,7 +1050,7 @@ var length: Int = str?.length
 //                👆 ，IDE 报错，Type mismatch. Required:Int. Found:Int?
 ```
 
-这里想要获取到可空变量 `str` 的长度，并赋值给不可空变量 `length`，IDE 就会提示类型不匹配。该怎么办呢？
+这里想要获取到可空变量 `str` 的长度，并赋值给一个不可空的变量 `length`，IDE 就会提示类型不匹配。那该怎么办呢？
 
 这时就可以使用 Kotlin 中的 Elvis 操作符 `?:` 来解决：
 
@@ -1096,10 +1096,10 @@ System.out.println(str1 == str2); // 引用地址不相等，输出：false
 
 Kotlin 中也有两种相等比较方式：
 
-- `==` ：可以对基本数据类型以及 `String` 等进行内容比较，相当于 Java 中的 `equals`
+- `==` ：可以对基本数据类型以及 `String` 等类型进行内容比较，相当于 Java 中的 `equals`
 - `===` ：对引用的内存地址进行比较，相当于 Java 中的 `==`
 
-其中 `equals` 换成了 `==`，这样可以使我们的代码更加简洁。
+可以发现，Java 中的 `equals` ，在 Kotlin 中与之相对应的是 `==`，这样可以使我们的代码更加简洁。
 
 下面再来看看代码示例：
 
