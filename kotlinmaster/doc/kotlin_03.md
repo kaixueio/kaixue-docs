@@ -92,7 +92,7 @@ class User constructor(var name: String) {
 - 类的继承：`class MainActivity : AppCompatActivity() {}`
 - 接口的实现：`class User : Impl {}`
 - 匿名类的创建：`object: ViewPager.SimpleOnPageChangeListener() {}`
-- 函数的返回值：`fun sum(a: Int, b: Int) : Int`
+- 函数的返回值：`fun sum(a: Int, b: Int): Int`
 
 可以看出 `:` 符号在 Kotlin 中非常高频出现，它其实表示了一种依赖关系，在这里表示依赖于主构造器。
 
@@ -517,7 +517,7 @@ println(text)
 
 这里有几个注意点：
 
-- \n` 并不会被转义
+- `\n` 并不会被转义
 - 最后输出的内容与写的内容完全一致，包括实际的换行
 - `$` 符号引用变量仍然生效
 
@@ -833,9 +833,16 @@ when (x) {
 - 省略了 `case` 和 `break`，前者比较好理解，后者的意思是 Kotlin 自动为每个分支加上了 `break` 的功能，防止我们像 Java 那样写错
 - Java 中的默认分支使用的是 `default` 关键字，Kotlin 中使用的是 `else`
 
-与 `if/else` 一样，`when` 也可以作为表达式进行使用，分支中最后一行的结果作为返回值。需要注意的是，这时就必须要有 `else` 分支，使得无论怎样都会有结果返回，除非已经列出了所有情况。
+与 `if/else` 一样，`when` 也可以作为表达式进行使用，分支中最后一行的结果作为返回值。需要注意的是，这时就必须要有 `else` 分支，使得无论怎样都会有结果返回，除非已经列出了所有情况：
 
-// todo
+```kotlin
+🏝️
+val value: Int = when (x) {
+    1 -> { x + 1 }
+    2 -> { x * 2 }
+    else -> { x + 5 }
+}
+```
 
 在 Java 中，当多种情况执行同一份代码时，可以这么写：
 
