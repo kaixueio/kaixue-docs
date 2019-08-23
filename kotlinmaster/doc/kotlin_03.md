@@ -215,7 +215,7 @@ fun area(width: Int, height: Int): Int {
 fun area(width: Int, height: Int): Int = width * height
 ```
 
-`{}` 和 `return ` 没有了，使用 `=` 符号连接返回值。
+`{}` 和 `return` 没有了，使用 `=` 符号连接返回值。
 
 我们之前讲过，Kotlin 有「类型推断」的特性，那么这里函数的返回类型还可以隐藏掉：
 
