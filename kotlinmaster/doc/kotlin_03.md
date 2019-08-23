@@ -544,7 +544,7 @@ println(text)
 
 ```
 Hi world!
-my name is kotlin.
+My name is kotlin.
 ```
 
 这里的 `trimMargin()` 函数有以下几个注意点：
@@ -716,7 +716,7 @@ println(result.first()) // 👈 只取集合的第一个元素
 
     - 取出元素 1 -> map 为 2 -> filter 判断 2 是否能被 3 整除
     - 取出元素 2 -> map 为 4 -> filter 判断 4 是否能被 3 整除
-    - ..
+    - ...
 
     惰性指当出现满足条件的第一个元素的时候，`Sequence` 就不会执行后面的元素遍历了，即跳过了 `4` 的遍历。
 
