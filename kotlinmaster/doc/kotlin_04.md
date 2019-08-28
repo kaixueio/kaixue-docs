@@ -1,150 +1,125 @@
 # Kotlin 的泛型
 
-这一期文章来讲讲泛型。
+
+
+今天我们来聊一聊泛型。
 
 
 
-泛型是我们在日常开发中很常见的东西，比如我们常常会拿集合类来装一些 View。
+下面这段代码在日常开发中应该很常见了：
 
 ```java
 ☕️
 List<TextView> textViews = new ArrayList<TextView>();
-//      👆           指定泛型类型             👆
 ```
 
-```kotlin
-🏝️
-var textViews: MutableList<TextView> = ArrayList<TextView>()
-//                            👆    指定泛型类型      👆
-```
+其中 `List<TextView>` 表示这是一个泛型类型为 TextView 的列表。
 
-在 Java 中，创建新集合的时候会根据变量类型来推断出泛型的类型，可以简化一点代码；Kotlin 有更强大的类型推断系统，同样可以简化代码：
+可以想一下，为什么我们会需要泛型呢？
+
+现在的程序开发都是面向对象的，平时会用到很多各种类型的对象，对象多了肯定需要用某种类型的容器来装它们，所以就有了一些容器类，比如 List、Map、Set 等。
+
+但是这些容器类里面都是装的具体类型的对象，我们又不能实现无数个类似于 `TextViewList`、`ActivityList` 这样的具体类型的容器类。
+
+所以就有了泛型这个东西，把具体的类型泛化，编码的时候用符号指代类型，在具体使用的时候，才会确定它的类型。
+
+前面那个例子，`List<TextView>`指的就是一个装着对象类型为 TextView 的列表容器。
+
+
+
+我们再看看另外一个例子：
 
 ```java
 ☕️
-List<TextView> textViews = new ArrayList<>();
-//                                      👆 省略泛型类型
+
+List<Activity> activities = new ArrayList<Activity>();
+List<TextViews> textViews = activities;
+// 👆 TextView 和 Activity 明显类型不同，所以两个列表类型肯定不一样嘛，这里就不能赋值
+
+List<Button> buttons = new ArrayList<Button>();
+List<TextView> textViews = buttons;
+// 👆 IDE 会提示错误 incompatible types: List<Button> cannot be converted to List<TextView>
 ```
 
-```kotlin
-🏝️
-var textViews: MutableList<TextView> = ArrayList();
-//                                             👆 Kotlin 甚至可以省略<>
-```
+我们知道 Button 是继承自 TextView 的，那为什么 `List<Button>` 就不能赋值给 `List<TextView>` 呢？
+
+这是因为 Java 的泛型本身具有不可变性(invariance)。
+
+> 具体原因是 Java 的泛型类型会在编译时发生**类型擦除**，为了保证类型安全，不允许这样赋值。至于什么是类型擦除，这里就不展开了。
 
 
-
-Kotlin 的泛型基本上继承了 Java 泛型的特性，想要学好 Kotlin 的泛型，那就先来回顾一下泛型在 Java 中的使用吧。
-
-
-
-在 Java 中使用泛型的时候，我们经常会遇到这种场景：不能把子类的 `List` 对象赋值给父类 `List` 对象的引用。
-
-```java
-☕️
-List<TextView> textViews = new ArrayList<Button>();
-//                       👆 incompatible types: 
-//                          ArrayList<Button> cannot be converted to List<TextView>
-```
-
-这是因为 Java 的泛型本身具有不可变性(invariance)。具体原因是 Java 的泛型类型会在编译时发生**类型擦除**，为了保证类型安全，不允许这样赋值。至于什么是类型擦除，这里就不展开了，网上有很多文章来讲解这个东西。不过 Java 提供了泛型通配符 `? extends` 和 `? super` 来解决这问题。
+不过 Java 提供了泛型通配符 `? extends` 和 `? super` 来解决这问题。
 
 
 
 ### Java 中的 `? extends`
 
-Java 提供了上界通配符 `? extends` 来使泛型具有协变性(covariance)，也就可以允许子类的泛型类型对象赋值到父类的泛型类型引用上去。也就是这样：
+Java 提供了上界通配符 `? extends` 来使泛型具有协变性(covariance)。也就是这样：
 
 ```java
 ☕️
-     👇
-List<? extends TextView> textViews;
-textViews = new ArrayList<Button>();
+List<Button> buttons = new ArrayList<Button>();
+      👇
+List<? extends TextView> textViews = buttons;
 ```
 
-这样定义的 `textViews` 变量的泛型类型是一个 TextView 或其子类型的的**未知类型**。由于我们不知道什么样的对象符合这个未知类型，也就没法向 List 对象中写入新元素，只能从中读取到 TextView 类型的对象。相当于作为生产者(Producer)只提供数据读取。
+用 `? extends TextView` 作为列表的泛型，也就是说泛型类型只要满足这个 extends 的条件即可。Button extends TextView，所以 buttons 能赋值到 textViews 变量上了。
 
-> 但它并不是不可变的(immutable)，因为 `clear()` 方法与类型无关，还是可以调用的，只是不能调用 `add()` 这种与类型相关的写入方法。
+这里要注意的是，这里定义的 `textViews` 变量，它内部装的对象的类型是某种**未知类型**，而这个未知类型必须是 TextView 或者它的子类型。
 
-比如，有一个方法接收类型参数为 TextView 的 List，遍历打印它们的文字内容：
 
-```java
-☕️
-public void printTexts(List<TextView> textViews) {
-    for (TextView textView: textViews) {
-        System.out.println(textView.getText());
-    }
-}
-```
 
-按照 Java 的规矩，如果传入一个参数类型为 Button 的 List 对象，肯定会报错的：
 
 ```java
 ☕️
 List<Button> buttons = new ArrayList<>();
-printTexts(buttons); 
-// 👆 IDE 会提示错误，incompatible types: List<Button> cannot be converted to List<TextView>
+// ... 执行一些添加元素的操作
 
+List<? extends TextView> textViews = buttons;
+TextView textView = textViews.get(0); // 👈 能正常读取到 TextView 类型的对象
+textViews.add(textView);
+//             👆 IDE 报错，no suitable method found for add(TextView)
 ```
 
-如果在方法参数上加上 `? extends`，就不会报错啦：
+前面说到这个列表的泛型类型是一个未知类型，并不一定是 TextView 类型，所以 IDE 告诉我们没有合适的方法去添加 TextView，我们不能向列表添加新的元素。
 
-```java
-☕️
-                             👇
-public void printTexts(List<? extends TextView> textViews) {
-    for (TextView textView: textViews) {
-        System.out.println(textView.getText());
-    }
-}
-```
+不过我们可以从里面读取出 TextView 类型的对象，因为这个未知的泛型类型必然是 TextView 或者它的子类型了。
 
 
 
-当你遇到「只需要读取，不需要写入」的场景，就可以用 `? extends` 来使 Java 泛型支持协变，以此来扩大变量或者参数的接收范围。
+当你遇到「只需要读取，不需要写入」的场景，就可以用 `? extends` 来使 Java 泛型支持协变，以此来扩大变量或者参数的接受范围。
 
 
 
 ### Java 中的 `? super`
 
-Java 中还提供了下界通配符 `? super` 来使泛型具有逆变性(contravariance)，也就可以允许父类的泛型类型对象赋值到子类的泛型类型引用上去。比如这样：
+Java 中还提供了下界通配符 `? super` 来使泛型具有逆变性(contravariance)。比如这样：
 
 ```java
 ☕️
+List<TextView> textViews = new ArrayList<TextView>();
      👇
-List<? super Button> textViews;
-textViews = new ArrayList<TextView>();
+List<? super Button> buttons = textViews;
 ```
 
-这样定义的 `textViews` 变量的泛型类型是一个 Button 或其父类型的**未知类型**。我们不知道它具体的父类型是什么，只能从中读取到 Object 类型，不过可以写入任何 `Button` 类型的对象。基本上就是作为消费者(Consumer)接收数据写入。
-
-比如又一个方法，接收一个 TextView 类型的 List，然后把自己持有的一个 TextView 对象给它添加进去：
+这样定义的 `textViews` 变量，它内部装的对象的类型也是一个**未知类型**，这个未知类型必须是 Button 或其父类型。
 
 ```java
 ☕️
-public void addTextView(List<TextView> textViews) {
-    textViews.add(textView);
-}
+List<TextView> textViews = new ArrayList<TextView>();
+// ... 执行一些添加元素的操作
+
+List<? super Button> buttons = textViews;
+
+Object object = buttons.get(0); // 👈 这里读取到的是 Object 类型的对象
+
+// Button button = ...
+buttons.add(button); // 👈 这里可以向列表中添加 Button 对象
 ```
 
-这样在使用的时候，如果我传过来一个 View 类型的 List，编译器就报错了：
+因为这个列表中元素的类型，是一个未知类型，所以就只能从里面读到 Object 类型啦。
 
-```java
-☕️
-List<View> views = new ArrayList<View>();
-addTextView(views);
-// 👆 IDE 会提示错误，incompatible types: List<View> cannot be converted to List<TextView>
-```
-
-但是我们其实是期望它不报错的，我们只是想让这个 TextView 插到一个 View 的 List 里面。为了解除这种限制，我们可以在方法参数上加上 `? super`，就不会报错啦：
-
-```java
-☕️
-                              👇
-public void addTextView(List<? super TextView> textViews) {
-    textViews.add(textView);
-}
-```
+我们可以向列表里添加 Button 类型的对象。
 
 
 
@@ -152,9 +127,13 @@ public void addTextView(List<? super TextView> textViews) {
 
 
 
-### 小结
-
 Java 的泛型本身是不支持协变和逆变的。可以使用泛型通配符 `? extends` 来使泛型支持协变，但是「只能读不能写」；可以使用泛型通配符 `? super` 来使泛型支持逆变，但是「不能读只能写」。这也被成为 PECS 法则：*Producer-Extends, Consumer-Super*。
+
+
+
+
+
+
 
 
 
