@@ -1,7 +1,5 @@
 # Kotlin 的泛型
 
-
-
 今天我们来聊一聊泛型。
 
 下面这段 Java 代码在日常开发中应该很常见了：
@@ -13,65 +11,48 @@ List<TextView> textViews = new ArrayList<TextView>();
 
 其中 `List<TextView>` 表示这是一个泛型类型为 TextView 的列表。
 
-可以想一下，为什么我们会需要泛型呢？
+这里首先要讲一下「泛型」的概念，因为如果不理解泛型，那么无论是 Java 还是 Kotlin 里对泛型的使用，都无从谈起了。
 
-现在的程序开发都是面向对象的，平时会用到很多各种类型的对象，对象多了肯定需要用某种类型的容器来装它们，所以就有了一些容器类，比如 List、Map、Set 等。
+那什么是泛型呢？我们先来看看为什么要有这么个东西。
 
-但是这些容器类里面都是装的具体类型的对象，我们几乎不可能去实现无数个类似于 `TextViewList`、`ActivityList` 这样的具体类型的容器类。
+现在的程序开发都是面向对象的，平时会用到各种类型的对象，对象多了肯定需要用某种类型的容器来装它们，因而就有了一些容器类，比如 List、Map、Set 等。
 
-所以就有了泛型这个东西，把具体的类型泛化，编码的时候用符号指代类型，在具体使用的时候，才会确定它的类型。
+但是这些容器类里面都是装的具体类型的对象，如果每个类型都去实现一个诸如 `TextViewList`、`ActivityList` 这样的具体类型的容器类，显然是不可能的。
 
-前面那个例子，`List<TextView>`指的就是一个装着对象类型为 TextView 的列表容器。
+所以就有了「泛型」，它的意思是把具体的类型泛化，编码的时候用符号指代类型，在具体使用的时候，才会确定它的类型。
 
-
-
-一般容器类都包含了读写两种操作，比如 Java 中列表类，它的具体定义长这个样子：
-
-```java
-public interface List<E> extends Collection<E>{
-    E get(int index);
-    boolean add(E e);
-  
-    // ... 其他方法
-}
-
-```
-
-`get()` 方法通过 index 获取到类型为 E 的对象，`add()` 方法可以向列表中添加一个类型为 E 的对象。
+前面那个例子，`List<TextView>` 指的就是一个装着对象类型为 TextView 的列表容器。
 
 
 
-我们再看看另外一个例子：
+我们再看看另外一个常见的使用场景：
 
 ```java
 ☕️
-// Context context = ...
 Button button = new Button(context);
 TextView textView = button;
-// 👆 这里能正确赋值
+// 👆 这是多态
 
 List<Button> buttons = new ArrayList<Button>();
 List<TextView> textViews = buttons;
-// 👆 IDE 会提示错误 incompatible types: List<Button> cannot be converted to List<TextView>
+// 👆 多态用在这里会报错 incompatible types: List<Button> cannot be converted to List<TextView>
 ```
 
 我们知道 Button 是继承自 TextView 的，根据 Java 多态的特性，把 button 赋值给 textView 自然是没什么问题的。
 
-既然根据多态，Button 对象能作为 TextView 对象来用，那一个 Button 的列表应该也能赋值给 TextView 的列表吧。为什么编译器就给报错呢？
+那么一个 Button 的列表应该也能赋值给 TextView 的列表吧。为什么编译器就给报错呢？
 
 这是因为 Java 的泛型本身具有不可变性（invariance），也就是说 Java 里面认为 `List<TextView>` 和 `List<Button>` 类型并不一致。
 
 >  Java 的泛型类型会在编译时发生**类型擦除**，为了保证类型安全，不允许这样赋值。至于什么是类型擦除，这里就不展开了。
 
-但是在实际使用中，我们的确会有这种类似的需求，要把 Button 列表赋值给 TextView 列表。
+但是在实际使用中，我们的确会有这种类似的需求，需要把 Button 列表赋值给 TextView 列表。
 
- Java 提供了「泛型通配符」 `? extends` 和 `? super` 来解决棒我们解决这个问题。
-
-
+ Java 提供了「泛型通配符」 `? extends` 和 `? super` 来解决这个问题。
 
 ### Java 中的 `? extends`
 
-前面那个问题在 Java 里面是这么解决的：
+在 Java 里面是这么解决的：
 
 ```java
 ☕️
@@ -80,15 +61,20 @@ List<Button> buttons = new ArrayList<Button>();
 List<? extends TextView> textViews = buttons;
 ```
 
-这个 `? extends` 叫做「上界通配符」，可以使 Java 泛型具有协变性（covariance）。
+这个 `? extends` 叫做「上界通配符」，可以使 Java 泛型具有协变性（covariance），协变性就是允许上面的赋值是合法的。
 
-> 在继承关系树中，子类继承自父类，可以认为父类在上，子类在下。extends 限制了类型的父类型，所以叫上界。
+> 在继承关系树中，子类继承自父类，可以认为父类在上，子类在下。`extends` 限制了泛型类型的父类型，所以叫上界。
 
-其中 `? `是个通配符，所以这个列表的泛型类型其实是一个**未知类型**。同时又用 `extends`限制了这个未知类型的上界，也就是泛型类型必须满足这个 extends 的限制条件。
+它有两层意思：
+
+- 其中 `? ` 是个通配符，表示这个列表的泛型类型是一个**未知类型**。
+- `extends` 限制了这个未知类型的上界，也就是泛型类型必须满足这个 extends 的限制条件，这里和定义 class 的 `extends` 关键字有点不一样：
+    - 它的范围不仅是所有直接和间接子类，还包括上界定义的父类，也就是 TextView。
+    - 它还有 `implements` 的意思，也就是说这里的上界 TextView 可以替换为接口。
 
 这里 Button 是 TextView 的子类，满足了泛型类型的限制条件，所以能够成功赋值。
 
-当然，这里不只是 List<Button> 可以赋值，还有几种情况也是可以的：
+根据刚才的描述，下面几种情况都是可以的：
 
 ```java
 ☕️
@@ -97,38 +83,46 @@ List<? extends TextView> textViews = new ArrayList<Button>();
 List<? extends TextView> textViews = new ArrayList<RadioButton>(); // 👈 RadioButton 是 Button 的子类
 ```
 
-TextView 的所有子类型都满足 `? extends TextView`的条件，TextView 类型自身也算满足这个限制条件。
+一般容器类都包含了 `get` 和 `add` 两种操作，比如 Java 中的 `List`，它的具体定义如下：
 
+```java
+☕️
+public interface List<E> extends Collection<E>{
+    E get(int index);
+    boolean add(E e);
+    ...
+}
 
+```
 
-前面集合的基本操作有读和写，来看下使用了上界通配符的列表读写有没有什么问题：
+上面的代码中，`E` 就是表示泛型类型的符号（用其他字母甚至单词都可以）。
+
+我们看看在使用了上界通配符之后，`List` 的使用上有没有什么问题：
 
 
 ```java
 ☕️
-List<Button> buttons = new ArrayList<>();
-// ... 执行一些添加元素的操作
-
+List<Button> buttons = ...;
 List<? extends TextView> textViews = buttons;
 
-TextView textView = textViews.get(0); // 👈 能正常读取到 TextView 类型的对象
-View view = textViews.get(0);
-
+TextView textView = textViews.get(0); // 👈 get 可以
 textViews.add(textView);
-//             👆 IDE 报错，no suitable method found for add(TextView)
+//             👆 add 会报错，no suitable method found for add(TextView)
 ```
 
 前面说到列表的泛型类型是个未知类型 `?`，编译器也不确定它是啥类型。
 
-不过由于它满足 `? extends TextView` 的限制条件，所以使用 `get()` 方法读出来的对象，肯定是 TextView 的子类型，根据多态的特性，能够赋值给 TextView 或者 View 等。
+不过由于它满足 `? extends TextView` 的限制条件，所以 `get` 出来的对象，肯定是 TextView 的子类型，根据多态的特性，能够赋值给 TextView，当然也可以赋值给 View。
 
-也是因为这样，编译器无法判断通过 `add()` 方法添加进去的 TextView 对象，到底是不是属于这个未知类型的，所以干脆直接报错，不让你编译通过，保证运行时类型安全。
+到了 `add` 操作的时候，我们可以这么理解：
 
+- `List<? extends TextView>` 可能表示 `List<Button>`，也可能表示 `List<TextView>`。
+- 对于前者，显然我们要添加 TextView 是不可以的。
+- 实际情况是编译器无法确定，所以无法继续执行下去，就报错了。
 
+那我干脆不要 `extends TextView` ，只用通配符 `?` 呢？
 
-那你可能会问，能不能直接只通配符 `?`呢？
-
-答案是可以。这样使用 `List<?>` 相当于是 `List<? extends Object>`。
+这样使用 `List<?>` 相当于是 `List<? extends Object>`。
 
 ```java
 ☕️
@@ -137,28 +131,24 @@ List<Button> buttons = new ArrayList<>();
 List<?> list = buttons;
 Object obj = list.get(0);
 
-list.add(obj); // 👈 这里会报错
+list.add(obj); // 👈 这里还是会报错
 ```
 
-和前面的例子一样，编译器没法确定 `?`的类型，所以这里就只能读到 Object 对象啦；同时编译器为了保证类型安全，也不能向列表中插入任何类型的对象。
+和前面的例子一样，编译器没法确定 `?` 的类型，所以这里就只能 `get` 到 Object 对象。
+
+同时编译器为了保证类型安全，也不能向列表中插入任何类型的对象。
+
+由于这个限制，使用了 `? extends` 泛型通配符的列表，只能够被消费，向外提供数据。
 
 
 
-当你遇到「只需要读取，不需要写入」的场景，就可以用 `? extends` 来使 Java 泛型支持协变，以此来扩大变量或者方法参数的接受范围。
+一个实际的场景是消费者买苹果手机，ta 只能买回来用（get），没办法造一台新手机（add）。
 
-
-
-使用了 `? extends` 泛型通配符的列表，只能够作为生产者向外提供数据。
-
-这就像张全蛋在富土康造手机，工厂只生产手机卖出，不会买入手机；同时肯定会有对应的消费者只买入手机，不会去生产手机。
-
-Java 里面还有一个泛型通配符能够使列表容器只写入不读取，它就是 `? super`。
-
-
+那么有消费者就有富土康和张全蛋们这些生产者，类似的 Java 里面还有一个泛型通配符能够使列表容器可以 `add` 但没法 `get`，它就是 `? super`。
 
 ### Java 中的 `? super`
 
-下面先看一下它的写法：
+先看一下它的写法：
 
 ```java
 ☕️
@@ -169,15 +159,18 @@ List<? super Button> buttons = textViews;
 
 这个 `? super` 叫做「下界通配符」，可以使 Java 泛型具有逆变性（contravariance）。
 
-> 与上界通配符类似，这里 super 限制了通配符 ? 的子类型，所以称之为下界。
+> 与上界通配符对应，这里 super 限制了通配符 ? 的子类型，所以称之为下界。
 
-通配符 `?` 表示列表的泛型类型是一个未知类型，同时又用 super 限制了这个未知类型的上界，也就是泛型类型必须满足这个 super 的限制条件。
+它也有两层意思：
+
+- 通配符 `?` 表示列表的泛型类型是一个未知类型。
+- `super` 限制了这个未知类型的上界，也就是泛型类型必须满足这个 super 的限制条件。
+    - super 我们在类的方法里面经常用到，这里的范围不仅包括 Button 的父类，也包括下届 Button。
+    - super 同样支持 implements，也就是说接口之间的继承也适用。
 
 上面的例子中，TextView 是 Button 的父类型 ，也就能够满足 super 的限制条件，这里就可以成功赋值了。
 
-
-
-这里不仅 TextView 类型的列表能正常赋值，还有其他一些情况：
+根据刚才的描述，下面几种情况都是可以的：
 
 ```java
 ☕️
@@ -186,58 +179,50 @@ List<? super Button> buttons = new ArrayList<TextView>();
 List<? super Button> buttons = new ArrayList<Object>();
 ```
 
-只要是 Button 的父类型就可以，也就是说从 Button 到 Object 之间继承关系上的各种类型，在这里就是可以的。
-
-
-
-那么使用了下界通配符的列表，它的读写操作会有问题吗：
+对于使用了下界通配符的列表，我们再看看它的 `get` 和 `add` 操作：
 
 ```java
 ☕️
-List<TextView> textViews = new ArrayList<TextView>();
-// ... 执行一些添加元素的操作
-
+List<TextView> textViews = ...
 List<? super Button> buttons = textViews;
-
-Object object = buttons.get(0); // 👈 这里读取到的是 Object 类型的对象
-
-// Button button = ...
-buttons.add(button); // 👈 这里可以向列表中添加 Button 对象
+Object object = buttons.get(0); // 👈 get 出来的是 Object 类型
+Button button = ...
+buttons.add(button); // 👈 add 操作是可以的
 ```
 
-首先 `?` 表示未知类型，编译器是不确定它的类型的。
+首先 `?` 表示未知类型，编译器是不确定它的类型的：
 
-这个未知类型满足 super 的限制条件，通过 `get()` 方法读出来的对象，肯定是 Button 的父类型。虽然不知道它的具体类型，不过在 Java 里任何对象都是 Object 类型，所以这里能把它赋值给 Object。
+- `get` 出来必须有一个类型，不能是一个不确定的范围。
+- 虽然不知道它的具体类型，不过在 Java 里任何对象都是 Object 的子类，所以这里能把它赋值给 Object。
 
-Button 对象一定是这个未知类型的子类型，根据多态的特性，这里通过 `add()` 方法添加 Button 对象肯定是没问题的了。
+Button 对象一定是这个未知类型的子类型，根据多态的特性，这里通过 `add()` 方法添加 Button 对象是合法的。
 
-使用下界通配符的列表，只能读取到 Object 对象，一般没有什么意义，通常也就只拿它来写入数据。
-
-
-
-当你遇到「只想写数据，不需要读取使用」的场景，就可以用 `? super` 来使 Java 泛型支持逆变，可以扩大变量或参数的接收范围。
+使用下界通配符的列表，只能读取到 Object 对象，一般没有什么实际的使用场景，通常也只拿它来添加数据。
 
 
 
-Java 的泛型本身是不支持协变和逆变的。可以使用泛型通配符 `? extends` 来使泛型支持协变，但是「只能读不能写」；可以使用泛型通配符 `? super` 来使泛型支持逆变，但是「不能读只能写」。这也被成为 PECS 法则：*Producer-Extends, Consumer-Super*。
+小结下，Java 的泛型本身是不支持协变和逆变的。
 
+- 可以使用泛型通配符 `? extends` 来使泛型支持协变，但是「只能读不能添加」。
+- 可以使用泛型通配符 `? super` 来使泛型支持逆变，但是「不能读只能添加」。
 
+这也被成为 PECS 法则：*Producer-Extends, Consumer-Super*。
 
-Java 的泛型就讲到这里了，下面来看看在 Kotlin 中是如何使用泛型的。
+这里说的 Producer 和 Consumer 是指声明泛型通配符所代表的变量。
 
-
+理解了 Java 的泛型之后，再理解 Kotlin 中的泛型，就有如练完九阳神功再练乾坤大挪移，就比较容易了。
 
 ### Kotlin 中的 `out` 和 `in`
 
-和 Java 泛型一样，Kolin 中的泛型本身是不可变的。
+和 Java 泛型一样，Kolin 中的泛型本身也是不可变的。
 
 需要使用关键字 `out` 来支持协变，等同于 Java 中的上界通配符 `? extends`。
 
 ```kotlin
 🏝️
 class Producer<T>{
-    fun produce(): T{
-        // ...
+    fun produce(): T {
+        ...
     }
 }
 
@@ -246,8 +231,6 @@ val producer: Producer<TextView> = Producer<Button>() // 👈 编译器报错，
 val producer: Producer<out TextView> = Producer<Button>()
 //                     👆 可以用 out 来支持协变
 ```
-
-
 
 也可以使用关键字 `in` 来支持逆变，等同于 Java 中的下界通配符 `? super`。
 
@@ -259,9 +242,9 @@ class Consumer<T> {
     }
 }
 
-val consumer :Consumer<Button> = Consumer<Button>()
-val consumer :Consumer<Button> = Consumer<TextView>() // 👈 编译器报错，类型不匹配
-val consumer :Consumer<in Button> = Consumer<TextView>()
+val consumer: Consumer<Button> = Consumer<Button>()
+val consumer: Consumer<Button> = Consumer<TextView>() // 👈 编译器报错，类型不匹配
+val consumer: Consumer<in Button> = Consumer<TextView>()
 //                     👆 可以用 in 来支持逆变
 ```
 
@@ -428,5 +411,5 @@ Java 的 List 不支持逆变，原因在上文已经讲过啦，需要使用泛
 
 
 
-### 思考题
+### 练习题
 
