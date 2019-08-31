@@ -210,7 +210,7 @@ Button 对象一定是这个未知类型的子类型，根据多态的特性，�
 
 这里说的 Producer 和 Consumer 是指声明泛型通配符所代表的变量。
 
-理解了 Java 的泛型之后，再理解 Kotlin 中的泛型，就有如练完九阳神功再练乾坤大挪移，就比较容易了。
+理解了 Java 的泛型之后，再理解 Kotlin 中的泛型，有如练完九阳神功再练乾坤大挪移，就比较容易了。
 
 ### Kotlin 中的 `out` 和 `in`
 
@@ -256,10 +256,9 @@ val consumer: Consumer<in Button> = Consumer<TextView>()
 
 ### 声明处的 `out` 和 `in`
 
+在前面的例子中，在声明 `Producer` 的时候已经确定了泛型 `T` 只会作为输出来用，但是每次都需要在使用的时候加上 `out TextView` 来支持协变，写起来很麻烦。
 
-每次使用的时候都需要关心泛型的型变类型，写起来很麻烦。
-
-在 Kotlin 中提供了另外种写法，可以在定义类或者接口的时候，就指明泛型参数的型变类型，可以简化使用处的代码。
+Kotlin 提供了另外一种写法：可以在声明类的时候，给泛型参数加上 `out` 关键字，表明泛型参数 `T` 只会用来输出，在使用的时候就不用额外加 `out` 了。
 
 ```kotlin
 🏝️             👇
@@ -274,11 +273,7 @@ val producer: Producer<TextView> = Producer<Button>() // 👈 这里不会报错
 val producer: Producer<out TextView> = Producer<Button>() // 👈 out 可以但没必要
 ```
 
-在声明类的地方，指定泛型为协变类型，也就是只用来输出。在使用的地方，编译器就不会报错啦。
-
-
-
-与 `out` 一样，可以直接在声明类的时候给泛型加上 `in`，来表面这个泛型类型只用来输入。
+与 `out` 一样，可以在声明类的时候，给泛型参数加上 `in` 关键字，来表明这个泛型参数 `T` 只用来输入。
 
 ```kotlin
 🏝️            👇
@@ -297,7 +292,7 @@ val consumer :Consumer<Button> = Consumer<TextView>() // 👈 可以直接用 Bu
 ### `*` 号
 
 前面讲到了 Java 中单个 `?` 号也能作为泛型通配符使用，相当于 `? extends Object`。
-这个在 Kotlin 中有等效的写法：`*` 号，相当于 `out Any`。
+它在 Kotlin 中有等效的写法：`*` 号，相当于 `out Any`。
 
 ```kotlin
 🏝️            👇
@@ -328,7 +323,7 @@ class Monster<T extends Animal & Food>{
 
 
 
-Kotlin 只是把 `extends` 换成了 `:`冒号。
+Kotlin 只是把 `extends` 换成了 `:` 冒号。
 
 ```kotlin
 🏝️            👇
@@ -399,17 +394,20 @@ inline fun <reified T> printIfTypeMatch(item: Any) {
 
 
 
-我们来看看之前的文章提到的，Kotlin 泛型与 Java 泛型不一致的地方，主要有两点：
+还记得第二篇文章中，提到了两个 Kotlin 泛型与 Java 泛型不一致的地方。
 
-1. Java 里的数组是支持逆变的，而 Kotlin 中的数组 Array 不支持逆变
+1. Java 里的数组是支持逆变的，而 Kotlin 中的数组 Array 不支持逆变。
 
-在 Kotlin 中数组是用 Array 类来表示的，这个 Array 使用泛型就和集合类一样，不支持逆变。
+   在 Kotlin 中数组是用 Array 类来表示的，这个 Array 类使用泛型就和集合类一样，所以不支持逆变。
 
-2. Java 中的 List 接口不支持逆变，而 Kotlin 中的 List 接口支持逆变
+   
 
-Java 的 List 不支持逆变，原因在上文已经讲过啦，需要使用泛型通配符来结果。 而在 Kotlin 中，实际上 MutableList 接口才等于 Java 的 List，Kotlin 中的 List 接口实现了只读操作，不会有类型安全上的问题，所以就支持的逆变。
+2. Java 中的 List 接口不支持逆变，而 Kotlin 中的 List 接口支持逆变。
+
+   Java 中的 List 不支持逆变，原因在上文已经讲过了，需要使用泛型通配符来解决。 
+
+   在 Kotlin 中，实际上 MutableList 接口才等于 Java 的 List。Kotlin 中的 List 接口实现了只读操作，没有写操作，所以不会有类型安全上的问题，自然可以支持逆变。
 
 
 
 ### 练习题
-
