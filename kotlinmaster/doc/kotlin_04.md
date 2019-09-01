@@ -74,9 +74,9 @@ List<? extends TextView> textViews = buttons;
 - 其中 `? ` 是个通配符，表示这个列表的泛型类型是一个**未知类型**。
 - `extends` 限制了这个未知类型的上界，也就是泛型类型必须满足这个 `extends` 的限制条件，这里和定义 `class` 的 `extends` 关键字有点不一样：
     - 它的范围不仅是所有直接和间接子类，还包括上界定义的父类本身，也就是 `TextView`。
-    - 它还有 `implements` 的意思，即这里的上界也可以是接口。
+    - 它还有 `implements` 的意思，即这里的上界也可以是 `interface`。
 
-这里 `Button` 是 `TextView` 的子类，满足了泛型类型的限制条件，因为能够成功赋值。
+这里 `Button` 是 `TextView` 的子类，满足了泛型类型的限制条件，因而能够成功赋值。
 
 根据刚才的描述，下面几种情况都是可以的：
 
