@@ -348,8 +348,8 @@ class Monster<T> : MonsterParent<T>
 
 ```java
 ☕️
-<T> void printIfTypeMatch(Object item){
-    if (item instanceof T){ // 👈 IDE 会提示错误，illegal generic type for instanceof
+<T> void printIfTypeMatch(Object item) {
+    if (item instanceof T) { // 👈 IDE 会提示错误，illegal generic type for instanceof
         System.out.println(item);
     }
 }
@@ -359,8 +359,8 @@ Kotlin 里同样也不行：
 
 ```kotlin
 🏝️
-fun <T> printIfTypeMatch(item: Any){
-    if(item is T){ // 👈 IDE 会提示错误，Cannot check for instance of erased type: T
+fun <T> printIfTypeMatch(item: Any) {
+    if (item is T) { // 👈 IDE 会提示错误，Cannot check for instance of erased type: T
         println(item)
     }
 }
