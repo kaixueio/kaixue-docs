@@ -327,7 +327,7 @@ class Monster<T : Animal>
 
 ```kotlin
 🏝️                👇
-class Monster<T> where T: Animal, T: Food
+class Monster<T> where T : Animal, T : Food
 ```
 
 有人在看文档的时候觉得这个 `where` 是个新东西，其实虽然 Java 里没有 `where` ，但它并没有带来新功能，只是把一个老功能换了个新写法。
@@ -337,7 +337,7 @@ class Monster<T> where T: Animal, T: Food
 ```kotlin
 🏝️
 class Monster<T> : MonsterParent<T>
-    where T: Animal
+    where T : Animal
 ```
 
 ### `reified` 关键字
