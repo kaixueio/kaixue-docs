@@ -224,7 +224,7 @@ var textViews: List<in TextView>
 
 ```kotlin
 🏝️
-class Producer<T>{
+class Producer<T> {
     fun produce(): T {
         ...
     }
@@ -256,8 +256,8 @@ Kotlin 提供了另外一种写法：可以在声明类的时候，给泛型符�
 
 ```kotlin
 🏝️             👇
-class Producer<out T>{
-    fun produce(): T{
+class Producer<out T> {
+    fun produce(): T {
         ...
     }
 }
