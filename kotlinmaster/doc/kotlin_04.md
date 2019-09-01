@@ -71,7 +71,7 @@ List<? extends TextView> textViews = buttons;
 
 它有两层意思：
 
-- 其中 `? ` 是个通配符，表示这个列表的泛型类型是一个**未知类型**。
+- 其中 `? ` 是个通配符，表示这个 `List` 的泛型类型是一个**未知类型**。
 - `extends` 限制了这个未知类型的上界，也就是泛型类型必须满足这个 `extends` 的限制条件，这里和定义 `class` 的 `extends` 关键字有点不一样：
     - 它的范围不仅是所有直接和间接子类，还包括上界定义的父类本身，也就是 `TextView`。
     - 它还有 `implements` 的意思，即这里的上界也可以是 `interface`。
@@ -158,7 +158,7 @@ List<? super Button> buttons = new ArrayList<TextView>();
 
 它也有两层意思：
 
-- 通配符 `?` 表示列表的泛型类型是一个**未知类型**。
+- 通配符 `?` 表示 `List` 的泛型类型是一个**未知类型**。
 - `super` 限制了这个未知类型的上界，也就是泛型类型必须满足这个 `super` 的限制条件。
     - `super` 我们在类的方法里面经常用到，这里的范围不仅包括 `Button` 的直接和间接父类，也包括下界 `Button` 本身。
     - `super` 同样支持 `interface`。
@@ -174,7 +174,7 @@ List<? super Button> buttons = new ArrayList<TextView>(); // 👈 直接父类
 List<? super Button> buttons = new ArrayList<Object>(); // 👈 间接父类
 ```
 
-对于使用了下界通配符的列表，我们再看看它的 `get` 和 `add` 操作：
+对于使用了下界通配符的 `List`，我们再看看它的 `get` 和 `add` 操作：
 
 ```java
 ☕️
