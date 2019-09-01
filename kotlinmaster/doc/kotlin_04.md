@@ -161,7 +161,7 @@ List<? super Button> buttons = new ArrayList<TextView>();
 - 通配符 `?` 表示列表的泛型类型是一个**未知类型**。
 - `super` 限制了这个未知类型的上界，也就是泛型类型必须满足这个 `super` 的限制条件。
     - `super` 我们在类的方法里面经常用到，这里的范围不仅包括 `Button` 的直接和间接父类，也包括下界 `Button` 本身。
-    - `super` 同样支持接口。
+    - `super` 同样支持 `interface`。
 
 上面的例子中，`TextView` 是 `Button` 的父类型 ，也就能够满足 `super` 的限制条件，就可以成功赋值了。
 
