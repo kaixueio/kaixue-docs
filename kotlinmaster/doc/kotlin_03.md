@@ -1,5 +1,21 @@
 ## Kotlin 里那些「更方便的」
 
+> 本期作者：
+>
+> 视频：扔物线（朱凯）
+>
+> 文章：[Sinyu（沈新宇）](https://github.com/sinyu1012)
+
+大家好，我是扔物线朱凯。不是第一期了，咱就不多废话了。直接视频伺候：
+
+<div class="aspect-ratio">
+    <iframe src="https://player.bilibili.com/player.html?aid=65034710&page=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</div>
+
+*如果你看不到上面的哔哩哔哩视频，可以点击 [这里](https://youtu.be/LpwRW2JVrPY) 去 YouTube 看。*
+
+> 以下内容来自文章作者 [Sinyu（沈新宇）](https://github.com/sinyu1012)。
+
 在上期内容当中，我们介绍了 Kotlin 的那些与 Java 写法不同的地方。这一期我们再进阶一点，讲一讲 Kotlin 中那些「更方便的」用法。这些知识点在不知道之前，你也可以正常写 Kotlin，但是在熟悉之后会让你写得更爽。
 
 ### 构造器
@@ -1105,3 +1121,26 @@ print(str2 === str3) // 👈 引用地址相等，输出：true
    - 写一个普通函数 `show`，要求通过字符串模板输出类中的属性
 
 2. 编写程序，使用今天所讲的操作符，找出集合 {21, 40, 11, 33, 78} 中能够被 3 整除的所有元素，并输出。
+
+   
+
+### 作者介绍
+
+#### 视频作者
+
+##### 扔物线（朱凯）
+
+- 码上开学创始人、项目管理人、内容模块规划者和视频内容作者。
+- <a href="https://developers.google.com/experts/people/kai-zhu" target="_blank">Android GDE</a>（ Google 认证 Android 开发专家），前 Flipboard Android 工程师。 
+- GitHub 全球 Java 排名第 92 位，在 <a href="https://github.com/rengwuxian" target="_blank">GitHub</a> 上有 6.6k followers 和 9.9k stars。
+- 个人的 Android 开源库 <a href="https://github.com/rengwuxian/MaterialEditText/" target="_blank">MaterialEditText</a> 被全球多个项目引用，其中包括在全球拥有 5 亿用户的新闻阅读软件 Flipboard 。
+- 曾多次在 Google Developer Group Beijing 线下分享会中担任 Android 部分的讲师。
+- 个人技术文章《<a href="https://gank.io/post/560e15be2dca930e00da1083" target="_blank">给 Android 开发者的 RxJava 详解</a>》发布后，在国内多个公司和团队内部被转发分享和作为团队技术会议的主要资料来源，以及逆向传播到了美国一些如 Google 、 Uber 等公司的部分华人团队。
+- 创办的 Android 高级进阶教学网站 [HenCoder](https://hencoder.com) 在全球华人 Android 开发社区享有相当的影响力。
+- 之后创办 Android 高级开发教学课程 [HenCoder Plus](https://plus.hencoder.com) ，学员遍布全球，有来自阿里、头条、华为、腾讯等知名一线互联网公司，也有来自中国台湾、日本、美国等地区的资深软件工程师。
+
+#### 文章作者
+
+##### Sinyu（沈新宇）
+
+[Sinyu（沈新宇）](https://github.com/sinyu1012) ，即刻 Android 工程师。2019 年加入即刻，参与即刻 6.0 的产品迭代，以及负责中台基础建设。独立开发并运营过一款用户过万的 App。

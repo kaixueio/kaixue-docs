@@ -1,5 +1,21 @@
 # Kotlin 的泛型
 
+> 本期作者：
+>
+> 视频：扔物线（朱凯）
+>
+> 文章：[Bruce（郑啸天）](https://github.com/bruce3x)
+
+大家好，我是扔物线朱凯。你在看的是码上开学项目的 Kotlin 高级部分的第 1 篇：Kotlin 的泛型。首当其冲的当然还是香香的视频香香的我啦：
+
+<div class="aspect-ratio">
+    <iframe src="https://player.bilibili.com/player.html?aid=66340216&page=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</div>
+
+*如果你看不到上面的哔哩哔哩视频，可以点击 [这里](https://youtu.be/rgslIQi65b8) 去 YouTube 看。* 
+
+> 以下内容来自文章作者[Bruce](https://github.com/bruce3x)。
+
 这期是码上开学 Kotlin 系列的独立技术点部分的第一期，我们来聊一聊泛型。
 
 提到 Kotlin 的泛型，通常离不开 `in ` 和 `out` 关键字，但泛型这门武功需要些基本功才能修炼，否则容易走火入魔，待笔者慢慢道来。
@@ -408,3 +424,25 @@ inline fun <reified T> printIfTypeMatch(item: Any) {
 1. 实现一个 `fill` 函数，传入一个 `Array` 和一个对象，将对象填充到 `Array` 中，要求 `Array` 参数的泛型支持逆变（假设 `Array` size 为 1）。
 2. 实现一个 `copy` 函数，传入两个 `Array` 参数，将一个 `Array` 中的元素复制到另外个 `Array` 中，要求 `Array` 参数的泛型分别支持协变和逆变。（提示：Kotlin 中的 `for` 循环如果要用索引，需要使用 `Array.indices`）
 
+
+
+### 作者介绍
+
+#### 视频作者
+
+##### 扔物线（朱凯）
+
+- 码上开学创始人、项目管理人、内容模块规划者和视频内容作者。
+- <a href="https://developers.google.com/experts/people/kai-zhu" target="_blank">Android GDE</a>（ Google 认证 Android 开发专家），前 Flipboard Android 工程师。 
+- GitHub 全球 Java 排名第 92 位，在 <a href="https://github.com/rengwuxian" target="_blank">GitHub</a> 上有 6.6k followers 和 9.9k stars。
+- 个人的 Android 开源库 <a href="https://github.com/rengwuxian/MaterialEditText/" target="_blank">MaterialEditText</a> 被全球多个项目引用，其中包括在全球拥有 5 亿用户的新闻阅读软件 Flipboard 。
+- 曾多次在 Google Developer Group Beijing 线下分享会中担任 Android 部分的讲师。
+- 个人技术文章《<a href="https://gank.io/post/560e15be2dca930e00da1083" target="_blank">给 Android 开发者的 RxJava 详解</a>》发布后，在国内多个公司和团队内部被转发分享和作为团队技术会议的主要资料来源，以及逆向传播到了美国一些如 Google 、 Uber 等公司的部分华人团队。
+- 创办的 Android 高级进阶教学网站 [HenCoder](https://hencoder.com) 在全球华人 Android 开发社区享有相当的影响力。
+- 之后创办 Android 高级开发教学课程 [HenCoder Plus](https://plus.hencoder.com) ，学员遍布全球，有来自阿里、头条、华为、腾讯等知名一线互联网公司，也有来自中国台湾、日本、美国等地区的资深软件工程师。
+
+#### 文章作者
+
+##### Bruce（郑啸天）
+
+[Bruce（郑啸天）](https://github.com/bruce3x)，即刻 Android 工程师。2018 年加入即刻，参与了即刻多个版本的迭代。多年 Android 开发经验，现在负责即刻客户端中台基础建设。
