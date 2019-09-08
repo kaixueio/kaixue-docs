@@ -4,9 +4,9 @@ Kotlin 的协程是它非常特别的一块地方，对比 Java，Kotlin 中的�
 
 初看协程似乎是一个很神秘的新东西，但它其实并不那么神秘。在我们的生活中其实也能遇到很多能够体现协程思想的例子，下面我将用最简单通俗的语言来告诉你「协程是什么」、「协程怎么用」以及「什么时候该使用协程」
 
-## 协程是什么
+### 协程是什么
 
-协程其实并不是 Kotlin 提出来的新概念，其他的一些编程语言，例如：Swift、Lua、Go、C#、Python 等都可以在语言层面上实现协程，甚至我们从未使用过协程的 Java，也可以通过扩展库来间接地支持协程。
+协程其实并不是 Kotlin 提出来的新概念，其他的一些编程语言，例如：Lua、Go、C#、Python 等都可以在语言层面上实现协程，甚至我们从未使用过协程的 Java，也可以通过扩展库来间接地支持协程。
 
 在网上搜「协程是什么」，会得到诸如“协程和线程类似”、“像一种轻量级的线程”、“不是线程”、“不需要从「用户态」切换到「内核态」”、“是「协作式」的，不需要线程的同步操作”这样的解释。这些描述难免让人感觉晦涩难懂。
 
@@ -111,7 +111,9 @@ nameTv.text = user.name  // 更新 UI（主线程）
 
 👆 这种写法在不使用协程的情况下大概率不会得到正确的 user.name，但如果是放到协程中去处理，nameTv.text 的正确赋值是能够得到保证的，这就是 Kotlin 的协程最著名的「非阻塞式挂起」。这个名词看起来不是那么容易理解，别急，后面的部分会完全讲明白。我们先把这个概念放下，来看看协程好在哪。
 
-## 协程好在哪
+### 协程好在哪
+
+#### 基本使用
 
 协程最基本的功能是并发，也就是多线程。用协程，你可以把任务切到后台执行 👇
 
@@ -173,7 +175,11 @@ api.getUser(new Callback<User>() {
 });
 ```
 
-👆 这种写法需要把异步消息的处理放到回调的 block 中（不使用协程的 Kotlin 写法类似），打破了代码的顺序结构，降低了可读性。如果并发场景再复杂一些，代码的嵌套会更加复杂，这样的话维护起来就非常麻烦。但如果你使用了 Kotlin 协程，多层网络请求或许只需要这么写 👇
+👆 这种写法需要把异步消息的处理放到回调的 block 中（不使用协程的 Kotlin 写法类似），打破了代码的顺序结构，降低了可读性。
+
+#### 协程的「1 到 0」
+
+如果并发场景再复杂一些，代码的嵌套会更加复杂，这样的话维护起来就非常麻烦。但如果你使用了 Kotlin 协程，多层网络请求或许只需要这么写 👇
 
 ```kotlin
 🏝️
@@ -225,13 +231,13 @@ launch(Dispatchers.Main) {
 
 在了解了协程的作用和优势之后，我们再来看看协程具体怎么使用。
 
-## 协程怎么用
+### 协程怎么用
 
-### 在项目中配置对 Kotlin 协程的支持
+#### 在项目中配置对 Kotlin 协程的支持
 
-在使用协程 api 之前，我们需要像以往使用其他第三方库一样，在 `build.gradle` 文件中增加对 Kotlin 协程的依赖：
+Kotlin 语法中原生支持协程的关键字 「suspend」（「suspend」具体是什么我们后面再讲），但这对于“使用协程”来说是不够的。在使用协程 api 之前，我们需要像以往使用其他第三方库一样，在 `build.gradle` 文件中增加对 Kotlin 协程的依赖：
 
-- 项目更目录下的 `build.gradle` :
+- 项目根目录下的 `build.gradle` :
 
 ```groovy
 buildscript {
@@ -247,15 +253,22 @@ buildscript {
 dependencies {
     ...
     // coroutines
+    //                                          👇 依赖协程核心库
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines'
+    //                                          👇 依赖当前平台所对应的平台库（这里是 Android 平台的）
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines'
     ...
 }
 ```
 
-Kotlin 协程是以官方扩展库的形式进行支持的。
+Kotlin 协程是以官方扩展库的形式进行支持的。而且，我们所使用的「核心库」和 「平台库」的版本应该保持一致。
 
-### 开始使用协程
+- 「核心库」中包含的代码主要是协程的公共 API 部分。有了这一公共代码层，才能使协程在各个平台的用法得到统一。
+- 「平台库」中包含的代码主要是协程框架在具体平台的具体实现方式。因为我们前面也说过“协程是一套由 Kotlin 官方所提供的线程控制 API”，「线程控制」在各个平台的实现方式是有所差异的。
+
+做完了以上的准备工作就可以开始使用协程了。
+
+#### 开始使用协程
 
 协程最简单的使用方法，其实在前面 **`协程好在哪`** 的介绍中就已经提到了。我们通过一个 `launch()` 函数或是一个 `async()` 函数，就能够实现线程的切换 👇
 
@@ -347,7 +360,7 @@ fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
 
 不过，如果你只是像这样写，编译器是会报错的，「👇」所指向的代码会提示 `Suspend function'withContext' should be called only from a coroutine or anoher suspend funcion` 这样的错误。也就是说，`withContext()` 是一个可挂起函数，它只能够在协程里，或者是另一个可挂起函数中调用。那么什么是「可挂起」呢？下面会进一步讲解。
 
-### 开始使用 suspend 
+### suspend
 
 `suspend` 是 Kotlin 协程最核心的关键词，几乎所有介绍 Kotlin 协程的文章和演讲都会提到它。它的中文意思是「暂停」或者「可挂起」。如果你去看一些技术博客或官方文档的时候，大概可以了解到：「代码执行到 `suspend` 函数的时候会『挂起』，并且这个『挂起』是非阻塞式的，它不会阻塞你当前的线程。」
 
@@ -363,7 +376,7 @@ suspend fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
 
 没错，它和普通函数的区别就只是多了一个 `suspend` 关键字作为函数的修饰符，对于一个普通函数，在「👇」所指向的位置加入 `suspend` 关键字，它就成为了一个可挂起函数。
 
-现在，我们来解释一下上一节所提到的「`withContext()` 放在普通函数中去调用时会报错」的原因。
+现在，我们来解释一下上一节所提到的 `withContext()` 放在普通函数中去调用时会报错」的原因。
 
 首先，我们可以看一下 `withContext()` 的源码：
 
@@ -424,103 +437,6 @@ handler.post {
 使用 `withContext()` 的好处是当我们的 `suspend` 函数执行完成后，能够自动切换回当前线程。那么我们可以这么理解：**`withContext() 帮助我们阻塞了当前协程，却没有阻塞当前线程。`** 这样，即满足了我们需要的逻辑上并发的需求，也达成了代码结构上顺序连贯的特点。
 
 看到这里，我们可以对协程的 「挂起」 `suspend` 可以做出一个比较通俗的解释了：协程在执行到有 `suspend` 标记的函数时，会被挂起，而所谓的被挂起，其实就和开启协程一样，就是切个线程；只不过区别在于，**挂起函数在执行完成之后，协程会被重新切回到之前的线程**。而这种「切回来」的操作，在 Koltlin 中被叫做 resume。
-
- ### CoroutineScope 的使用
-
-上一小节有简单提到 `CoroutineScope` 的使用方法，使用它可以方便地创建出协程。`CoroutineScope` 直接翻译过来是「协程范围」，那为什么协程会有「范围」这种概念？这个「范围」有什么用？我们先通过源码来简单看看它是什么：
-
-```kotlin
-🏝️
-// 接口定义 (省略了注释)
-public interface CoroutineScope {
-    /**
-     * Context of this scope.
-     */
-    public val coroutineContext: CoroutineContext
-}
-
-// API 方法
-public fun CoroutineScope(context: CoroutineContext): CoroutineScope =
-    ContextScope(if (context[Job] != null) context else context + Job())
-```
-
-其实这就是一个接口，而定义得也非常简单，只有一个变量 `coroutineContext` 。只看代码我们并不能看出一个所以然，于是我们回过去再看一下注释，其中有一句写到：`[CoroutineScope] should be implemented on entities with well-defined lifecycle that are responsible for launching children coroutines.  Example of such entity on Android is Activity.` 可以看出其实 `CoroutineScope` 主要被用来控制协程的生命周期，一般在 Android 中需要在具备生命周期的 Activity 或 Service 中去使用。你可以像这样去使用它 👇
-
-```kotlin
-🏝️
-//                                           👇 通过实现接口的方式使用 CoroutineScope
-class MyActivity : AppCompatActivity(), CoroutineScope {
-    lateinit var job: Job
-    //                 👇 实现 CoroutineScope 时唯一需要实现的字段
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
-    
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        job = Job()     // 👈 在 Activity onCreate() 时初始化 job
-      
-        getImage("image_id")
-    }
-  
-    override fun onDestroy() {
-        super.onDestroy()
-        job.cancel()   // 👈 在 Activity onDestory() 时取消 job
-    }
-  
-    //                                👇 在执行 'job.cancel()' 时，此处创建的协程也会被取消当前任务
-    fun getImage(imageId: String) = launch {
-        ...
-    }
-}
-```
-
-`coroutineContext` 和 `job` 的具体含义我们下一小节再去展开来讲。可以注意到 `getImage()` 方法中有通过 `launch` 去创建一个新的协程，而使用 CoroutineScope 的好处就是：`在执行取消操作时，能让所有嵌套在自身作用域中（包括间接嵌套）的协程都自动取消当前任务`。所以我们只需要在 `onDestory()` 中调用 `job.cancel()` ，而不必去关心具体的每一个协程。
-
-那么，我们现在可以这样来理解：`CoroutineScope` 定义了一个可对 `子协程` 进行操作的 `作用域` ，通过它可以管理域内所有协程。正是因为有这种功能，它很适用于具有生命周期的场景。
-
-上一小节所讲到的三种创建协程的方式，其实都直接或间接地用到了 `CoroutineScope` 。`GlobalScope` 直接继承自 CoroutineScope；而 `runBlocking` 在 API 的实现中用的是 `BlockingCoroutine` ，也是继承了 CoroutineScope。也就是说，只要涉及到「协程的创建」，就必然要用到 「CoroutineScope」。而这些创建方式间的主要区别是在于它们所具有的不同上下文 `coroutineContext` 。
-
-### CoroutineContext 和 Job
-
-把 `CoroutineContext` 和 `Job` 放在一起讲是由于后者是被包含在前者众多参数中的一个。
-
-「CoroutineContext」 是 协程的上下文，它和 Android 中常遇到的上下文 `Context` 类似，包含了当前协程的信息，比如 Job、CoroutineName、CoroutineDispatcher 等。我们前面提到的协程「调度器」，如 `Dispatchers.IO` 、`Dispatchers.Main` 等其实都是 CoroutineDispatcher 的子类实例，而 Job、CoroutineName、CoroutineDispatcher 等也都是继承自 CoroutineContext。
-
-// 在「CoroutineContext」中存储这些信息用的是 map，并做了巧妙的封装。map 的键其实就是每个子类所实现 // 的「伴生对象」
-
-「Job」是 CoroutineContext 所包含的众多信息中比较实用的一个。上一小节所提到的 「CoroutineScope 的使用例子」中就是通过 `job.cancel()` 去取消 `子协程` 当前任务的。「Job」除了 `cancel()` 方法， 还有 `start()` 等方法，其主要作用是去管理 CoroutineContext 作用到的子协程。
-
-通常，实际开发中我们可以把 「CoroutineDispatcher」 和 「Job」结合起来作为 `CoroutineScope` 的参数 `CoroutineContext` 使用 👇
-
-```kotlin
-🏝️
-//                    👇 Job 的一个实现类
-val serviceJob = SupervisorJob()
-//                                                👇 将调度器和 Job 共同作为协程上下文使用
-val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
-```
-
-这里用到了「操作符重载」的知识，实现了将多个协程上下文信息合并到一起的功能，关于这个概念，后面的文章会讲到。将 Job 增加到协程上下文中的好处就是能够去控制 `CoroutineScope` 中的子协程。
-
-## 协程与线程
-
-协程是基于线程实现的一种更上层的工具 API，类似于 `Executor` 系列 API 或者 `Handler` 系列 API。所以「线程」和「协程」不是同一个级别的东西，也就没办法进行比较。
-
-#### 项目中可以用协程完全代替线程吗？
-
-协程对于 Android 项目的开发可以说是完全够用了。因为在 Android 开发中，我们能够频繁使用到多线程的场景其实还是网络请求。像以往我们使用 Java 开发 Android 时所用到 `Executor` 或者 `Handler` 中的功能，协程都具备。
-
-#### 项目中可以完全不用协程只用线程吗？
-
-当然可以，因为我们说协程是对线程封装的上层工具 API，也就是说能够通过协程做的事，通过线程也同样可以，只不过实现起来可能会很复杂、很麻烦。
-
-其实只需要弄清楚「协程不是线程」就可以了。官方文档或某些技术博客所说的「协程是轻量级的线程」是不严谨的，忘了就好；而那些写了一个 Demo 将「线程性能」和「协程性能」拿来做比较的，其实也没有这个必要了，做过优化封装的协程，肯定会比简单粗暴地直接使用 Thread 性能更好，如果非要进行比较也只能和同级别的 `Executor` 等 API 去比。而使用「协程」真正能体现出来的优势是其良好的「可读性」和「可维护性」。
-
-也正是由于「协程不是线程」，协程的实现才能够脱离具体的操作系统，在语言的层面就能够实现。
-
-## 协程与 RxJava
-
-协程和 RxJava 在线程切换方面的功能是一样的，都能让你写出避免嵌套回调的复杂并发代码，不过协程的写法比 RxJava 还要更简单一些，因此连 RxJava 的操作符都省了。
 
 ## 练习题
 
