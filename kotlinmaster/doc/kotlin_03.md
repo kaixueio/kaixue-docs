@@ -713,7 +713,7 @@ for (i in 4 downTo 1) {
 ```kotlin
 🏝️
 val sequence = sequenceOf(1, 2, 3, 4)
-val result: List = sequence
+val result: Sequence<Int> = sequence
     .map { i ->
         println("Map $i")
         i * 2 
