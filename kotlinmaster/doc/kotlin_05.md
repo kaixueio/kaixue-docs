@@ -1,5 +1,27 @@
 # Kotlin 的协程用力瞥一眼
 
+> 本期作者：
+>
+> 视频：扔物线（朱凯）
+>
+> 文章：[LewisLuo（罗宇）](https://github.com/yuanshanxike)
+
+大家好，我是扔物线朱凯。
+
+终于到了协程的一期了。
+
+Kotlin 的协程是它非常特别的一块地方：宣扬它的人都在说协程多么好多么棒，但多数人不管是看了协程的官方文档还是一些网络文章之后又都觉得完全看不懂。而且这个「不懂」和 RxJava 是属于一类的：由于协程在概念上对于 Java 开发者来说就是个新东西，所以对于大多数人来说，别说怎么用了，我连它是个什么东西都没看明白。
+
+所以今天，我就先从「协程是什么」说起。首先还是看视频。**不过因为我一直不知道怎么在掘金发视频，所以你可以点击 [这里](https://www.bilibili.com/video/av67107689?zw) 去哔哩哔哩看视频，可以点击 [这里](https://youtu.be/LKsGkEsEE7w) 去 YouTube 看。**
+
+这期内容主要是讲一个概念：什么是协程。因为这个概念有点难（其实看完视频你会发现它超级简单），所以专门花一期来讲解。后面的内容会更劲爆，如果你喜欢我的视频，别忘了去 [原视频](https://www.bilibili.com/video/av67107689/) 点个赞投个币，以及关注订阅一下，不错过我的任何新视频！
+
+ 
+
+> 以下内容来自文章作者 [LewisLuo](https://github.com/yuanshanxike)。
+
+
+
 码上开学 Kotlin 系列的文章，协程已经是第五期了，这里简单讲一下我们（扔物线和即刻 Android 团队）出品的 Kotlin 上手指南系列文章的一些考量：
 
 - 官方文档有指定的格式，因为它是官方的，必须面面俱到，写作顺序不是由浅入深，不管你懂不懂，它都得讲。
@@ -480,3 +502,26 @@ suspend fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
 
 1. 开启一个协程，并在协程中打印出当前线程名。
 2. 通过协程下载一张网络图片并显示出来。
+
+ 
+
+### 作者介绍
+
+#### 视频作者
+
+##### 扔物线（朱凯）
+
+- 码上开学创始人、项目管理人、内容模块规划者和视频内容作者。
+- [Android GDE](https://developers.google.com/experts/people/kai-zhu)（ Google 认证 Android 开发专家），前 Flipboard Android 工程师。
+- GitHub 全球 Java 排名第 92 位，在 [GitHub](https://github.com/rengwuxian) 上有 6.6k followers 和 9.9k stars。
+- 个人的 Android 开源库 [MaterialEditText](https://github.com/rengwuxian/MaterialEditText/) 被全球多个项目引用，其中包括在全球拥有 5 亿用户的新闻阅读软件 Flipboard 。
+- 曾多次在 Google Developer Group Beijing 线下分享会中担任 Android 部分的讲师。
+- 个人技术文章《[给 Android 开发者的 RxJava 详解](https://gank.io/post/560e15be2dca930e00da1083)》发布后，在国内多个公司和团队内部被转发分享和作为团队技术会议的主要资料来源，以及逆向传播到了美国一些如 Google 、 Uber 等公司的部分华人团队。
+- 创办的 Android 高级进阶教学网站 [HenCoder](https://hencoder.com/) 在全球华人 Android 开发社区享有相当的影响力。
+- 之后创办 Android 高级开发教学课程 [HenCoder Plus](https://plus.hencoder.com/) ，学员遍布全球，有来自阿里、头条、华为、腾讯等知名一线互联网公司，也有来自中国台湾、日本、美国等地区的资深软件工程师。
+
+#### 文章作者
+
+##### LewisLuo（罗宇）
+
+[LewisLuo（罗宇）](https://github.com/yuanshanxike) ，即刻 Android 工程师。2019 年加入即刻，参与即刻日记功能的开发和迭代及中台基础建设。曾就职于 mobike，负责国际化业务开发。
