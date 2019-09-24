@@ -360,9 +360,9 @@ buildscript {
 dependencies {
     ...
     //                                       👇 依赖协程核心库
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
     //                                       👇 依赖当前平台所对应的平台库
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines"
     ...
 }
 ```
