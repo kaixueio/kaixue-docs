@@ -403,7 +403,7 @@ launch(Dispatchers.IO) {
 🏝️
 coroutineScope.launch(Dispatchers.IO) {
     val image = getImage(imageId)
-    launch(Dispatch.Main) {
+    launch(Dispatchers.Main) {
         avatarIv.setImageBitmap(image)
     }
 }
@@ -428,13 +428,13 @@ coroutineScope.launch(Dispatchers.Main) {      // 👈 在 UI 线程开始
 ```kotlin
 🏝️
 // 第一种写法
-coroutineScope.launch(Dispachers.IO) {
+coroutineScope.launch(Dispatchers.IO) {
     ...
-    launch(Dispachers.Main){
+    launch(Dispatchers.Main){
         ...
-        launch(Dispachers.IO) {
+        launch(Dispatchers.IO) {
             ...
-            launch(Dispacher.Main) {
+            launch(Dispatchers.Main) {
                 ...
             }
         }
@@ -442,13 +442,13 @@ coroutineScope.launch(Dispachers.IO) {
 }
 
 // 通过第二种写法来实现相同的逻辑
-coroutineScope.launch(Dispachers.Main) {
+coroutineScope.launch(Dispatchers.Main) {
     ...
-    withContext(Dispachers.IO) {
+    withContext(Dispatchers.IO) {
         ...
     }
     ...
-    withContext(Dispachers.IO) {
+    withContext(Dispatchers.IO) {
         ...
     }
     ...
@@ -459,7 +459,7 @@ coroutineScope.launch(Dispachers.Main) {
 
 ```kotlin
 🏝️
-launch(Dispachers.Main) {              // 👈 在 UI 线程开始
+launch(Dispatchers.Main) {              // 👈 在 UI 线程开始
     val image = getImage(imageId)
     avatarIv.setImageBitmap(image)     // 👈 执行结束后，自动切换回 UI 线程
 }
