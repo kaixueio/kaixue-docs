@@ -113,15 +113,15 @@ coroutineScope.launch(Dispatchers.Main) {
 // 我会用 1️⃣2️⃣3️⃣ 来标注任务顺序结果
 I.post {
     // 1️⃣ 把所有衣服挂起来
-	clothes.forEach {
-		handUp(it)
-	}
-	// 3️⃣ 挂起完毕后，启动一个协程，作用是让衣服干掉（耗时操作）
-	launch {
-		drying（clothes）
-	}
-	// 2️⃣ 在码上开学学习
-	learn()
+    clothes.forEach {
+        handUp(it)
+    }
+    // 3️⃣ 挂起完毕后，启动一个协程，作用是让衣服干掉（耗时操作）
+    launch {
+        drying(clothes)
+    }
+    // 2️⃣ 在码上开学学习
+    learn()
 }
 ```
 
@@ -160,16 +160,16 @@ I.post {
 // 我会用 1️⃣2️⃣3️⃣ 来标注任务顺序结果
 I.post {
   // 1️⃣ 「我」把所有衣服挂起来
-	clothes.forEach {
-		handUp(it)
-	}
-	// 3️⃣ 挂起完毕后，启动一个协程，作用是让衣服干掉（耗时操作），之后再「我」再它们整理起来
-	launch {
-		drying(clothes）      // 👈 在 IO 线程晒干衣服
-		fold(clothes)         // 👈 晒干后，回到「我」，进行整理衣服
-	}
-	// 2️⃣ 「我」在码上开学学习
-	learn()
+    clothes.forEach {
+        handUp(it)
+    }
+    // 3️⃣ 挂起完毕后，启动一个协程，作用是让衣服干掉（耗时操作），之后再「我」再它们整理起来
+    launch {
+        drying(clothes）      // 👈 在 IO 线程晒干衣服
+        fold(clothes)         // 👈 晒干后，回到「我」，进行整理衣服
+    }
+    // 2️⃣ 「我」在码上开学学习
+    learn()
 }
 
 suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
