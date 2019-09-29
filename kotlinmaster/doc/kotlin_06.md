@@ -231,31 +231,27 @@ I/System.out: Thread: main
 
 输出的结果还是在主线程。
 
-为什么切换线程？因为它不知道往哪切，需要我们告诉它。
+为什么没切换线程？因为它不知道往哪切，需要我们告诉它。
 
-对比之前例子中，自定义 `suspend` 函数代码：
+对比之前例子中 `drying` 函数代码：
 
 ```kotlin
 🏝️
-//                                       👇
-suspend fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
-    ...
+//                                               👇
+suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
+  ...
 }
 ```
 
 我们可以发现不同之处其实在于 `withContext`函数。
 
-其实通过源码可以知道，它本身就是一个挂起函数，它接收一个 `Dispatcher` 参数，依赖这个 `Dispatcher` 参数的指示，你的协程被挂起，然后切到别的线程。
+其实通过 `withContext` 源码可以知道，它本身就是一个挂起函数，它接收一个 `Dispatcher` 参数，依赖这个 `Dispatcher` 参数的指示，你的协程被挂起，然后切到别的线程。
 
 所以这个 `suspend`，其实并不是起到把任何把协程挂起，或者说切换线程的作用。
 
-真正要挂起协程，还需要你在 `suspend` 函数里调用另外一个 `suspend` 函数，而且这个里面的 `suspend` 函数需要是：
+真正挂起协程这件事，是 Kotlin 的协程框架帮我们做的。
 
-- 协程自带的 `suspend`函数
-- 内部实现了协程挂起代码
-- 直接或间接调用了某个自带的 `suspend` 函数
-
-所以我们想要自己写一个挂起函数，仅仅只加上这个 `suspend` 关键字是不行的，还需要函数内部直接或间接地调用到自带的 `suspend`函数才行。
+所以我们想要自己写一个挂起函数，仅仅只加上 `suspend` 关键字是不行的，还需要函数内部直接或间接地调用到 Kotlin 协程框架自带的 `suspend`函数才行。
 
 
 
