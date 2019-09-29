@@ -8,22 +8,22 @@
 
 
 
-我们大部分情况下是用 `launch()` 函数创建协程，其实官方提供了三个方法来创建协程：
+我们大部分情况下是用 `launch` 函数创建协程，其实官方提供了三个方法来创建协程：
 
-- `runBlocking()`
-- `launch()`
-- `async()`
+- `runBlocking`
+- `launch`
+- `async`
 
-`runBlocking()` 通常适用于单元测试的场景，而业务开发中不会用到这种方法，因为它是线程阻塞的。
+`runBlocking` 通常适用于单元测试的场景，而业务开发中不会用到这种方法，因为它是线程阻塞的。
 
-我们主要来对比 `launch()` 与 `async()` 这两个函数。
+我们主要来对比 `launch` 与 `async` 这两个函数。
 
 - 相同点：都是可以用来启动一个协程。
 
 - 不同点：返回值的不同：
-    - `launch()` 会返回一个 `Job` 对象
+    - `launch` 会返回一个 `Job` 对象
 
-    - `async() `会返回一个 `Deferred` 对象
+    - `async `会返回一个 `Deferred` 对象
 
 `Job`中封装了协程需要执行的代码逻辑，同时 `Job` 有简单的生命周期，也可以被取消。
 
@@ -34,13 +34,13 @@
 - `Job` 是有简单的生命周期，没有返回值
 - `Deferred` 是继承 `Job` 的且带有返回值
 
-那 `async()` 中的 `Deferred` 的返回值是如何得到的呢？
+那 `async` 中的 `Deferred` 的返回值是如何得到的呢？
 
 我们调用它的 `Deferred.await()` 方法就可以得到返回值了。
 
 
 
-接下来我们继续看看 `async()` 是如何使用的，先回忆一下上期中的一个场景：
+接下来我们继续看看 `async` 是如何使用的，先回忆一下上期中的一个场景：
 
 ```kotlin
 🏝️
@@ -53,9 +53,9 @@ coroutineScope.launch(Dispatchers.Main) {
 }
 ```
 
-可以看到 avatar 和 logo 的类型就是 `Deferred` ，通过 `await()` 获取结果并且更新到 UI 上显示。
+可以看到 avatar 和 logo 的类型就是 `Deferred` ，通过 `await` 获取结果并且更新到 UI 上显示。
 
-`await()` 的方法签名如下：
+`await` 的方法签名如下：
 
 ```kotlin
 🏝️
@@ -84,9 +84,9 @@ public suspend fun await(): T
 
 还记得协程是什么吗？
 
-启动一个协程可以使用 `launch()`或者`async()` 函数，协程其实就是这两个函数中闭包的代码块。
+启动一个协程可以使用 `launch`或者`async` 函数，协程其实就是这两个函数中闭包的代码块。
 
-`launch()` ，`async()` 或者其他函数创建的协程，在执行到某一个 `suspend` 函数的时候，这个协程会被 suspend，也就是被挂起。
+`launch` ，`async` 或者其他函数创建的协程，在执行到某一个 `suspend` 函数的时候，这个协程会被 suspend，也就是被挂起。
 
 那此时又是从哪里挂起？
 
@@ -168,11 +168,11 @@ suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
 
 「我」就是这个线程，其实看我做了哪些事情，就是当前线程在做什么。
 
-运行到编号 3️⃣ 的时候，就启动了一个协程，当运行到 `drying()` 这个挂起函数的时候，当前线程就会跳出整个 `launch()`包裹的代码块，也就是协程。
+运行到编号 3️⃣ 的时候，就启动了一个协程，当运行到 `drying` 这个挂起函数的时候，当前线程就会跳出整个 `launch`包裹的代码块，也就是协程。
 
-这时候当前线程并没有停止工作，而是继续运行到编号 2️⃣ `learn()` 函数。
+这时候当前线程并没有停止工作，而是继续运行到编号 2️⃣ `learn` 函数。
 
-这个时候你可能就会疑问了，那 `launch()` 包裹的剩下代码怎么办？
+这个时候你可能就会疑问了，那 `launch` 包裹的剩下代码怎么办？
 
 接下来我们看看协程这部分代码。
 
@@ -184,7 +184,7 @@ suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
 
 谁指定的？
 
- `suspend` 函数指定的，比如，我们这个例子中，函数内部的 `withContext()`传入的 `Dispatchers.IO` 所指定的 IO 线程。
+ `suspend` 函数指定的，比如，我们这个例子中，函数内部的 `withContext`传入的 `Dispatchers.IO` 所指定的 IO 线程。
 
 `Dispatchers` 调度器，它可以将协程限制在一个特定的线程执行，或者将它分派到一个线程池，或者让它不受限制地运行，关于`Dispatchers` 的深入我们后续再讲 。
 
@@ -205,7 +205,7 @@ suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
  ![](kotlin_06.gif)
 
 - 绿色是当前线程做的事情，红色是挂起函数从当前线程切走后执行的耗时操作
-- 当调用到`suspend`修饰的函数的时候，协程会从当前线程切到 IO 线程，然后执行 `drying()` 中的具体操作
+- 当调用到`suspend`修饰的函数的时候，协程会从当前线程切到 IO 线程，然后执行 `drying` 中的具体操作
 - 等待几秒后，耗时操作执行完毕，协程会执行 resume 操作，回到当前线程上，之后正常往下执行。
 
 通过上面的分析， 我们可以知道「挂起」实际上就是切了一个线程，不过与普通的切线程的区别在于，挂起函数执行完成后，协程会重新切回它原先所在的线程。
@@ -310,11 +310,11 @@ suspend fun suspendingPrint() {
 
 #### 写的时候怎么写？
 
-给函数加上 `suspend` 关键字，然后在 `withContext()` 把函数的内容包住就可以了。
+给函数加上 `suspend` 关键字，然后在 `withContext` 把函数的内容包住就可以了。
 
-提到用 `withContext()`是因为它在挂起函数里功能最简单直接：把线程自动切走和切回。
+提到用 `withContext`是因为它在挂起函数里功能最简单直接：把线程自动切走和切回。
 
-当然并不是只有 `witchContext()` 这一个函数来辅助我们实现自定义的 `suspend` 函数，比如还有一个挂起函数叫  `delay()`，它的作用是等待一段时间后再继续往下执行代码。
+当然并不是只有 `witchContext` 这一个函数来辅助我们实现自定义的 `suspend` 函数，比如还有一个挂起函数叫  `delay`，它的作用是等待一段时间后再继续往下执行代码。
 
 使用它就可以实现刚才提到的等待类型的耗时操作：
 
