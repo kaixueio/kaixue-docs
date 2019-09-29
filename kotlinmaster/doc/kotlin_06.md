@@ -257,7 +257,7 @@ suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
 
 ### suspend 的意义？
 
-那这个 `suspend` 关键字，既然它并不是真正实现挂起，那它的作用是什么？
+这个 `suspend` 关键字，既然它并不是真正实现挂起，那它的作用是什么？
 
 **它其实是一个提醒。**
 
@@ -269,9 +269,9 @@ suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
 
 因为它本来就不是用来操作挂起的。
 
-挂起的操作——也就是切线程——依赖的是挂起方法里面的实际代码，而不是这个关键字。
+挂起的操作 —— 也就是切线程，依赖的是挂起方法里面的实际代码，而不是这个关键字。
 
-所以可以再次可以重申，这个关键字，**是一个提醒**。
+所以这个关键字，**只是一个提醒**。
 
 还记得刚才我们尝试自定义挂起函数的方法吗？
 
@@ -283,34 +283,11 @@ suspend fun suspendingPrint() {
 }
 ```
 
-如果你创建一个 `suspend` 函数但却不在它内部调用别的 `suspend` 函数，编译器会给你一个提醒：`redundant suspend modifier`，告诉你这个 `suspend` 是多余的。
+如果你创建一个 `suspend` 函数但它内部不包含真正的挂起逻辑，编译器会给你一个提醒：`redundant suspend modifier`，告诉你这个 `suspend` 是多余的。
 
-因为你这个函数实质上并没有发生挂起，那你这个 suspend 关键字只有一个效果：就是限制这个函数只能在协程里被调用。
+因为你这个函数实质上并没有发生挂起，那你这个 `suspend` 关键字只有一个效果：就是限制这个函数只能在协程里被调用，如果在非协程的代码中调用，就会编译不通过。
 
-所以，创建一个 `suspend` 函数，一定要在它内部调用别的 `suspend` 函数，你的这个 `suspend` 才能是有意义的。
-
-
-
-那这个 `suspend` 关键字可以修饰哪些东西呢？
-
-有三个，它们分别是：
-
-- 普通函数
-- 扩展函数（什么是扩展函数我们以后再讲）
-- lambda 表达式
-
-```kotlin
-🏝️
-
-// 普通函数
-suspend fun suspendingPrint() = withContext(Dispatchers.IO) {}
-
-// 扩展函数
-suspend fun String.trim() = withContext(Dispatchers.IO) {}
-
-// lambda 表达式
-val lambdaAction = suspend {}
-```
+所以，创建一个 `suspend` 函数，为了让它包含真正挂起的逻辑，要在它内部直接或间接调用 Kotlin 自带的 `suspend` 函数，你的这个 `suspend` 才是有意义的。
 
 
 
