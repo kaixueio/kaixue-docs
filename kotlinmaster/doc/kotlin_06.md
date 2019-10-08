@@ -8,13 +8,13 @@
 
 
 
-我们大部分情况下是用 `launch` 函数创建协程，其实官方提供了三个方法来创建协程：
+我们大部分情况下是用 `launch` 函数创建协程，其实官方提供了三个函数来创建协程：
 
 - `runBlocking`
 - `launch`
 - `async`
 
-`runBlocking` 通常适用于单元测试的场景，而业务开发中不会用到这种方法，因为它是线程阻塞的。
+`runBlocking` 通常适用于单元测试的场景，而业务开发中不会用到这个函数，因为它是线程阻塞的。
 
 我们主要来对比 `launch` 与 `async` 这两个函数。
 
@@ -36,7 +36,7 @@
 
 那 `async` 中的 `Deferred` 的返回值是如何得到的呢？
 
-我们调用它的 `Deferred.await()` 方法就可以得到返回值了。
+我们调用它的 `Deferred.await()` 函数就可以得到返回值了。
 
 
 
@@ -56,7 +56,7 @@ coroutineScope.launch(Dispatchers.Main) {
 
 可以看到 avatar 和 logo 的类型就是 `Deferred` ，通过 `await` 获取结果并且更新到 UI 上显示。
 
-`await` 的方法签名如下：
+`await` 函数签名如下：
 
 ```kotlin
 🏝️
@@ -277,7 +277,7 @@ suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
 
 因为它本来就不是用来操作挂起的。
 
-挂起的操作 —— 也就是切线程，依赖的是挂起方法里面的实际代码，而不是这个关键字。
+挂起的操作 —— 也就是切线程，依赖的是挂起函数里面的实际代码，而不是这个关键字。
 
 所以这个关键字，**只是一个提醒**。
 
