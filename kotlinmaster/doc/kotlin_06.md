@@ -44,12 +44,13 @@
 
 ```kotlin
 🏝️
+
 coroutineScope.launch(Dispatchers.Main) {
     //                      👇  async 函数启动新的协程
     val avatar: Deferred = async { api.getAvatar(user) }    // 获取用户头像
     val logo: Deferred = async { api.getCompanyLogo(user) } // 获取用户所在公司的 logo
-    //            👇          👇   获取返回值
-    show(avatar.await(), logo.await()) 						// 更新 UI
+    //            👇          👇 获取返回值
+    show(avatar.await(), logo.await())                     // 更新 UI
 }
 ```
 
@@ -59,6 +60,7 @@ coroutineScope.launch(Dispatchers.Main) {
 
 ```kotlin
 🏝️
+
 public suspend fun await(): T
 ```
 
@@ -222,6 +224,7 @@ suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
 
 ```kotlin
 🏝️
+
 suspend fun suspendingPrint() {
   println("Thread: ${Thread.currentThread().name}")
 }
@@ -237,6 +240,7 @@ I/System.out: Thread: main
 
 ```kotlin
 🏝️
+
 //                                               👇
 suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
   ...
@@ -277,6 +281,7 @@ suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
 
 ```kotlin
 🏝️
+
 // 👇 redundant suspend modifier
 suspend fun suspendingPrint() {
   println("Thread: ${Thread.currentThread().name}")
@@ -320,6 +325,7 @@ suspend fun suspendingPrint() {
 
 ```kotlin
 🏝️
+
 suspend fun suspendUntilDone() {
   while (!done) {
     delay(5)
