@@ -208,7 +208,7 @@ suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
 
 我将之前的场景做了一个动图，方便大家理解「切走线程之后，又自动切回来的过程」：
 
- ![](https://tva1.sinaimg.cn/large/006y8mN6gy1g7ghfel7y9g30py0s01kx.gif)
+ ![](https://tva1.sinaimg.cn/large/006y8mN6gy1g7qsimxf8kg30u20qwb0t.gif)
 
 - 绿色是当前线程做的事情，红色是挂起函数从当前线程切走后执行的耗时操作
 - 当调用到`suspend`修饰的函数的时候，协程会从当前线程切到 IO 线程，然后执行 `drying` 中的具体操作
