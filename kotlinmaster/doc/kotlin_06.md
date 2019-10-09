@@ -114,17 +114,17 @@ suspend 是有暂停的意思，但我们在协程中应该理解为：
 
 如果这个线程它是 Android 的主线程，那它接下来就会继续回去工作：
 
-一秒钟 60 次的界面刷新任务。
+也就是一秒钟 60 次的界面刷新任务。
 
-接下来我们看看一个常见的需求：获取一个图片，然后显示出来。
+接下来有一个常见的需求：获取一个图片，然后显示出来。
 
 ```kotlin
 🏝️
 
 // 主线程中
 GlobalScope.launch {
-  val image = suspendingGetImage(imageId)
-  avatarIv.setImageBitmap(image)
+  val image = suspendingGetImage(imageId)  // 获取图片
+  avatarIv.setImageBitmap(image)           // 显示出来
 }
 
 suspend fun suspendingGetImage(id: String) = withContext(Dispatchers.IO) {
@@ -150,7 +150,7 @@ handler.post {
 这个时候线程的我们就完整看完了。
 你可能会有一个疑问，那 `launch` 包裹的剩下代码怎么办？
 
-所以，接下来我们切换到协程的视角。
+所以接下来，我们切换到协程的视角。
 
 
 
@@ -176,14 +176,15 @@ handler.post {
 
 
 
-回到我们的协程，它从 `suspend` 函数继续执行在 `Dispatchers` 所指定的 IO 线程。
+回到我们的协程，它从 `suspend` 函数开始脱离启动它的线程，继续执行在 `Dispatchers` 所指定的 IO 线程。
 
 紧接着在 `suspend` 函数执行完成之后，协程为我们做的最爽的事就来了：会**自动帮我们把线程再切回来**。
+
+这个「切回来」是什么意思？
 
 我们的协程原本是运行在**主线程**的，当代码遇到 suspend 函数的时候，发生线程切换，根据 `Dispatchers` 切换到了 IO 线程。
 
 当这个函数执行完毕后，线程又切了回来，「切回来」也就是协程会帮我再 `post` 一个任务，让我剩下的代码继续回到主线程去执行。
-
 
 
 我们从线程和协程的两个角度都分析完成后，终于可以对协程的「挂起」suspend 做一个解释了：
@@ -206,7 +207,7 @@ handler.post {
 
 而恢复这个功能是协程的，如果你不在协程的里面调用，恢复这个功能没法实现，所以挂起函数必须在协程里被调用。
 
-另外在思考一下这个逻辑：
+另外再思考一下这个逻辑：
 
 如果一个挂起函数要么在协程里被调用，要么在另一个挂起函数里被调用，那么它其实直接或者间接地，总是会在一个协程里被调用的。
 
