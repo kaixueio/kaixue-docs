@@ -18,25 +18,14 @@
 
 我们主要来对比 `launch` 与 `async` 这两个函数。
 
-- 相同点：都是可以用来启动一个协程。
+- 相同点：都可以用来启动一个协程，它俩都是返回的 `Coroutine`，我们这里不纠结具体是返回哪个类。
 
-- 不同点：返回值的不同：
-    - `launch` 会返回一个 `Job` 对象
+- 不同点在于：`async` 返回的 `Coroutine` 实现了 `Deferred` 接口
+  
 
-    - `async `会返回一个 `Deferred` 对象
+关于 `Deferred` 更深入的知识就不在这里过多阐述，它的意思就是延迟，也就是结果稍后才能拿到。
 
-`Job`中封装了协程需要执行的代码逻辑，同时 `Job` 有简单的生命周期，也可以被取消。
-
-`Job` 在完成时是没有返回值的，如果需要返回值，这个时候就需要 `Deferred` 出马。
-
-关于 `Job`，`Deferred` 更深入的知识就不在这里过多阐述，我们目前只需要了解到：
-
-- `Job` 是有简单的生命周期，没有返回值
-- `Deferred` 是继承 `Job` 的且带有返回值
-
-那 `async` 中的 `Deferred` 的返回值是如何得到的呢？
-
-我们调用它的 `Deferred.await()` 函数就可以得到返回值了。
+我们调用 `Deferred.await()` 就可以得到结果了。
 
 
 
@@ -44,7 +33,6 @@
 
 ```kotlin
 🏝️
-
 coroutineScope.launch(Dispatchers.Main) {
     //                      👇  async 函数启动新的协程
     val avatar: Deferred = async { api.getAvatar(user) }    // 获取用户头像
@@ -60,7 +48,6 @@ coroutineScope.launch(Dispatchers.Main) {
 
 ```kotlin
 🏝️
-
 public suspend fun await(): T
 ```
 
@@ -78,7 +65,7 @@ public suspend fun await(): T
 
 还记得协程是什么吗？
 
-启动一个协程可以使用 `launch`或者`async` 函数，协程其实就是这两个函数中闭包的代码块。
+启动一个协程可以使用 `launch` 或者 `async` 函数，协程其实就是这两个函数中闭包的代码块。
 
 `launch` ，`async` 或者其他函数创建的协程，在执行到某一个 `suspend` 函数的时候，这个协程会被 suspend，也就是被挂起。
 
@@ -120,7 +107,6 @@ suspend 是有暂停的意思，但我们在协程中应该理解为：
 
 ```kotlin
 🏝️
-
 // 主线程中
 GlobalScope.launch {
   val image = suspendingGetImage(imageId)  // 获取图片
@@ -132,20 +118,17 @@ suspend fun suspendingGetImage(id: String) = withContext(Dispatchers.IO) {
 }
 ```
 
-这段执行在主线程的协程，它实质上会往你的主线程 `post` 一个新任务，这个任务就是你的协程代码：
+这段执行在主线程的协程，它实质上会往你的主线程 `post` 一个 `Runnable`，这个 `Runnable` 就是你的协程代码：
 
 ```kotlin
 🏝️
-
 handler.post {
-  val image = suspendingGetImage（imageId)
+  val image = suspendingGetImage(imageId)
   avatarIv.setImageBitmap(image)
 }
 ```
 
-当这个协程被挂起的时候，就是主线程 `post` 的任务提前结束，然后跳出这个任务，继续执行它界面刷新的任务。
-
-
+当这个协程被挂起的时候，就是主线程 `post` 的这个 `Runnable` 提前结束，然后继续执行它界面刷新的任务。
 
 这个时候线程的我们就完整看完了。
 你可能会有一个疑问，那 `launch` 包裹的剩下代码怎么办？
@@ -162,19 +145,17 @@ handler.post {
 
 谁指定的？
 
- `suspend` 函数指定的，比如，我们这个例子中，函数内部的 `withContext`传入的 `Dispatchers.IO` 所指定的 IO 线程。
+`suspend` 函数指定的，比如，我们这个例子中，函数内部的 `withContext` 传入的 `Dispatchers.IO` 所指定的 IO 线程。
 
-`Dispatchers` 调度器，它可以将协程限制在一个特定的线程执行，或者将它分派到一个线程池，或者让它不受限制地运行，关于`Dispatchers` 的深入我们后续再讲 。
+`Dispatchers` 调度器，它可以将协程限制在一个特定的线程执行，或者将它分派到一个线程池，或者让它不受限制地运行，关于 `Dispatchers` 的深入我们后续再讲 。
 
 那我们平日里常用到的调度器有哪些？
 
 常用的 `Dispatchers` ，有以下三种：
 
-- Dispatchers.Main：Android 中的主线程
-- Dispatchers.IO：针对磁盘和网络 IO 进行了优化，适合 IO 密集型的任务，比如：读写文件，操作数据库以及网络请求
-- Dispatchers.Default：适合 CPU 密集型的任务，比如计算 
-
-
+- `Dispatchers.Main`：Android 中的主线程
+- `Dispatchers.IO`：针对磁盘和网络 IO 进行了优化，适合 IO 密集型的任务，比如：读写文件，操作数据库以及网络请求
+- `Dispatchers.Default`：适合 CPU 密集型的任务，比如计算 
 
 回到我们的协程，它从 `suspend` 函数开始脱离启动它的线程，继续执行在 `Dispatchers` 所指定的 IO 线程。
 
@@ -185,6 +166,7 @@ handler.post {
 我们的协程原本是运行在**主线程**的，当代码遇到 suspend 函数的时候，发生线程切换，根据 `Dispatchers` 切换到了 IO 线程。
 
 当这个函数执行完毕后，线程又切了回来，「切回来」也就是协程会帮我再 `post` 一个任务，让我剩下的代码继续回到主线程去执行。
+
 
 
 我们从线程和协程的两个角度都分析完成后，终于可以对协程的「挂起」suspend 做一个解释了：
@@ -201,7 +183,7 @@ handler.post {
 
 回到上期最后的那个问题：
 
-为什么 suspend 函数只能在协程里或者另一个 suspend 函数里被调用？
+为什么 `suspend` 函数只能在协程里或者另一个 `suspend` 函数里被调用？
 
 通过刚才的分析我们知道：挂起之后是需要恢复。
 
@@ -211,18 +193,17 @@ handler.post {
 
 如果一个挂起函数要么在协程里被调用，要么在另一个挂起函数里被调用，那么它其实直接或者间接地，总是会在一个协程里被调用的。
 
-所以，要求 suspend 函数只能在协程里或者另一个 suspend 函数里被调用，还是为了要让协程能够在 suspend 函数切换线程之后再切换回来。
+所以，要求 `suspend` 函数只能在协程里或者另一个 suspend 函数里被调用，还是为了要让协程能够在 `suspend` 函数切换线程之后再切换回来。
 
 
 ### 怎么就「挂起」了？
 
 我们了解到了什么是「挂起」后，再接着看看这个「挂起」是怎么做到的。
 
-先随便写一个自定义的 `suspend`函数：
+先随便写一个自定义的 `suspend` 函数：
 
 ```kotlin
 🏝️
-
 suspend fun suspendingPrint() {
   println("Thread: ${Thread.currentThread().name}")
 }
@@ -234,18 +215,17 @@ I/System.out: Thread: main
 
 为什么没切换线程？因为它不知道往哪切，需要我们告诉它。
 
-对比之前例子中 `drying` 函数代码：
+对比之前例子中 `suspendingGetImage` 函数代码：
 
 ```kotlin
 🏝️
-
 //                                               👇
-suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
+suspend fun suspendingGetImage(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
   ...
 }
 ```
 
-我们可以发现不同之处其实在于 `withContext`函数。
+我们可以发现不同之处其实在于 `withContext` 函数。
 
 其实通过 `withContext` 源码可以知道，它本身就是一个挂起函数，它接收一个 `Dispatcher` 参数，依赖这个 `Dispatcher` 参数的指示，你的协程被挂起，然后切到别的线程。
 
@@ -253,7 +233,7 @@ suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
 
 真正挂起协程这件事，是 Kotlin 的协程框架帮我们做的。
 
-所以我们想要自己写一个挂起函数，仅仅只加上 `suspend` 关键字是不行的，还需要函数内部直接或间接地调用到 Kotlin 协程框架自带的 `suspend`函数才行。
+所以我们想要自己写一个挂起函数，仅仅只加上 `suspend` 关键字是不行的，还需要函数内部直接或间接地调用到 Kotlin 协程框架自带的 `suspend` 函数才行。
 
 
 
@@ -264,8 +244,6 @@ suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
 **它其实是一个提醒。**
 
 函数的创建者对函数的使用者的提醒：我是一个耗时函数，我被我的创建者用挂起的方式放在后台运行，所以请在协程里调用我。
-
-
 
 为什么 `suspend` 关键字并没有实际去操作挂起，但 Kotlin 却把它提供出来？
 
@@ -279,7 +257,6 @@ suspend fun drying(clothes: List<Clothes>) = withContext(Dispatchers.IO) {
 
 ```kotlin
 🏝️
-
 // 👇 redundant suspend modifier
 suspend fun suspendingPrint() {
   println("Thread: ${Thread.currentThread().name}")
@@ -300,7 +277,7 @@ suspend fun suspendingPrint() {
 
 这个「怎么自定义」其实分为两个问题：
 
-- 什么时候需要自定义 suspend 函数？
+- 什么时候需要自定义 `suspend` 函数？
 - 写的时候怎么写？
 
 #### 什么时候需要自定义 suspend 函数？
@@ -323,7 +300,6 @@ suspend fun suspendingPrint() {
 
 ```kotlin
 🏝️
-
 suspend fun suspendUntilDone() {
   while (!done) {
     delay(5)
@@ -332,6 +308,8 @@ suspend fun suspendUntilDone() {
 ```
 
 这些东西，在我们初步使用协程的时候不用立马接触，可以先把协程最基本的方法和概念理清楚。
+
+
 
 ### 总结
 
@@ -344,7 +322,7 @@ suspend fun suspendUntilDone() {
 - 协程中挂起的「非阻塞式」到底是怎么回事？
 - 协程和 RxJava 在切换线程方面功能是一样的，都能让你写出避免嵌套回调的复杂并发代码，那协程还有哪些优势，或者让开发者使用协程的理由？
 
-这些疑惑的答案，我们都会在下一章节中全部揭晓。
+这些疑惑的答案，我们都会在下一篇中全部揭晓。
 
 
 ### 练习题

@@ -3,10 +3,7 @@ package org.kotlinmaster
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 abstract class MainActivity : AppCompatActivity() {
     protected abstract fun test()
@@ -15,8 +12,8 @@ abstract class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState, persistentState)
 
         GlobalScope.launch {
-            val a = suspendingGetImage(imageId)
-            avatarIv.setImageBitmap(image)
+        }
+        GlobalScope.async {
         }
     }
 
