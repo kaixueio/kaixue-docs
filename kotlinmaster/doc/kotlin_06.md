@@ -108,7 +108,7 @@ suspend 是有暂停的意思，但我们在协程中应该理解为：
 ```kotlin
 🏝️
 // 主线程中
-GlobalScope.launch {
+GlobalScope.launch(Dispatchers.Main) {
   val image = suspendingGetImage(imageId)  // 获取图片
   avatarIv.setImageBitmap(image)           // 显示出来
 }
