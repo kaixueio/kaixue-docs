@@ -42,7 +42,7 @@ coroutineScope.launch(Dispatchers.Main) {
 }
 ```
 
-可以看到 avatar 和 logo 的类型就是 `Deferred` ，通过 `await` 获取结果并且更新到 UI 上显示。
+可以看到 avatar 和 logo 的类型可以声明为 `Deferred` ，通过 `await` 获取结果并且更新到 UI 上显示。
 
 `await` 函数签名如下：
 
