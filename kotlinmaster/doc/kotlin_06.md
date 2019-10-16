@@ -1,3 +1,29 @@
+# Kotlin 协程「挂起」的本质
+
+> 本期作者：
+>
+> 视频：扔物线（朱凯）
+>
+> 文章：[Hugo（谢晨成）](https://github.com/xcc3641)
+
+大家好，我是扔物线朱凯，我回来啦。今天我们接着讲协程。
+
+在上一期里，我介绍了 Kotlin 的协程到底是什么——它就是个线程框架。没什么说不清的，就这么简单，它就是个线程框架，只不过这个线程框架比较方便——另外呢，上期也讲了一下协程的基本用法，但到最后也留下了一个大问号：协程最核心的那个「非阻塞式」的「挂起」到底是怎么回事？今天，我们的核心内容就是来说一说这个「挂起」。
+
+老规矩，全国最硬核的 Android 视频播主为你带来最硬核的视频：
+
+<div class="aspect-ratio">
+    <iframe src="https://player.bilibili.com/player.html?aid=68241619&page=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</div>
+
+如果你看不到上面的哔哩哔哩视频，可以点击 [这里](https://youtu.be/mDtXcEuOXvk) 去 YouTube 看。
+
+
+
+> 以下内容来自文章作者 [Hugo](https://github.com/xcc3641)。
+
+
+
 ### **上期回顾**
 
 在协程上一期中我们知道了下面知识点：
@@ -305,3 +331,26 @@ suspend fun suspendUntilDone() {
 - 一次切成大小相同的 9 份，取其中的最后一份
 
 得到结果后，将它们展示在两个 ImageView 上。
+
+ 
+
+### 作者介绍
+
+#### 视频作者
+
+##### 扔物线（朱凯）
+
+- 码上开学创始人、项目管理人、内容模块规划者和视频内容作者。
+- [Android GDE](https://developers.google.com/experts/people/kai-zhu)（ Google 认证 Android 开发专家），前 Flipboard Android 工程师。
+- GitHub 全球 Java 排名第 92 位，在 [GitHub](https://github.com/rengwuxian) 上有 6.6k followers 和 9.9k stars。
+- 个人的 Android 开源库 [MaterialEditText](https://github.com/rengwuxian/MaterialEditText/) 被全球多个项目引用，其中包括在全球拥有 5 亿用户的新闻阅读软件 Flipboard 。
+- 曾多次在 Google Developer Group Beijing 线下分享会中担任 Android 部分的讲师。
+- 个人技术文章《[给 Android 开发者的 RxJava 详解](https://gank.io/post/560e15be2dca930e00da1083)》发布后，在国内多个公司和团队内部被转发分享和作为团队技术会议的主要资料来源，以及逆向传播到了美国一些如 Google 、 Uber 等公司的部分华人团队。
+- 创办的 Android 高级进阶教学网站 [HenCoder](https://hencoder.com/) 在全球华人 Android 开发社区享有相当的影响力。
+- 之后创办 Android 高级开发教学课程 [HenCoder Plus](https://plus.hencoder.com/) ，学员遍布全球，有来自阿里、头条、华为、腾讯等知名一线互联网公司，也有来自中国台湾、日本、美国等地区的资深软件工程师。
+
+#### 文章作者
+
+##### Hugo（谢晨成）
+
+[Hugo（谢晨成）](https://github.com/xcc3641)，即刻 Android 工程师。2017 年加入即刻，参与了即刻 3.0 到 6.0 版本的架构设计和产品迭代。多年 Android 开发经验，现在负责即刻客户端中台基础建设。
