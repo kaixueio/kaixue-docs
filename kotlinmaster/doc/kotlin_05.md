@@ -12,7 +12,13 @@
 
 Kotlin 的协程是它非常特别的一块地方：宣扬它的人都在说协程多么好多么棒，但多数人不管是看了协程的官方文档还是一些网络文章之后又都觉得完全看不懂。而且这个「不懂」和 RxJava 是属于一类的：由于协程在概念上对于 Java 开发者来说就是个新东西，所以对于大多数人来说，别说怎么用了，我连它是个什么东西都没看明白。
 
-所以今天，我就先从「协程是什么」说起。首先还是看视频。**不过因为我一直不知道怎么在掘金发视频，所以你可以点击 [这里](https://www.bilibili.com/video/av67107689?zw) 去哔哩哔哩看视频，可以点击 [这里](https://youtu.be/LKsGkEsEE7w) 去 YouTube 看。**
+所以今天，我就先从「协程是什么」说起。首先还是看视频。
+
+<div class="aspect-ratio">
+    <iframe src="https://player.bilibili.com/player.html?aid=67107689&page=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</div>
+
+如果你看不到上面的哔哩哔哩视频，可以点击 [这里](https://youtu.be/LKsGkEsEE7w) 去 YouTube 看。
 
 这期内容主要是讲一个概念：什么是协程。因为这个概念有点难（其实看完视频你会发现它超级简单），所以专门花一期来讲解。后面的内容会更劲爆，如果你喜欢我的视频，别忘了去 [原视频](https://www.bilibili.com/video/av67107689/) 点个赞投个币，以及关注订阅一下，不错过我的任何新视频！
 
