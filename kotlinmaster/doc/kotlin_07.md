@@ -1,3 +1,32 @@
+# 到底什么是「非阻塞式」挂起？协程真的更轻量级吗？
+
+> 本期作者：
+>
+> 视频：扔物线（朱凯）
+>
+> 文章：[Lewis（姚文钦）](https://github.com/wenqin-231)
+
+
+
+大家好，我是扔物线朱凯。今天又是协程，不过今天有一些不一样：
+
+1. 今天是协程的最后一期（起码近期内最后一期）；
+2. 今天的视频最后，我 dui 了 Kotlin 官方。好刺激啊。
+
+这期主要是解释一下挂起的「非阻塞式」是怎么回事，以及对一些最常见的误导性言论进行一下日常打脸——当然了目的当然不是打谁的脸，我没那闲工夫，主要是给大家开个雾。
+
+更多的话就不说了，来看视频吧：
+
+<div class="aspect-ratio">
+    <iframe src="https://player.bilibili.com/player.html?aid=69354029&page=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</div>
+
+如果你看不到上面的哔哩哔哩视频，可以点击 [这里](https://youtu.be/NnLQ9zvrcCo) 去 YouTube 看。
+
+
+
+> 以下内容来自文章作者 [Lewis](https://github.com/wenqin-231)。
+
 大家好，协程的素质三连最后一连终于来了，挖坑容易填坑难。
 
 这段时间真的太忙了，不过我们即刻 Android 团队也对做好「码上开学」的意义又有了新的认识。
@@ -96,8 +125,6 @@ main {
 
 就像 ReactiveX 一样，为了让你更好地使用各种操作符 API，新造了 Observable 等概念。
 
-
-
 说到这里，Kotlin 协程的三大疑问：协程是什么、挂起是什么、挂起的非阻塞式是怎么回事，就已经全部讲完了。非常简单：
 
 - 协程就是切线程；
@@ -106,15 +133,11 @@ main {
 
 当然了，这几句是总结，它们背后的原理你是一定要掌握住的。如果忘了，再去把之前的视频和文章看一遍就好。
 
-
-
 视频中还纠正了官方文档里面的一个错误，这里就不再重复了，最后想表达一点：
 
 Kotlin 协程并没有脱离 Kotlin 或者 JVM 创造新的东西，它只是将多线程的开发变得更简单了，可以说是因为 Kotlin 的诞生而顺其自然出现的东西，从语法上看它很神奇，但从原理上讲，它并不是魔术。
 
 希望通过协程系列的讲解能帮助读者上手 Kotlin 协程，不再觉得害怕不敢上手，欢迎继续关注「码上开学」的后续文章，期待和你共同进步。
-
-
 
 ### 练习题
 
@@ -124,3 +147,24 @@ Kotlin 协程并没有脱离 Kotlin 或者 JVM 创造新的东西，它只是将
 * 请求成功或者出错让 Loading 消失；
 * 请求失败需要提示用户请求失败了;
 * 让你的协程写法上看上去像单线程。
+
+### 作者介绍
+
+#### 视频作者
+
+##### 扔物线（朱凯）
+
+- 码上开学创始人、项目管理人、内容模块规划者和视频内容作者。
+- [Android GDE](https://developers.google.com/experts/people/kai-zhu)（ Google 认证 Android 开发专家），前 Flipboard Android 工程师。
+- GitHub 全球 Java 排名第 92 位，在 [GitHub](https://github.com/rengwuxian) 上有 6.6k followers 和 9.9k stars。
+- 个人的 Android 开源库 [MaterialEditText](https://github.com/rengwuxian/MaterialEditText/) 被全球多个项目引用，其中包括在全球拥有 5 亿用户的新闻阅读软件 Flipboard 。
+- 曾多次在 Google Developer Group Beijing 线下分享会中担任 Android 部分的讲师。
+- 个人技术文章《[给 Android 开发者的 RxJava 详解](https://gank.io/post/560e15be2dca930e00da1083)》发布后，在国内多个公司和团队内部被转发分享和作为团队技术会议的主要资料来源，以及逆向传播到了美国一些如 Google 、 Uber 等公司的部分华人团队。
+- 创办的 Android 高级进阶教学网站 [HenCoder](https://hencoder.com/) 在全球华人 Android 开发社区享有相当的影响力。
+- 之后创办 Android 高级开发教学课程 [HenCoder Plus](https://plus.hencoder.com/) ，学员遍布全球，有来自阿里、头条、华为、腾讯等知名一线互联网公司，也有来自中国台湾、日本、美国等地区的资深软件工程师。
+
+#### 文章作者
+
+##### Lewis（姚文钦）
+
+[Lewis（姚文钦）](https://github.com/wenqin-231)，即刻 Android 工程师。2017年加入即刻，参与即刻 4.0 到 6.0 版本的架构设计和与产品迭代。多年 Android 开发经验，现在负责 Android 端多媒体中台基础建设。
