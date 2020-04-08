@@ -16,6 +16,8 @@
 
 > 以下内容来自文章作者[Bruce](https://github.com/bruce3x)。
 
+## 从 Kotlin 的 in 和 out 说起
+
 这期是码上开学 Kotlin 系列的独立技术点部分的第一期，我们来聊一聊泛型。
 
 提到 Kotlin 的泛型，通常离不开 `in ` 和 `out` 关键字，但泛型这门武功需要些基本功才能修炼，否则容易走火入魔，待笔者慢慢道来。
@@ -70,7 +72,7 @@ List<TextView> textViews = buttons;
 
  Java 提供了「泛型通配符」 `? extends` 和 `? super` 来解决这个问题。
 
-### Java 中的 `? extends`
+## Java 中的 `? extends`
 
 在 Java 里面是这么解决的：
 
@@ -158,7 +160,7 @@ list.add(obj); // 👈 这里还是会报错
 
 由于 `add` 的这个限制，使用了 `? extends` 泛型通配符的 `List`，只能够向外提供数据被消费，从这个角度来讲，向外提供数据的一方称为「生产者 Producer」。对应的还有一个概念叫「消费者 Consumer」，对应  Java 里面另一个泛型通配符 `? super`。
 
-### Java 中的 `? super`
+## Java 中的 `? super`
 
 先看一下它的写法：
 
@@ -219,7 +221,7 @@ buttons.add(button); // 👈 add 操作是可以的
 
 理解了 Java 的泛型之后，再理解 Kotlin 中的泛型，有如练完九阳神功再练乾坤大挪移，就比较容易了。
 
-### Kotlin 中的 `out` 和 `in`
+## 说回 Kotlin 中的 `out` 和 `in`
 
 和 Java 泛型一样，Kolin 中的泛型本身也是不可变的。
 
@@ -264,7 +266,7 @@ val consumer: Consumer<in Button> = Consumer<TextView>()
 consumer.consume(Button(context)) // 👈 相当于 'List' 的 'add'
 ```
 
-### 声明处的 `out` 和 `in`
+## 声明处的 `out` 和 `in`
 
 在前面的例子中，在声明 `Producer` 的时候已经确定了泛型 `T` 只会作为输出来用，但是每次都需要在使用的时候加上 `out TextView` 来支持协变，写起来很麻烦。
 
@@ -296,7 +298,7 @@ val consumer: Consumer<Button> = Consumer<TextView>() // 👈 这里不写 in �
 val consumer: Consumer<in Button> = Consumer<TextView>() // 👈 in 可以但没必要
 ```
 
-### `*` 号
+## `*` 号
 
 前面讲到了 Java 中单个 `?` 号也能作为泛型通配符使用，相当于 `? extends Object`。
 它在 Kotlin 中有等效的写法：`*` 号，相当于 `out Any`。
@@ -310,7 +312,7 @@ var list: List<*>
 
 比如你的类型定义里是 `out T : Number` 的，那它加上 `<*>` 之后的效果就不是 `out Any`，而是 `out Number`。
 
-### `where` 关键字
+## `where` 关键字
 
 Java 中声明类或接口的时候，可以使用 `extends` 来设置边界，将泛型类型参数限制为某个类型的子集：
 
@@ -356,7 +358,7 @@ class Monster<T> : MonsterParent<T>
     where T : Animal
 ```
 
-### `reified` 关键字
+## `reified` 关键字
 
 由于 Java 中的泛型存在类型擦除的情况，任何在运行时需要知道泛型确切类型信息的操作都没法用了。
 
@@ -419,18 +421,17 @@ inline fun <reified T> printIfTypeMatch(item: Any) {
 
    在 Kotlin 中，实际上 `MutableList` 接口才相当于 Java 的 `List`。Kotlin 中的 `List` 接口实现了只读操作，没有写操作，所以不会有类型安全上的问题，自然可以支持协变。
 
-### 练习题
+## 练习题
 
 1. 实现一个 `fill` 函数，传入一个 `Array` 和一个对象，将对象填充到 `Array` 中，要求 `Array` 参数的泛型支持逆变（假设 `Array` size 为 1）。
 2. 实现一个 `copy` 函数，传入两个 `Array` 参数，将一个 `Array` 中的元素复制到另外个 `Array` 中，要求 `Array` 参数的泛型分别支持协变和逆变。（提示：Kotlin 中的 `for` 循环如果要用索引，需要使用 `Array.indices`）
 
 
+## 作者介绍
 
-### 作者介绍
+### 视频作者
 
-#### 视频作者
-
-##### 扔物线（朱凯）
+#### 扔物线（朱凯）
 
 - 码上开学创始人、项目管理人、内容模块规划者和视频内容作者。
 - <a href="https://developers.google.com/experts/people/kai-zhu" target="_blank">Android GDE</a>（ Google 认证 Android 开发专家），前 Flipboard Android 工程师。 
@@ -441,8 +442,8 @@ inline fun <reified T> printIfTypeMatch(item: Any) {
 - 创办的 Android 高级进阶教学网站 [HenCoder](https://hencoder.com) 在全球华人 Android 开发社区享有相当的影响力。
 - 之后创办 Android 高级开发教学课程 [HenCoder Plus](https://plus.hencoder.com) ，学员遍布全球，有来自阿里、头条、华为、腾讯等知名一线互联网公司，也有来自中国台湾、日本、美国等地区的资深软件工程师。
 
-#### 文章作者
+### 文章作者
 
-##### Bruce（郑啸天）
+#### Bruce（郑啸天）
 
 [Bruce（郑啸天）](https://github.com/bruce3x)，即刻 Android 工程师。2018 年加入即刻，参与了即刻多个版本的迭代。多年 Android 开发经验，现在负责即刻客户端中台基础建设。

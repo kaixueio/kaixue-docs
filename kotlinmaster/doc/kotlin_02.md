@@ -1,4 +1,4 @@
-## Kotlin 里那些「不是那么写的」
+# Kotlin 里那些「不是那么写的」
 
 > 本期作者：
 >
@@ -18,7 +18,7 @@
 
 上一篇我们讲了 Kotlin 上手最基础的三个点：变量、函数和类型。大家都听说过，Kotlin 完全兼容 Java，这个意思是用 Java 写出来的代码和 Kotlin 可以完美交互，而不是说你用 Java 的写法去写 Kotlin 就完全没问题，这个是不行的。这期内容我们就讲一下，Kotlin 里那些「不 Java」的写法。
 
-### Constructor
+## Constructor
 
 上一篇中简单介绍了 Kotlin 的构造器，这一节具体看看 Kotlin 的构造器和 Java 有什么不一样的地方：
 
@@ -58,7 +58,7 @@
 - Java 中构造器和类同名，Kotlin 中使用 `constructor` 表示。
 - Kotlin 中构造器没有 public 修饰，因为默认可见性就是公开的（关于可见性修饰符这里先不展开，后面会讲到）。
 
-#### init
+### init
 
 除了构造器，Java 里常常配合一起使用的 init 代码块，在 Kotlin 里的写法也有了一点点改变：你需要给它加一个 `init` 前缀。
 
@@ -94,7 +94,7 @@
 
 上一篇提到，Java 的类如果不加 final 关键字，默认是可以被继承的，而 Kotlin 的类默认就是 final 的。在 Java 里 final 还可以用来修饰变量，接下来让我们看看 Kotlin 是如何实现类似功能的。
 
-### `final`
+## `final`
 
 Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能修改。这里分别从成员变量、参数和局部变量来和 Java 做对比：
 
@@ -135,7 +135,7 @@ Kotlin 中的 `val` 和 Java 中的 `final` 类似，表示只读变量，不能
 
 这就是一件很有意思的事：从 `final` 到 `val`，只是方便了一点点，但却让它的使用频率有了巨大的改变。这种改变是会影响到代码质量的：在该加限制的地方加上限制，就可以减少代码出错的概率。
 
-#### `val`自定义 getter
+### `val`自定义 getter
 
 不过 `val` 和 `final` 还是有一点区别的，虽然 `val` 修饰的变量不能二次赋值，但可以通过自定义变量的 getter 函数，让变量每次被访问时，返回动态获取的值：
 
@@ -150,7 +150,7 @@ val size: Int
 
 不过这个属于 `val` 的另外一种用法，大部分情况下 `val` 还是对应于 Java 中的 `final` 使用的。
 
-### `static` property / function
+## `static` property / function
 
 刚才说到大家都不喜欢写 `final` 对吧？但有一种场景，大家是最喜欢用 `final` 的：常量。
 
@@ -176,7 +176,7 @@ class Sample {
 
 为啥 Kotlin 越改越复杂了？不着急，我们先看看 `object` 是个什么东西。
 
-#### `object`
+### `object`
 
 Kotlin 里的 `object` ——首字母小写的，不是大写，Java 里的 `Object` 在 Kotlin 里不用了。
 
@@ -315,7 +315,7 @@ Sample.name
         这里的 `new ` 和 `object:` 修饰的都是接口或者抽象类。    
 
 
-#### `companion object`
+### `companion object`
 
 用 `object` 修饰的对象中的变量和函数都是静态的，但有时候，我们只想让类中的一部分函数和变量是静态的该怎么做呢：
 
@@ -391,7 +391,7 @@ class A {
     }
     ```
 
-#### top-level property / function 声明
+### top-level property / function 声明
 
 除了静态函数这种简便的调用方式，Kotlin 还有更方便的东西：「`top-level declaration` 顶层声明」。其实就是把属性和函数的声明不写在 `class` 里面，这个在 Kotlin 里是允许的：
 
@@ -456,14 +456,14 @@ topLevelFunction()
 
     可以看到当出现两个同名顶级函数时，IDE 会自动加上包前缀来区分，这也印证了「顶级函数属于包」的特性。
 
-#### 对比
+### 对比
 
 那在实际使用中，在 `object`、`companion object` 和 top-level 中该选择哪一个呢？简单来说按照下面这两个原则判断：
 
 - 如果想写工具类的功能，直接创建文件，写 top-level「顶层」函数。
 - 如果需要继承别的类或者实现接口，就用 `object` 或 `companion object`。
 
-### 常量
+## 常量
 
 Java 中，除了上面讲到的的静态变量和方法会用到 `static`，声明常量时也会用到，那 Kotlin 中声明常量会有什么变化呢？
 
@@ -536,9 +536,9 @@ user.name = "Lisi";
 
 前面讲的 `val` 「只读变量」和静态变量都是针对单个变量来说的，接下来我们看看编程中另外一个常见的主题：数组和集合。
 
-### 数组和集合
+## 数组和集合
 
-#### 数组
+### 数组
 
 声明一个 String 数组：
 
@@ -608,7 +608,7 @@ user.name = "Lisi";
 
     关于协变的问题，这里就先不展开了，后面讲泛型的时候会提到。
 
-#### 集合
+### 集合
 
 Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含义分别如下：
 
@@ -769,7 +769,7 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
     
     - `toMutable*()` 返回的是一个新建的集合，原有的集合还是不可变的，所以只能对函数返回的集合修改。
 
-#### `Sequence`
+### `Sequence`
 
 除了集合 Kotlin 还引入了一个新的容器类型 `Sequence`，它和 `Iterable` 一样用来遍历一组数据并可以对每个元素进行特定的处理，先来看看如何创建一个 `Sequence`。
 
@@ -801,7 +801,7 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
 
 这看起来和 `Iterable` 一样呀，为啥要多此一举使用 `Sequence` 呢？在下一篇文章中会结合例子展开讨论。
 
-### 可见性修饰符
+## 可见性修饰符
 
 讲完了数据集合，再看看 Kotlin 中的可见性修饰符，Kotlin 中有四种可见性修饰符：
 
@@ -812,7 +812,7 @@ Kotlin 和 Java 一样有三种集合类型：List、Set 和 Map，它们的含�
 
 相比 Java 少了一个 `default` 「包内可见」修饰符，多了一个 `internal`「module 内可见」修饰符。这一节结合例子讲讲 Kotlin 这四种可见性修饰符，以及在 Kotlin 和 Java 中的不同。先来看看 `public`：
 
-#### `public`
+### `public`
 
 Java 中没写可见性修饰符时，表示包内可见，只有在同一个 `package` 内可以引用：
 
@@ -852,7 +852,7 @@ public class OtherPackageExample {
 
 Kotlin 中如果不写可见性修饰符，就表示公开，和 Java 中 `public` 修饰符具有相同效果。在 Kotlin 中 `public` 修饰符「可以加，但没必要」。
 
-#### `@hide`
+### `@hide`
 
 在 Android 的官方 sdk 中，有一些方法只想对 sdk 内可见，不想开放给用户使用（因为这些方法不太稳定，在后续版本中很有可能会修改或删掉）。为了实现这个特性，会在方法的注释中添加一个 Javadoc 方法 `@hide`，用来限制客户端访问：
 
@@ -868,7 +868,7 @@ public void hideMethod() {
 
 但这种限制不太严格，可以通过反射访问到限制的方法。针对这个情况，Kotlin 引进了一个更为严格的可见性修饰符：`internal`。
 
-#### `internal`
+### `internal`
 
 `internal` 表示修饰的类、函数仅对 module 内可见，这里的 module 具体指的是一组共同编译的 kotlin 文件，常见的形式有：
 
@@ -879,21 +879,21 @@ public void hideMethod() {
 
 `internal` 在写一个 library module 时非常有用，当需要创建一个函数仅开放给 module 内部使用，不想对 library 的使用者可见，这时就应该用  `internal` 可见性修饰符。
 
-#### Java 的「包内可见」怎么没了？
+### Java 的「包内可见」怎么没了？
 
 Java 的 `default`「包内可见」在 Kotlin 中被弃用掉了，Kotlin 中与它最接近的可见性修饰符是 `internal`「module  内可见」。为什么会弃用掉包内可见呢？我觉得有这几个原因：
 
 - Kotlin 鼓励创建 top-level 函数和属性，一个源码文件可以包含多个类，使得 Kotlin 的源码结构更加扁平化，包结构不再像 Java 中那么重要。
 - 为了代码的解耦和可维护性，module 越来越多、越来越小，使得 `internal` 「module 内可见」已经可以满足对于代码封装的需求。
 
-#### `protected`
+### `protected`
 
 - Java 中 `protected` 表示包内可见 + 子类可见。
 - Kotlin 中 `protected` 表示 `private` + 子类可见。
 
 Kotlin 相比 Java `protected` 的可见范围收窄了，原因是 Kotlin 中不再有「包内可见」的概念了，相比 Java 的可见性着眼于 `package`，Kotlin 更关心的是 module。
 
-#### `private`
+### `private`
 
 - Java 中的 `private` 表示类中可见，作为内部类时对外部类「可见」。
 - Kotlin 中的 `private` 表示类中或所在文件内可见，作为内部类时对外部类「不可见」。
@@ -964,16 +964,16 @@ private val propertyInFile = "A string." // 👈 范围更大，整个文件可�
 
 ---
 
-### 练习题
+## 练习题
 
 1. 创建一个 Kotlin 类，这个类需要禁止外部通过构造器创建实例，并提供至少一种实例化方式。
 2. 分别用 Array、IntArray、List 实现 「保存 1-100_000 的数字，并求出这些数字的平均值」，打印出这三种数据结构的执行时间。
 
-### 作者介绍
+## 作者介绍
 
-#### 视频作者
+### 视频作者
 
-##### 扔物线（朱凯）
+#### 扔物线（朱凯）
 
 - 码上开学创始人、项目管理人、内容模块规划者和视频内容作者。
 - <a href="https://developers.google.com/experts/people/kai-zhu" target="_blank">Android GDE</a>（ Google 认证 Android 开发专家），前 Flipboard Android 工程师。 
@@ -984,8 +984,8 @@ private val propertyInFile = "A string." // 👈 范围更大，整个文件可�
 - 创办的 Android 高级进阶教学网站 [HenCoder](https://hencoder.com) 在全球华人 Android 开发社区享有相当的影响力。
 - 之后创办 Android 高级开发教学课程 [HenCoder Plus](https://plus.hencoder.com) ，学员遍布全球，有来自阿里、头条、华为、腾讯等知名一线互联网公司，也有来自中国台湾、日本、美国等地区的资深软件工程师。
 
-#### 文章作者
+### 文章作者
 
-##### Walker（张磊）
+#### Walker（张磊）
 
 [Walker（张磊）](https://juejin.im/user/58e46281da2f60005fe23d48) ，即刻 Android 高级工程师。2015 年加入即刻，参与了即刻 2.0 到 6.0 版本的架构设计和产品迭代。多年 Android 开发经验，曾就职于 OPPO，专注于客户端用户体验、音视频开发和性能优化。

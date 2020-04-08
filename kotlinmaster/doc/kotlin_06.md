@@ -24,7 +24,7 @@
 
 
 
-### **上期回顾**
+## **上期回顾**
 
 在协程上一期中我们知道了下面知识点：
 
@@ -78,7 +78,7 @@ public suspend fun await(): T
 
 
 
-### 「挂起」的本质
+## 「挂起」的本质
 
 协程中「挂起」的对象到底是什么？挂起线程，还是挂起函数？都不对，**我们挂起的对象是协程。**
 
@@ -194,7 +194,7 @@ handler.post {
 
 
 
-### 怎么就「挂起」了？
+## 怎么就「挂起」了？
 
 我们了解到了什么是「挂起」后，再接着看看这个「挂起」是怎么做到的。
 
@@ -235,7 +235,7 @@ suspend fun suspendingGetImage(id: String) = withContext(Dispatchers.IO) {
 
 
 
-### suspend 的意义？
+## suspend 的意义？
 
 这个 `suspend` 关键字，既然它并不是真正实现挂起，那它的作用是什么？
 
@@ -269,7 +269,7 @@ suspend fun suspendingPrint() {
 
 
 
-### 怎么自定义 suspend 函数？
+## 怎么自定义 suspend 函数？
 
 在了解了 `suspend` 关键字的来龙去脉之后，我们就可以进入下一个话题了：怎么自定义 `suspend` 函数。
 
@@ -278,7 +278,7 @@ suspend fun suspendingPrint() {
 - 什么时候需要自定义 `suspend` 函数？
 - 具体该怎么写呢？
 
-#### 什么时候需要自定义 suspend 函数
+### 什么时候需要自定义 suspend 函数
 
 如果你的某个函数比较耗时，也就是要等的操作，那就把它写成 `suspend` 函数。这就是原则。
 
@@ -286,7 +286,7 @@ suspend fun suspendingPrint() {
 
 另外这个「耗时」还有一种特殊情况，就是这件事本身做起来并不慢，但它需要等待，比如 5 秒钟之后再做这个操作。这种也是 `suspend` 函数的应用场景。
 
-#### 具体该怎么写
+### 具体该怎么写
 
 给函数加上 `suspend` 关键字，然后在 `withContext` 把函数的内容包住就可以了。
 
@@ -309,7 +309,7 @@ suspend fun suspendUntilDone() {
 
 
 
-### 总结
+## 总结
 
 我们今天整个文章其实就在理清一个概念：什么是挂起？**挂起，就是一个稍后会被自动切回来的线程调度操作。**
 
@@ -323,7 +323,7 @@ suspend fun suspendUntilDone() {
 
 
 
-### 练习题
+## 练习题
 
 使用协程下载一张图，并行进行**两次**切割
 
@@ -334,11 +334,11 @@ suspend fun suspendUntilDone() {
 
  
 
-### 作者介绍
+## 作者介绍
 
-#### 视频作者
+### 视频作者
 
-##### 扔物线（朱凯）
+#### 扔物线（朱凯）
 
 - 码上开学创始人、项目管理人、内容模块规划者和视频内容作者。
 - [Android GDE](https://developers.google.com/experts/people/kai-zhu)（ Google 认证 Android 开发专家），前 Flipboard Android 工程师。
@@ -349,8 +349,8 @@ suspend fun suspendUntilDone() {
 - 创办的 Android 高级进阶教学网站 [HenCoder](https://hencoder.com/) 在全球华人 Android 开发社区享有相当的影响力。
 - 之后创办 Android 高级开发教学课程 [HenCoder Plus](https://plus.hencoder.com/) ，学员遍布全球，有来自阿里、头条、华为、腾讯等知名一线互联网公司，也有来自中国台湾、日本、美国等地区的资深软件工程师。
 
-#### 文章作者
+### 文章作者
 
-##### Hugo（谢晨成）
+#### Hugo（谢晨成）
 
 [Hugo（谢晨成）](https://github.com/xcc3641)，即刻 Android 工程师。2017 年加入即刻，参与了即刻 3.0 到 6.0 版本的架构设计和产品迭代。多年 Android 开发经验，现在负责即刻客户端中台基础建设。
